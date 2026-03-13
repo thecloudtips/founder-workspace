@@ -1,0 +1,30 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "fbbbf09cba7c",
+  "session_id": "cb090e74-500d-4d38-af40-3978273f3eb5",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-13T23:04:32.033941Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "founderOS/.claude/worktrees/agent-af3d39ef/agents/social/monitor-agent.md"
+  ],
+  "agent": "Claude Code",
+  "transcript_identifier_at_start": "bef13984-716d-4427-928f-712daca8ba78",
+  "token_usage": {
+    "input_tokens": 80,
+    "cache_creation_tokens": 195004,
+    "cache_read_tokens": 6847868,
+    "output_tokens": 41145,
+    "api_call_count": 63
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-03-13T23:04:31.973783Z",
+    "agent_lines": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 0,
+    "agent_percentage": 0
+  }
+}

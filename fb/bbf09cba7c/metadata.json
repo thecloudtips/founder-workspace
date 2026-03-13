@@ -3,8 +3,9 @@
   "checkpoint_id": "fbbbf09cba7c",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 4,
+  "checkpoints_count": 5,
   "files_touched": [
+    "founderOS/.claude/worktrees/agent-af3d39ef/agents/social/monitor-agent.md",
     "founderOS/CLAUDE.md",
     "founderOS/_infrastructure/dispatcher/SKILL.md",
     "founderOS/_infrastructure/dispatcher/result-template.md",
@@ -24,13 +25,20 @@
       "context": "/fb/bbf09cba7c/1/context.md",
       "content_hash": "/fb/bbf09cba7c/1/content_hash.txt",
       "prompt": "/fb/bbf09cba7c/1/prompt.txt"
+    },
+    {
+      "metadata": "/fb/bbf09cba7c/2/metadata.json",
+      "transcript": "/fb/bbf09cba7c/2/full.jsonl",
+      "context": "/fb/bbf09cba7c/2/context.md",
+      "content_hash": "/fb/bbf09cba7c/2/content_hash.txt",
+      "prompt": "/fb/bbf09cba7c/2/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 1199,
-    "cache_creation_tokens": 251405,
-    "cache_read_tokens": 4750548,
-    "output_tokens": 54674,
-    "api_call_count": 61
+    "input_tokens": 1279,
+    "cache_creation_tokens": 446409,
+    "cache_read_tokens": 11598416,
+    "output_tokens": 95819,
+    "api_call_count": 124
   }
 }
