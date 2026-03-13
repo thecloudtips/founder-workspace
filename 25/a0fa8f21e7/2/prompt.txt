@@ -1,0 +1,14 @@
+do we have some uncomitted changes ?
+
+---
+
+ok before commithign anything i steal think we have a lot of unnecessery sub folders in founderOs folder like .beads .claude .claude-flow etc we should get rid of this i think this are left over after reorganizing the repo with sub modules concept
+
+---
+
+yes
+
+---
+
+yes commit and push to sub module, 
+do we need to d osomething in the root repo ?

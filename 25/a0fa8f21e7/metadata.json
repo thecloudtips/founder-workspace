@@ -3,7 +3,7 @@
   "checkpoint_id": "25a0fa8f21e7",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 2,
+  "checkpoints_count": 3,
   "files_touched": [
     ".gitignore",
     "CLAUDE.md",
@@ -13,6 +13,7 @@
     "founderOS/.claude/helpers/hook-handler.cjs",
     "founderOS/.claude/helpers/statusline.cjs",
     "founderOS/.claude/settings.json",
+    "founderOS/.gitignore",
     "founderOS/.mcp.json"
   ],
   "sessions": [
@@ -29,13 +30,20 @@
       "context": "/25/a0fa8f21e7/1/context.md",
       "content_hash": "/25/a0fa8f21e7/1/content_hash.txt",
       "prompt": "/25/a0fa8f21e7/1/prompt.txt"
+    },
+    {
+      "metadata": "/25/a0fa8f21e7/2/metadata.json",
+      "transcript": "/25/a0fa8f21e7/2/full.jsonl",
+      "context": "/25/a0fa8f21e7/2/context.md",
+      "content_hash": "/25/a0fa8f21e7/2/content_hash.txt",
+      "prompt": "/25/a0fa8f21e7/2/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 176,
-    "cache_creation_tokens": 237448,
-    "cache_read_tokens": 10495018,
-    "output_tokens": 61945,
-    "api_call_count": 116
+    "input_tokens": 209,
+    "cache_creation_tokens": 290469,
+    "cache_read_tokens": 11548371,
+    "output_tokens": 65977,
+    "api_call_count": 141
   }
 }
