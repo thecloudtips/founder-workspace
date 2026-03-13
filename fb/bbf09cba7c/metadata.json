@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "fbbbf09cba7c",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "founderOS/CLAUDE.md",
+    "founderOS/_infrastructure/dispatcher/SKILL.md",
+    "founderOS/_infrastructure/dispatcher/result-template.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/fb/bbf09cba7c/0/metadata.json",
+      "transcript": "/fb/bbf09cba7c/0/full.jsonl",
+      "context": "/fb/bbf09cba7c/0/context.md",
+      "content_hash": "/fb/bbf09cba7c/0/content_hash.txt",
+      "prompt": "/fb/bbf09cba7c/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 101,
+    "cache_creation_tokens": 78044,
+    "cache_read_tokens": 2893358,
+    "output_tokens": 14135,
+    "api_call_count": 40
+  }
+}

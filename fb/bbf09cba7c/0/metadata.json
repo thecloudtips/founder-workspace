@@ -1,0 +1,32 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "fbbbf09cba7c",
+  "session_id": "d3c675ca-9084-472d-9d3e-d4c4d96b5071",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-13T21:56:24.438967Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "founderOS/CLAUDE.md",
+    "founderOS/_infrastructure/dispatcher/SKILL.md",
+    "founderOS/_infrastructure/dispatcher/result-template.md"
+  ],
+  "agent": "Claude Code",
+  "transcript_identifier_at_start": "081292f0-c70d-4fb4-bce3-f754d625bb02",
+  "token_usage": {
+    "input_tokens": 101,
+    "cache_creation_tokens": 78044,
+    "cache_read_tokens": 2893358,
+    "output_tokens": 14135,
+    "api_call_count": 40
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-03-13T21:56:24.41444Z",
+    "agent_lines": 0,
+    "human_added": 1,
+    "human_modified": 667,
+    "human_removed": 0,
+    "total_committed": 1,
+    "agent_percentage": 0
+  }
+}
