@@ -1,0 +1,32 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "25a0fa8f21e7",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "founderOS/.claude-flow/metrics/v3-progress.json",
+    "founderOS/.claude-flow/security/audit-status.json",
+    "founderOS/.claude/helpers/github-safe.js",
+    "founderOS/.claude/helpers/hook-handler.cjs",
+    "founderOS/.claude/helpers/statusline.cjs",
+    "founderOS/.claude/settings.json",
+    "founderOS/.mcp.json"
+  ],
+  "sessions": [
+    {
+      "metadata": "/25/a0fa8f21e7/0/metadata.json",
+      "transcript": "/25/a0fa8f21e7/0/full.jsonl",
+      "context": "/25/a0fa8f21e7/0/context.md",
+      "content_hash": "/25/a0fa8f21e7/0/content_hash.txt",
+      "prompt": "/25/a0fa8f21e7/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 89,
+    "cache_creation_tokens": 97100,
+    "cache_read_tokens": 4072668,
+    "output_tokens": 18990,
+    "api_call_count": 48
+  }
+}
