@@ -1,0 +1,565 @@
+i woudl like to spec and plan a new capability: social media posting
+
+i woudl ike to use the getlate.dev here is the docuemntation of the api 
+
+https://docs.getlate.dev/llms-full.txt
+https://docs.getlate.dev/
+
+i would like to have same thin cli as for notion 
+
+fist set of functionalities should focus on linked in and x posting with all superoted by these platforms content types and users interactsions taht are possible with late.dev functionality
+
+use superpowrs for secifing and planning 
+
+this should ship as a set of skills commands and posibli agents that can ofload the actual posting 
+
+desing for subagents driven developemtn and multpile subagnest developing togheters with usage of claude-flow swarm mode
+
+use the askUserQetion tool as much as posbile
+
+---
+
+Base directory for this skill: /Users/lhalicki/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.2/skills/brainstorming
+
+# Brainstorming Ideas Into Designs
+
+Help turn ideas into fully formed designs and specs through natural collaborative dialogue.
+
+Start by understanding the current project context, then ask questions one at a time to refine the idea. Once you understand what you're building, present the design and get user approval.
+
+<HARD-GATE>
+Do NOT invoke any implementation skill, write any code, scaffold any project, or take any implementation action until you have presented a design and the user has approved it. This applies to EVERY project regardless of perceived simplicity.
+</HARD-GATE>
+
+## Anti-Pattern: "This Is Too Simple To Need A Design"
+
+Every project goes through this process. A todo list, a single-function utility, a config change — all of them. "Simple" projects are where unexamined assumptions cause the most wasted work. The design can be short (a few sentences for truly simple projects), but you MUST present it and get approval.
+
+## Checklist
+
+You MUST create a task for each of these items and complete them in order:
+
+1. **Explore project context** — check files, docs, recent commits
+2. **Offer visual companion** (if topic will involve visual questions) — this is its own message, not combined with a clarifying question. See the Visual Companion section below.
+3. **Ask clarifying questions** — one at a time, understand purpose/constraints/success criteria
+4. **Propose 2-3 approaches** — with trade-offs and your recommendation
+5. **Present design** — in sections scaled to their complexity, get user approval after each section
+6. **Write design doc** — save to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` and commit
+7. **Spec review loop** — dispatch spec-document-reviewer subagent with precisely crafted review context (never your session history); fix issues and re-dispatch until approved (max 5 iterations, then surface to human)
+8. **User reviews written spec** — ask user to review the spec file before proceeding
+9. **Transition to implementation** — invoke writing-plans skill to create implementation plan
+
+## Process Flow
+
+```dot
+digraph brainstorming {
+    "Explore project context" [shape=box];
+    "Visual questions ahead?" [shape=diamond];
+    "Offer Visual Companion\n(own message, no other content)" [shape=box];
+    "Ask clarifying questions" [shape=box];
+    "Propose 2-3 approaches" [shape=box];
+    "Present design sections" [shape=box];
+    "User approves design?" [shape=diamond];
+    "Write design doc" [shape=box];
+    "Spec review loop" [shape=box];
+    "Spec review passed?" [shape=diamond];
+    "User reviews spec?" [shape=diamond];
+    "Invoke writing-plans skill" [shape=doublecircle];
+
+    "Explore project context" -> "Visual questions ahead?";
+    "Visual questions ahead?" -> "Offer Visual Companion\n(own message, no other content)" [label="yes"];
+    "Visual questions ahead?" -> "Ask clarifying questions" [label="no"];
+    "Offer Visual Companion\n(own message, no other content)" -> "Ask clarifying questions";
+    "Ask clarifying questions" -> "Propose 2-3 approaches";
+    "Propose 2-3 approaches" -> "Present design sections";
+    "Present design sections" -> "User approves design?";
+    "User approves design?" -> "Present design sections" [label="no, revise"];
+    "User approves design?" -> "Write design doc" [label="yes"];
+    "Write design doc" -> "Spec review loop";
+    "Spec review loop" -> "Spec review passed?";
+    "Spec review passed?" -> "Spec review loop" [label="issues found,\nfix and re-dispatch"];
+    "Spec review passed?" -> "User reviews spec?" [label="approved"];
+    "User reviews spec?" -> "Write design doc" [label="changes requested"];
+    "User reviews spec?" -> "Invoke writing-plans skill" [label="approved"];
+}
+```
+
+**The terminal state is invoking writing-plans.** Do NOT invoke frontend-design, mcp-builder, or any other implementation skill. The ONLY skill you invoke after brainstorming is writing-plans.
+
+## The Process
+
+**Understanding the idea:**
+
+- Check out the current project state first (files, docs, recent commits)
+- Before asking detailed questions, assess scope: if the request describes multiple independent subsystems (e.g., "build a platform with chat, file storage, billing, and analytics"), flag this immediately. Don't spend questions refining details of a project that needs to be decomposed first.
+- If the project is too large for a single spec, help the user decompose into sub-projects: what are the independent pieces, how do they relate, what order should they be built? Then brainstorm the first sub-project through the normal design flow. Each sub-project gets its own spec → plan → implementation cycle.
+- For appropriately-scoped projects, ask questions one at a time to refine the idea
+- Prefer multiple choice questions when possible, but open-ended is fine too
+- Only one question per message - if a topic needs more exploration, break it into multiple questions
+- Focus on understanding: purpose, constraints, success criteria
+
+**Exploring approaches:**
+
+- Propose 2-3 different approaches with trade-offs
+- Present options conversationally with your recommendation and reasoning
+- Lead with your recommended option and explain why
+
+**Presenting the design:**
+
+- Once you believe you understand what you're building, present the design
+- Scale each section to its complexity: a few sentences if straightforward, up to 200-300 words if nuanced
+- Ask after each section whether it looks right so far
+- Cover: architecture, components, data flow, error handling, testing
+- Be ready to go back and clarify if something doesn't make sense
+
+**Design for isolation and clarity:**
+
+- Break the system into smaller units that each have one clear purpose, communicate through well-defined interfaces, and can be understood and tested independently
+- For each unit, you should be able to answer: what does it do, how do you use it, and what does it depend on?
+- Can someone understand what a unit does without reading its internals? Can you change the internals without breaking consumers? If not, the boundaries need work.
+- Smaller, well-bounded units are also easier for you to work with - you reason better about code you can hold in context at once, and your edits are more reliable when files are focused. When a file grows large, that's often a signal that it's doing too much.
+
+**Working in existing codebases:**
+
+- Explore the current structure before proposing changes. Follow existing patterns.
+- Where existing code has problems that affect the work (e.g., a file that's grown too large, unclear boundaries, tangled responsibilities), include targeted improvements as part of the design - the way a good developer improves code they're working in.
+- Don't propose unrelated refactoring. Stay focused on what serves the current goal.
+
+## After the Design
+
+**Documentation:**
+
+- Write the validated design (spec) to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`
+  - (User preferences for spec location override this default)
+- Use elements-of-style:writing-clearly-and-concisely skill if available
+- Commit the design document to git
+
+**Spec Review Loop:**
+After writing the spec document:
+
+1. Dispatch spec-document-reviewer subagent (see spec-document-reviewer-prompt.md)
+2. If Issues Found: fix, re-dispatch, repeat until Approved
+3. If loop exceeds 5 iterations, surface to human for guidance
+
+**User Review Gate:**
+After the spec review loop passes, ask the user to review the written spec before proceeding:
+
+> "Spec written and committed to `<path>`. Please review it and let me know if you want to make any changes before we start writing out the implementation plan."
+
+Wait for the user's response. If they request changes, make them and re-run the spec review loop. Only proceed once the user approves.
+
+**Implementation:**
+
+- Invoke the writing-plans skill to create a detailed implementation plan
+- Do NOT invoke any other skill. writing-plans is the next step.
+
+## Key Principles
+
+- **One question at a time** - Don't overwhelm with multiple questions
+- **Multiple choice preferred** - Easier to answer than open-ended when possible
+- **YAGNI ruthlessly** - Remove unnecessary features from all designs
+- **Explore alternatives** - Always propose 2-3 approaches before settling
+- **Incremental validation** - Present design, get approval before moving on
+- **Be flexible** - Go back and clarify when something doesn't make sense
+
+## Visual Companion
+
+A browser-based companion for showing mockups, diagrams, and visual options during brainstorming. Available as a tool — not a mode. Accepting the companion means it's available for questions that benefit from visual treatment; it does NOT mean every question goes through the browser.
+
+**Offering the companion:** When you anticipate that upcoming questions will involve visual content (mockups, layouts, diagrams), offer it once for consent:
+> "Some of what we're working on might be easier to explain if I can show it to you in a web browser. I can put together mockups, diagrams, comparisons, and other visuals as we go. This feature is still new and can be token-intensive. Want to try it? (Requires opening a local URL)"
+
+**This offer MUST be its own message.** Do not combine it with clarifying questions, context summaries, or any other content. The message should contain ONLY the offer above and nothing else. Wait for the user's response before continuing. If they decline, proceed with text-only brainstorming.
+
+**Per-question decision:** Even after the user accepts, decide FOR EACH QUESTION whether to use the browser or the terminal. The test: **would the user understand this better by seeing it than reading it?**
+
+- **Use the browser** for content that IS visual — mockups, wireframes, layout comparisons, architecture diagrams, side-by-side visual designs
+- **Use the terminal** for content that is text — requirements questions, conceptual choices, tradeoff lists, A/B/C/D text options, scope decisions
+
+A question about a UI topic is not automatically a visual question. "What does personality mean in this context?" is a conceptual question — use the terminal. "Which wizard layout works better?" is a visual question — use the browser.
+
+If they agree to the companion, read the detailed guide before proceeding:
+`skills/brainstorming/visual-companion.md`
+
+---
+
+<task-notification>
+<task-id>a59ba5015e98859e0</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Review skill approach for social" completed</summary>
+<result>I now have a thorough understanding of the existing patterns. Here is my structured review.
+
+---
+
+## Skill Architecture Review: Social Media Posting Design
+
+### APPROVED
+
+**1. Infrastructure vs. domain skill split is correct and mirrors the gws pattern.**
+The proposed `_infrastructure/late-skills/` with 3 infrastructure skills (`late-common`, `late-publish`, `late-media`) directly parallels `_infrastructure/gws-skills/` with `gws-common`, `gmail-read`, `gmail-write`, etc. Infrastructure skills handle CLI wrapper conventions; domain skills handle business logic. This is the established pattern.
+
+**2. Infrastructure skill naming follows conventions.**
+- `late-common` mirrors `gws-common` (shared auth, error handling, rate limits).
+- `late-publish` mirrors `gmail-read`/`gmail-write` (operation-type skills).
+- `late-media` covers a distinct operation type (media upload workflow).
+All use `kebab-case` naming with a tool-prefix, consistent with gws skills.
+
+**3. Domain skill placement under `skills/social/` is correct.**
+Four domain skills under the `social` namespace directory follows the pattern of `skills/linkedin/` (3 skills), `skills/crm/` (3 skills), etc.
+
+**4. The `references/` subdirectory pattern for `platform-adapters/` is correct.**
+The proposed `skills/social/platform-adapters/references/platform-constraints.md` mirrors `skills/linkedin/linkedin-writing/references/post-frameworks.md` and `skills/linkedin/hook-creation/references/hook-templates.md`.
+
+**5. The CLI wrapper approach (`scripts/late-tool.mjs`) mirrors `scripts/notion-tool.mjs`.**
+Consistent infrastructure pattern.
+
+**6. Graceful degradation pattern is correctly specified.**
+`late-common` specifies `status: "unavailable"` degradation, matching the universal convention documented in CLAUDE.md and implemented in `gws-common`.
+
+**7. Agent team pattern (pipeline) is appropriate.**
+Pipeline pattern is already used by P01 Inbox Zero and P09 Report Gen. The 5-agent pipeline (content-adapter, preview, media-handler, publisher, monitor) fits this established pattern.
+
+---
+
+### ISSUES (Need Fixing)
+
+**1. Missing YAML frontmatter in skill spec descriptions.**
+Every existing SKILL.md has a YAML frontmatter block with `name` and `description` fields (and optionally `globs`). The spec describes skill content but does not include the required frontmatter for any of the 7 skills. The implementation must include:
+```yaml
+---
+name: late-common
+description: "Core Late.dev CLI conventions for Founder OS plugins..."
+---
+```
+For domain skills, the `description` field should include activation phrases (the "Activates when..." pattern seen in `linkedin-writing`, `crm-sync`, etc.). For infrastructure skills, the description is a plain capability statement (as in `gws-common`, `scheduling-bridge`).
+
+**Recommendation**: Add frontmatter templates for all 7 skills to the spec, or at minimum note the requirement.
+
+**2. Infrastructure skills should be mirrored in `skills/infrastructure/`.**
+The project maintains mirror copies of infrastructure skills. Every `_infrastructure/` skill has a corresponding entry under `skills/infrastructure/`:
+- `_infrastructure/gws-skills/gws-common/` is mirrored at `skills/infrastructure/gws-common/SKILL.md`
+- `_infrastructure/memory/` is mirrored at `skills/infrastructure/memory/SKILL.md`
+- `_infrastructure/scheduling/` is mirrored at `skills/infrastructure/scheduling/SKILL.md`
+
+The spec only mentions `_infrastructure/late-skills/` but does not account for the required mirror copies at `skills/infrastructure/late-common/SKILL.md`, `skills/infrastructure/late-publish/SKILL.md`, and `skills/infrastructure/late-media/SKILL.md`. These mirrors are needed for the plugin discovery mechanism.
+
+**3. No `globs` field specified for domain skills.**
+Domain skills like `linkedin-writing` include a `globs` field in frontmatter (e.g., `globs: ["commands/linkedin-*.md"]`) that controls automatic skill activation. The 4 proposed domain skills should specify their globs, likely `"commands/social-*.md"` or `"commands/social/*.md"`.
+
+**4. The `platform-adapters` skill name does not follow the `noun-verb` or `noun-noun` pattern.**
+Existing domain skill names use patterns like: `linkedin-writing`, `hook-creation`, `email-triage`, `crm-sync`, `expense-categorization`, `follow-up-detection`. The name `platform-adapters` uses a plural noun which is atypical. Consider `platform-adaptation` or `content-adaptation` to match conventions.
+
+---
+
+### SUGGESTIONS (Optional Improvements)
+
+**1. Consider splitting `late-publish` into `late-publish` and `late-read` (or `late-posts-read`).**
+The gws pattern splits by read/write operation: `gmail-read`/`gmail-write`, `drive-read`/`drive-write`, `calendar-read`/`calendar-write`. The proposed `late-publish` conflates read operations (status polling, listing posts) with write operations (creating, scheduling, retrying). Splitting into `late-publish` (write) and `late-status` or `late-read` (read) would be more consistent with gws conventions.
+
+**2. The `engagement` skill is thin relative to other domain skills.**
+Comparing to existing skills (linkedin-writing at ~245 lines, memory-engine at ~449 lines, crm-sync at robust depth), the `engagement/SKILL.md` description in the spec covers only 5 bullet points. If the actual implementation would be similarly thin, consider merging it into `cross-posting/SKILL.md` as a section, since engagement and cross-posting are closely related. Alternatively, expand it significantly to justify its own skill.
+
+**3. Add the `social` namespace to the CLAUDE.md namespace table.**
+The spec does not mention updating the namespace quick reference table in CLAUDE.md. When implemented, a row should be added:
+```
+| 32 | Social Media | `social` | post, cross-post, schedule, draft, status, reply, analytics, queue, connect, profiles, webhooks | Late.dev | Content (Social Post) |
+```
+
+**4. Consider a `late-accounts` infrastructure skill.**
+Account management (connect, disconnect, health checks, profile management) is a distinct concern from publishing or media. The gws pattern has separate skills per service area. A `late-accounts` skill covering OAuth flows, account health, and profile management would keep `late-common` focused on shared conventions only.
+
+**5. The spec references the `scheduling-strategy` domain skill and the `_infrastructure/scheduling/` infrastructure skill, which have overlapping concerns.**
+The infrastructure `scheduling` skill handles the `--schedule` flag mechanics (cron generation, P27 workflow creation). The proposed domain `scheduling-strategy` skill handles optimal posting times and queue management. The boundary is clear in concept but the names could cause confusion. Consider renaming the domain skill to `posting-cadence` or `timing-strategy` to create clearer separation.
+
+---
+
+### Summary
+
+The skill architecture is well-designed and follows established project conventions in its major structural decisions (infrastructure/domain split, CLI wrapper pattern, pipeline agent team, graceful degradation). The 4 issues identified are: missing YAML frontmatter, missing `skills/infrastructure/` mirror copies, missing `globs` field, and one non-conventional skill name. These are straightforward to fix before implementation. The 5 suggestions are refinements that would improve consistency but are not blockers.</result>
+<usage><total_tokens>45372</total_tokens><tool_uses>13</tool_uses><duration_ms>71342</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a3cc6ecb52af44c3d</task-id>
+<tool-use-id>toolu_014cK5CYXf9pwCUaS99jgjnX</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Review plugin structure for social" completed</summary>
+<result>I now have enough context for a thorough review. Here is my structured assessment.
+
+---
+
+## Structured Review: `social` Namespace Spec
+
+### APPROVED
+
+1. **Namespace naming**: `social` follows the existing single-word lowercase convention (`inbox`, `briefing`, `linkedin`, `prep`, `sow`, etc.). No conflicts with existing namespaces.
+
+2. **Command file structure**: `commands/social/<action>.md` with 11 commands matches the established pattern. Actions use lowercase kebab-case where needed (`cross-post`).
+
+3. **Skills structure**: `skills/social/<skill-name>/SKILL.md` follows the exact convention seen in `skills/linkedin/linkedin-writing/SKILL.md`, `skills/linkedin/hook-creation/SKILL.md`, etc.
+
+4. **Infrastructure skills placement**: `_infrastructure/late-skills/` mirrors the existing `_infrastructure/gws-skills/` pattern for shared external tool integration skills.
+
+5. **CLI wrapper placement**: `scripts/late-tool.mjs` mirrors `scripts/notion-tool.mjs` -- correct location and naming convention.
+
+6. **P24 linkedin relationship**: Clean separation -- P24 handles content *creation*, `social` handles *publishing*. This avoids namespace overlap and follows the dependency chain pattern (`linkedin:post` -> `social:cross-post`).
+
+7. **Notion DB integration**: Extending the existing Content DB with new Type values (`Social Post`, `Tweet`, `Thread`, `Cross-Post`) follows the HQ consolidation pattern. New properties (Platform, Post ID, Published URL, etc.) are additive and non-breaking.
+
+8. **Memory injection**: Spec correctly includes Step 0 memory context injection and references `_infrastructure/memory/context-injection/SKILL.md`. Matches the pattern in `commands/inbox/triage.md` and `commands/linkedin/post.md`.
+
+9. **Scheduling integration**: Correctly follows the existing 9-namespace scheduling pattern with `--schedule` flag, natural language + cron expressions, `--persistent`, `status`, and `disable` sub-flags. References `_infrastructure/scheduling/SKILL.md`.
+
+10. **Agent team pattern**: Pipeline pattern with 5 agents matches the existing `agents/inbox/config.json` pipeline pattern. The `--team` flag convention matches `inbox:triage` and `linkedin:post`.
+
+11. **Data flow**: The compose (P24) -> publish (social) pipeline is well-defined with clear handoff points.
+
+12. **Security**: Token handling for `LATE_API_KEY` follows good practices (never log, mask in output, format validation, HTTPS-only).
+
+---
+
+### ISSUES (Must Fix)
+
+1. **Agent config.json schema mismatch**: The proposed `agents/social/config.json` in the spec uses a flat array of agent name strings (`"agents": ["content-adapter", "preview", ...]`), but the existing convention uses an array of objects with `name`, `role`, `file`, `tools`, and pattern-specific fields (`order` for pipeline, `parallel_group` for parallel-gathering). Compare:
+   - Existing (`agents/inbox/config.json`): `{ "name": "triage-agent", "role": "...", "file": "agents/triage-agent.md", "order": 1, "tools": ["Bash"] }`
+   - Proposed: just `"content-adapter"` as a string
+   
+   **Fix**: Rewrite the `config.json` example to use the full object schema with `name`, `role`, `file`, `order`, and `tools` for each agent. Since this is a pipeline, each agent needs an `order` field.
+
+2. **Agent config.json top-level fields**: The proposed config includes `"namespace"`, `"trigger"`, and `"minimum_success"` which are not present in any existing config. The existing configs use `"pattern"`, `"description"`, `"execution"`, `"agents"`, `"coordination"`, and `"observability"`. Fields like `timeout_per_agent` belong inside `coordination`, not at the top level.
+   
+   **Fix**: Restructure to match the existing schema: move `timeout_per_agent` and `failure_handling` into a `coordination` object; add `observability` block; remove non-standard `namespace`, `trigger`, and `minimum_success` top-level keys.
+
+3. **Missing frontmatter in command definitions**: The spec describes commands but does not show the YAML frontmatter (`---` block with `description`, `argument-hint`, `allowed-tools`). Every existing command file has this frontmatter. Since this is a design spec (not implementation), this is acceptable as-is -- but the implementation must include frontmatter.
+   
+   **Fix**: Add a note to the spec stating that each command `.md` file must include standard YAML frontmatter with `description`, `argument-hint`, and `allowed-tools` fields.
+
+4. **Missing Business Context loading step**: Existing commands (e.g., `linkedin:post`, `inbox:triage`) include a "Business Context (Optional)" section that reads from `_infrastructure/context/active/`. The spec's command flow (e.g., `social:post` execution flow) mentions "Step 0: Memory context injection" but omits the Business Context loading step.
+   
+   **Fix**: Add Business Context loading as a prerequisite step before Step 0 in the command execution flows, per the universal pattern in CLAUDE.md.
+
+5. **Missing Intelligence/Self-Healing integration**: Existing commands like `inbox:triage` include "Observation: Start", "Intelligence: Apply Learned Patterns", and "Self-Healing: Error Recovery" sections. The spec does not mention Intelligence integration at all.
+   
+   **Fix**: Add Intelligence observation events (pre_command/post_command), learned pattern application, and self-healing error recovery to the command execution template. This is a universal pattern per `inbox:triage.md`.
+
+6. **Missing Memory observation at end**: CLAUDE.md states all namespaces "log observations at end (Final step)." The spec mentions Step 0 injection but does not include the final-step pattern detection/observation logging via `_infrastructure/memory/pattern-detection/SKILL.md`.
+   
+   **Fix**: Add a final step to each command flow that records observations via the pattern-detection skill.
+
+7. **Preflight registry does not exist yet**: The spec references adding entries to `_infrastructure/preflight/dependency-registry.json`, but this file does not exist in the repo. The preflight superpower is still in planning phase (`docs/superpowers/plans/`).
+   
+   **Fix**: Note this as a future integration point. The spec should clarify that the preflight entries are pending the preflight infrastructure being built, and should not block implementation. Consider adding a manual check step in the meantime (similar to `inbox:triage`'s `which gws` check).
+
+---
+
+### SUGGESTIONS (Optional Improvements)
+
+1. **11 commands is large**: Most existing namespaces have 2-4 commands. The `social` namespace proposes 11. Consider whether `webhooks`, `profiles`, and `connect` could be subsumed into a single `social:manage` or `social:setup` command with sub-actions, reducing the namespace surface area. Alternatively, keep them separate but note this is the largest namespace by command count.
+
+2. **Missing `--format` flag**: Several existing commands support output format flags. Consider adding `--format=table|json|markdown` to `social:status`, `social:analytics`, and `social:queue` for consistency.
+
+3. **Skill references directory**: The proposed `skills/social/platform-adapters/references/platform-constraints.md` introduces a `references/` subdirectory inside a skill. This is not seen in existing skills (e.g., `skills/linkedin/` has flat skill folders each with just `SKILL.md`). While not strictly wrong, it introduces a new pattern. Consider putting platform constraints directly in the SKILL.md or as a separate skill.
+
+4. **Agent naming**: Existing pipeline agents often include "-agent" suffix (`triage-agent`, `action-agent`, `archive-agent`). The proposed agents drop this (`content-adapter`, `preview`, `publisher`, `monitor`). Consider using `content-adapter-agent`, `preview-agent`, etc. for consistency, or note this as a deliberate deviation.
+
+5. **Notion DB template file**: The spec mentions updating `_infrastructure/notion-db-templates/hq-content.json` but does not mention creating a standalone `social-*` template JSON for the new properties. Given the HQ consolidation pattern, extending `hq-content.json` is correct, but a migration note for existing HQ users who need the new properties added to their live databases would be helpful.
+
+6. **Error handling in command flow**: The `inbox:triage` command has detailed error classification (transient, recoverable, degradable, fatal). The spec's error handling section covers the CLI wrapper (`late-tool.mjs`) but not the command-level error handling pattern. Consider adding this to the command execution flows.
+
+---
+
+### Summary
+
+The spec is well-structured and demonstrates strong understanding of the Founder OS architecture. The P24 bridge design, Notion DB extension, and infrastructure skill placement are all convention-compliant. The **6 must-fix issues** are all about aligning with universal patterns that existing commands follow (agent config schema, frontmatter, business context, intelligence, memory observation, and preflight). None require architectural changes -- they are pattern compliance gaps in the spec document.</result>
+<usage><total_tokens>34620</total_tokens><tool_uses>19</tool_uses><duration_ms>80889</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a64ac0e9030b9aa60</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Security review for token handling" completed</summary>
+<result>I now have all the information needed for a thorough security review. Here is my structured analysis:
+
+---
+
+## Security Review: Late.dev Integration (Social Media Posting Spec)
+
+**File reviewed**: `REDACTED.md`
+**Baseline comparison**: `/Users/lhalicki/coding_projects/founderOS/scripts/notion-tool.mjs`
+
+---
+
+### SECURE (Good Practices)
+
+1. **Token never logged or echoed** -- The spec explicitly states on line 79: "NEVER log, echo, or include the API key in error messages." This matches the `notion-tool.mjs` pattern where `resolveAuth()` returns the key silently and error messages use structured codes without embedding credentials.
+
+2. **Token masking in diagnostics** -- Spec line 82 requires `sk_****...last4` masking in diagnostic output. This is an improvement over `notion-tool.mjs`, which has NO masking at all -- the diagnostic mode passes the raw key to the Notion client but never displays it. The Late spec is more explicit about what to show.
+
+3. **HTTPS enforcement** -- Spec line 84 mandates HTTPS-only with URL validation. Good defense against downgrade attacks.
+
+4. **API key format validation** -- Spec line 83 requires validating `sk_` prefix + 64 hex characters before making API calls. This is a fail-fast improvement over `notion-tool.mjs`, which sends any string to the Notion API without local format validation.
+
+5. **Rate limit handling with backoff** -- The spec mirrors the existing `withRetry()` pattern from `notion-tool.mjs` (line 79-89) with exponential backoff on 429s. The spec adds `X-RateLimit-Remaining` header awareness (line 83), which is an improvement.
+
+6. **`.env` in `.gitignore`** -- The `.gitignore` file properly excludes `.env`, `.env.local`, `.env.*.local`, `credentials.json`, and `token.json`.
+
+7. **Token never written to Notion DB** -- Spec line 80 explicitly prohibits writing the API key to output files or Notion DB. The Notion DB schema (lines 523-540) does not include any token/key fields.
+
+8. **Structured error codes without credential leakage** -- Error codes like `LATE_AUTH_FAILED` mirror the `NOTION_AUTH_FAILED` pattern and avoid embedding credentials in error messages.
+
+---
+
+### VULNERABILITIES (Must Fix)
+
+**V1. `.env` file parsing does not strip quotes**
+
+The `notion-tool.mjs` regex on line 43 (`/^NOTION_API_KEY=(.+)$/m`) captures everything after the `=`, including surrounding quotes if present. If a user writes `LATE_API_KEY="sk_abc..."`, the parsed value will include the double quotes, causing silent auth failures or worse, sending quoted strings to the API. The spec should mandate quote stripping (single and double).
+
+**V2. OAuth flow has no state parameter or CSRF protection specified**
+
+The `social:connect` command (line 286-290) initiates an OAuth flow but the spec mentions nothing about:
+- CSRF state parameter generation and validation
+- Authorization code exchange security
+- Redirect URI validation (allowlisting)
+- PKCE (Proof Key for Code Exchange) for public clients
+
+Open Question #2 (line 649) acknowledges the redirect URL problem but does not propose a solution. Since this is a CLI (public client), PKCE is mandatory per OAuth 2.1. This is an OWASP A07 (Identification and Authentication Failures) risk.
+
+**V3. Webhook URL has no signature verification**
+
+The `social:webhooks` command (lines 105-106, 300-303) allows setting an arbitrary webhook URL with `--url=https://...`, but the spec has zero mention of:
+- Webhook signature verification (HMAC validation of incoming payloads)
+- Shared secret management for webhook signing
+- URL validation beyond HTTPS
+
+Without signature verification, an attacker who discovers the webhook endpoint could send forged status updates, causing the system to incorrectly mark posts as published or failed.
+
+**V4. Presigned URLs logged in media upload flow example**
+
+Lines 139-152 show the presigned URL flow in a code example that includes the full presigned URL in the output: `{ "uploadUrl": "https://...", "publicUrl": "https://..." }`. The spec does not specify:
+- Presigned URL expiration time (how long are they valid?)
+- Whether presigned URLs should be masked in logs
+- Whether presigned URLs are stored anywhere persistent
+
+Presigned URLs are bearer tokens. If they leak via logs or Notion DB writes, anyone can upload arbitrary content to the user's Late.dev storage.
+
+---
+
+### WARNINGS (Should Fix)
+
+**W1. No key rotation or revocation guidance**
+
+The spec describes how to set up the key (preflight fix message, lines 569-581) but provides no guidance on:
+- How to rotate a compromised key
+- How to revoke access
+- Key expiration awareness
+
+**W2. `.env` file permissions not enforced**
+
+Neither the existing `notion-tool.mjs` nor the spec checks `.env` file permissions. On shared systems, a world-readable `.env` (e.g., `chmod 644`) exposes credentials. The spec should recommend `chmod 600 .env` and the CLI should warn if permissions are too open (similar to SSH key warnings).
+
+**W3. Rate limit handling does not prevent credential stuffing**
+
+The spec says "respect `X-RateLimit-Remaining` headers" and "auto-retry with exponential backoff" (lines 83, 135), but there is no client-side rate limiting on auth failures specifically. If `LATE_AUTH_FAILED` is returned, the retry logic (3 retries on 5xx) could amplify invalid key attempts. Auth failures (401) should NOT be retried automatically.
+
+**W4. `errExit` in `notion-tool.mjs` leaks error body on 400 responses**
+
+Line 99 of `notion-tool.mjs`: `errExit(e.message || "Validation error", "NOTION_VALIDATION", e.body || "Check parameters")` -- the raw `e.body` from the API could potentially contain reflected input including partial credentials or sensitive data. The Late spec should sanitize API error bodies before including them in output.
+
+**W5. No Content Security Policy for media uploads**
+
+The media upload flow accepts user-specified content types (`--content-type=image/jpeg`). There is no validation that the claimed content type matches the actual file content. An attacker could upload a malicious HTML file with a JPEG content type, potentially leading to stored XSS if the `publicUrl` is rendered in a browser context.
+
+**W6. Post content written to Notion DB could contain injection payloads**
+
+The Content DB records post text (line 523+). If post content contains Notion formula injection or markdown injection payloads, they could affect the Notion workspace. The spec should specify input sanitization before Notion DB writes.
+
+---
+
+### RECOMMENDATIONS (Nice to Have)
+
+**R1. Add `--validate-only` flag for dry-run auth testing**
+
+Beyond `--diagnostic`, a lightweight `--validate-only` flag that checks key format + makes a single authenticated call without side effects would be useful for CI/CD pipelines.
+
+**R2. Consider a credential helper abstraction**
+
+Both `notion-tool.mjs` and the planned `late-tool.mjs` duplicate the same `.env` walk-up logic. Extract this into a shared `_infrastructure/auth/resolve-env.mjs` utility that handles:
+- Environment variable lookup
+- `.env` file walk-up with quote stripping
+- Permission checking
+- Key format validation
+- Masking utility
+
+**R3. Add audit logging for sensitive operations**
+
+OAuth connect/disconnect, webhook URL changes, and API key validation failures should be logged to a local audit file (not containing credentials) for forensic review.
+
+**R4. Presigned URL short TTL recommendation**
+
+Document that presigned URLs from Late.dev should have the shortest practical TTL. If the Late.dev API allows specifying expiration, default to 5-15 minutes.
+
+**R5. Consider `LATE_API_KEY` in system keychain**
+
+For desktop users, offer integration with macOS Keychain / Linux Secret Service instead of `.env` files, similar to how `gh auth` stores GitHub tokens.
+
+**R6. Webhook URL allowlisting**
+
+Rather than accepting any HTTPS URL via `--url`, consider validating the webhook URL against a user-configured allowlist or requiring URL ownership verification.
+
+---
+
+### OWASP Top 10 Assessment (Integration-Specific)
+
+| OWASP Category | Risk Level | Notes |
+|---|---|---|
+| A01: Broken Access Control | Low | Late.dev API key scopes access. No local RBAC needed for single-user CLI. |
+| A02: Cryptographic Failures | Low | HTTPS enforced. No local encryption of secrets (`.env` is plaintext -- see W2). |
+| A03: Injection | Medium | Post content flows to Late.dev API and Notion DB without sanitization (W6). |
+| A04: Insecure Design | Medium | OAuth flow lacks CSRF/PKCE (V2). Webhook lacks signature verification (V3). |
+| A05: Security Misconfiguration | Low | `.env` permission not checked (W2). Presigned URL TTL unspecified (V4). |
+| A06: Vulnerable Components | N/A | No third-party dependencies beyond Node.js stdlib and Late.dev SDK. |
+| A07: Auth Failures | Medium | OAuth flow incomplete (V2). Auth retry logic could amplify (W3). |
+| A08: Data Integrity Failures | Medium | Webhook payloads not signed (V3). Presigned URLs are bearer tokens (V4). |
+| A09: Logging & Monitoring | Low | No audit logging for sensitive ops (R3). Token masking specified but not in baseline. |
+| A10: SSRF | Low | Webhook URL is user-supplied but goes to Late.dev, not fetched locally. Low risk. |
+
+---
+
+### Summary
+
+The spec generally follows good security patterns established by `notion-tool.mjs` and improves on them in several areas (key format validation, explicit masking, rate limit header awareness). However, there are **4 vulnerabilities** that should be addressed before implementation:
+
+1. **V1** (`.env` quote stripping) -- trivial fix, apply to both tools
+2. **V2** (OAuth CSRF/PKCE) -- critical for the `social:connect` command
+3. **V3** (webhook signature verification) -- critical for `social:webhooks`
+4. **V4** (presigned URL handling) -- needs expiration and logging policy
+
+The 6 warnings are lower priority but should be addressed in the implementation phase, particularly W3 (don't retry auth failures) and W4 (sanitize API error bodies).</result>
+<usage><total_tokens>34005</total_tokens><tool_uses>7</tool_uses><duration_ms>80515</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+ok i would like to make a little cleanup excercise can we have reorganization of the folderstructure i woudl like it as fallows 
+
+root folder with all our workflow thigs licke .clude .claude-flow etc 
+in the root folder the fouderOS folder for the development work which is a git repo
+then next to it fouder-os-dist folder also the git repot but with the dist repo 
+
+does this makes sense ?
+
+as well i have one question how to track then the beads and entire where theu should live 
+does we should also the git at the root level?

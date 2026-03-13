@@ -3,8 +3,10 @@
   "checkpoint_id": "25a0fa8f21e7",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 1,
+  "checkpoints_count": 2,
   "files_touched": [
+    ".gitignore",
+    "CLAUDE.md",
     "founderOS/.claude-flow/metrics/v3-progress.json",
     "founderOS/.claude-flow/security/audit-status.json",
     "founderOS/.claude/helpers/github-safe.js",
@@ -20,13 +22,20 @@
       "context": "/25/a0fa8f21e7/0/context.md",
       "content_hash": "/25/a0fa8f21e7/0/content_hash.txt",
       "prompt": "/25/a0fa8f21e7/0/prompt.txt"
+    },
+    {
+      "metadata": "/25/a0fa8f21e7/1/metadata.json",
+      "transcript": "/25/a0fa8f21e7/1/full.jsonl",
+      "context": "/25/a0fa8f21e7/1/context.md",
+      "content_hash": "/25/a0fa8f21e7/1/content_hash.txt",
+      "prompt": "/25/a0fa8f21e7/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 89,
-    "cache_creation_tokens": 97100,
-    "cache_read_tokens": 4072668,
-    "output_tokens": 18990,
-    "api_call_count": 48
+    "input_tokens": 176,
+    "cache_creation_tokens": 237448,
+    "cache_read_tokens": 10495018,
+    "output_tokens": 61945,
+    "api_call_count": 116
   }
 }
