@@ -1,0 +1,6 @@
+[submodule "founderOS"]
+	path = founderOS
+	url = https://github.com/thecloudtips/founderOS.git
+[submodule "founder-os-dist"]
+	path = founder-os-dist
+	url = https://github.com/thecloudtips/founder-os-dist.git
