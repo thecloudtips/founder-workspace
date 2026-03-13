@@ -1,0 +1,30 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "fbbbf09cba7c",
+  "session_id": "22da7a74-e4f5-46ff-b86e-dac92dbc8b80",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-13T23:04:09.623846Z",
+  "branch": "main",
+  "checkpoints_count": 3,
+  "files_touched": [
+    "founderOS/docs/superpowers/plans/[9]-2026-03-13-social-media-posting.md"
+  ],
+  "agent": "Claude Code",
+  "transcript_identifier_at_start": "863fe130-c102-4b7c-ac6c-1a3c5c36a437",
+  "token_usage": {
+    "input_tokens": 1098,
+    "cache_creation_tokens": 173361,
+    "cache_read_tokens": 1857190,
+    "output_tokens": 40539,
+    "api_call_count": 21
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-03-13T23:04:09.435937Z",
+    "agent_lines": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 3242,
+    "total_committed": 3242,
+    "agent_percentage": 0
+  }
+}

@@ -1,0 +1,387 @@
+i would like to prepre a plan with superpowers for this spec file 
+
+founderOS/docs/superpowers/specs/2026-03-13-social-media-posting-design.md
+
+assume claude-flow subagnet drivet developemnt with multuple paraller worktrees 
+for each skill use /skill-creator skill for other things relted to the plugin specyfiok work ushe the /plugin:dev namespace skills 
+
+each developemnt shpould also conclute with revew staege and addresing feedbakc
+
+---
+
+Base directory for this skill: /Users/lhalicki/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.2/skills/writing-plans
+
+# Writing Plans
+
+## Overview
+
+Write comprehensive implementation plans assuming the engineer has zero context for our codebase and questionable taste. Document everything they need to know: which files to touch for each task, code, testing, docs they might need to check, how to test it. Give them the whole plan as bite-sized tasks. DRY. YAGNI. TDD. Frequent commits.
+
+Assume they are a skilled developer, but know almost nothing about our toolset or problem domain. Assume they don't know good test design very well.
+
+**Announce at start:** "I'm using the writing-plans skill to create the implementation plan."
+
+**Context:** This should be run in a dedicated worktree (created by brainstorming skill).
+
+**Save plans to:** `docs/superpowers/plans/YYYY-MM-DD-<feature-name>.md`
+- (User preferences for plan location override this default)
+
+## Scope Check
+
+If the spec covers multiple independent subsystems, it should have been broken into sub-project specs during brainstorming. If it wasn't, suggest breaking this into separate plans — one per subsystem. Each plan should produce working, testable software on its own.
+
+## File Structure
+
+Before defining tasks, map out which files will be created or modified and what each one is responsible for. This is where decomposition decisions get locked in.
+
+- Design units with clear boundaries and well-defined interfaces. Each file should have one clear responsibility.
+- You reason best about code you can hold in context at once, and your edits are more reliable when files are focused. Prefer smaller, focused files over large ones that do too much.
+- Files that change together should live together. Split by responsibility, not by technical layer.
+- In existing codebases, follow established patterns. If the codebase uses large files, don't unilaterally restructure - but if a file you're modifying has grown unwieldy, including a split in the plan is reasonable.
+
+This structure informs the task decomposition. Each task should produce self-contained changes that make sense independently.
+
+## Bite-Sized Task Granularity
+
+**Each step is one action (2-5 minutes):**
+- "Write the failing test" - step
+- "Run it to make sure it fails" - step
+- "Implement the minimal code to make the test pass" - step
+- "Run the tests and make sure they pass" - step
+- "Commit" - step
+
+## Plan Document Header
+
+**Every plan MUST start with this header:**
+
+```markdown
+# [Feature Name] Implementation Plan
+
+> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** [One sentence describing what this builds]
+
+**Architecture:** [2-3 sentences about approach]
+
+**Tech Stack:** [Key technologies/libraries]
+
+---
+```
+
+## Task Structure
+
+````markdown
+### Task N: [Component Name]
+
+**Files:**
+- Create: `exact/path/to/file.py`
+- Modify: `exact/path/to/existing.py:123-145`
+- Test: `tests/exact/path/to/test.py`
+
+- [ ] **Step 1: Write the failing test**
+
+```python
+def test_specific_behavior():
+    result = function(input)
+    assert result == expected
+```
+
+- [ ] **Step 2: Run test to verify it fails**
+
+Run: `pytest tests/path/test.py::test_name -v`
+Expected: FAIL with "function not defined"
+
+- [ ] **Step 3: Write minimal implementation**
+
+```python
+def function(input):
+    return expected
+```
+
+- [ ] **Step 4: Run test to verify it passes**
+
+Run: `pytest tests/path/test.py::test_name -v`
+Expected: PASS
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add tests/path/test.py src/path/file.py
+git commit -m "feat: add specific feature"
+```
+````
+
+## Remember
+- Exact file paths always
+- Complete code in plan (not "add validation")
+- Exact commands with expected output
+- Reference relevant skills with @ syntax
+- DRY, YAGNI, TDD, frequent commits
+
+## Plan Review Loop
+
+After completing each chunk of the plan:
+
+1. Dispatch plan-document-reviewer subagent (see plan-document-reviewer-prompt.md) with precisely crafted review context — never your session history. This keeps the reviewer focused on the plan, not your thought process.
+   - Provide: chunk content, path to spec document
+2. If ❌ Issues Found:
+   - Fix the issues in the chunk
+   - Re-dispatch reviewer for that chunk
+   - Repeat until ✅ Approved
+3. If ✅ Approved: proceed to next chunk (or execution handoff if last chunk)
+
+**Chunk boundaries:** Use `## Chunk N: <name>` headings to delimit chunks. Each chunk should be ≤1000 lines and logically self-contained.
+
+**Review loop guidance:**
+- Same agent that wrote the plan fixes it (preserves context)
+- If loop exceeds 5 iterations, surface to human for guidance
+- Reviewers are advisory - explain disagreements if you believe feedback is incorrect
+
+## Execution Handoff
+
+After saving the plan:
+
+**"Plan complete and saved to `docs/superpowers/plans/<filename>.md`. Ready to execute?"**
+
+**Execution path depends on harness capabilities:**
+
+**If harness has subagents (Claude Code, etc.):**
+- **REQUIRED:** Use superpowers:subagent-driven-development
+- Do NOT offer a choice - subagent-driven is the standard approach
+- Fresh subagent per task + two-stage review
+
+**If harness does NOT have subagents:**
+- Execute plan in current session using superpowers:executing-plans
+- Batch execution with checkpoints for review
+
+---
+
+<task-notification>
+<task-id>a4a04cd6d17da3e08</task-id>
+<tool-use-id>toolu_012iu7Pp8FPTjhELPTTxnSyw</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Review plan chunks 2-4 against spec" completed</summary>
+<result>I now have a thorough view of both documents. Let me compile my findings.
+
+---
+
+Reviewing: `/Users/lhalicki/coding_projects/founder-workspace/founderOS/docs/superpowers/plans/[9]-2026-03-13-social-media-posting.md` against `REDACTED.md`, focused on Chunks 2–4 (Tasks 9–22).
+
+---
+
+## Result: ❌ Issues Found
+
+All issues are ordered by severity. The plan is largely excellent and faithful to the spec, but there are four concrete defects and two minor gaps.
+
+---
+
+### Critical
+
+**1. `connect.md` missing Business Context section (Confidence: 90)**
+
+The spec's Universal Command Execution Flow requires Business Context (Step 2) for every command. All other 10 commands include the Business Context section ("Check `_infrastructure/context/active/` for `.md` files..."). The `connect.md` body jumps directly from Arguments to Preflight, omitting this step entirely.
+
+File: `/Users/lhalicki/coding_projects/founder-workspace/founderOS/docs/superpowers/plans/[9]-2026-03-13-social-media-posting.md`, line 2236
+
+Fix: Add a Business Context section between Arguments and Preflight Check, identical in structure to the one in `post.md` (line 1432).
+
+---
+
+**2. `draft.md` and `analytics.md` missing "Intelligence: Apply Learned Patterns" and "Intelligence: Post-Command" steps (Confidence: 85)**
+
+The spec's Universal Command Execution Flow (spec lines 239–245) includes Steps 4 and 9 — "Intelligence: Apply Learned Patterns" before phases and "Intelligence: Post-Command" after observation logging. Every other command in the plan includes these two steps (`post.md`, `cross-post.md`, `schedule.md`, `reply.md`). Both `draft.md` and `analytics.md` are missing them entirely. `queue.md` also omits both intelligence steps.
+
+Files:
+- `draft.md` body (plan lines 1798–1829)
+- `analytics.md` body (plan lines 2051–2093)
+- `queue.md` body (plan lines 2129–2171)
+
+Fix: Add `## Intelligence: Apply Learned Patterns` before the first phase, and `## Intelligence: Post-Command` after the Final Step in each of the three commands.
+
+---
+
+### Important
+
+**3. Agent frontmatter is missing `model` field in spec but plan adds it — inconsistency with spec's own definition (Confidence: 82)**
+
+The spec defines the agent frontmatter convention as:
+
+```yaml
+---
+name: content-adapter-agent
+description: Adapts source content for each target platform's constraints and culture
+tools: ["Read"]
+color: blue
+---
+```
+
+No `model` field appears in the spec's canonical agent definitions. However, all five agent files in the plan (Tasks 16–20) add `model: inherit`. This is not a spec violation per se — `inherit` is a safe default — but because the spec's own agent frontmatter blocks are the contract, the plan silently diverges. The review step in Task 21 explicitly checks "frontmatter" against the spec, so the reviewer would flag this. It should be a deliberate decision that is documented.
+
+This is low-risk in practice (`model: inherit` is correct behavior), but strictly the plan adds a field the spec does not specify for these agents. Flag as a deliberate addition or remove if strict spec conformance is required.
+
+---
+
+**4. `status.md` omits "Intelligence: Apply Learned Patterns" step (Confidence: 82)**
+
+`status.md` has Step 0 (Memory Context) but skips "Intelligence: Apply Learned Patterns" before Phase 1, which is required by the universal flow. It also omits "Intelligence: Post-Command" at the end. (`profiles.md` and `webhooks.md` also omit both intelligence steps.)
+
+Files:
+- `status.md` (plan lines 1843–1906)
+- `profiles.md` (plan lines 2296–2352)
+- `webhooks.md` (plan lines 2359–2428)
+
+Fix: Same as Issue 2 — add both intelligence sections to each command.
+
+---
+
+### Checklist Verification (passing items)
+
+1. **All 11 commands present**: post, cross-post, schedule, draft, status, reply, analytics, queue, connect, profiles, webhooks — confirmed.
+
+2. **Frontmatter fields**: All commands carry `description`, `argument-hint`, `allowed-tools`, `execution-mode`, `result-format` — confirmed correct.
+
+3. **`connect.md` uses `execution-mode: foreground`**: Confirmed at plan line 2216.
+
+4. **Universal execution flow**: Skills, preflight, memory (Step 0), phases, error recovery, observation logging are present in all commands. The missing "Intelligence" steps above are the only gap.
+
+5. **`config.json` matches spec exactly**: Pattern, description, execution, all 5 agents (name, role, file, order, tools, skills), coordination, observability — confirmed character-for-character match with spec lines 413–473.
+
+6. **All 5 agent markdown files include correct frontmatter**: name, description, model, color, tools — confirmed for all five agents. (See Issue 3 note on `model: inherit` being plan-added.)
+
+7. **Agent pipeline data flow**: content-adapter outputs `variants[]` → preview receives `variants[]`, outputs approved `variants[]` → media-handler receives `variants[]` + `mediaPaths`, outputs `mediaMap{}` → publisher receives `variants[]` + media (note: publisher input schema does not explicitly include `mediaMap` from media-handler — see below) → monitor receives `perPlatformStatus[]`. The publisher input schema at plan line 2888 shows `variants[].mediaItems` pre-populated, which is consistent with media-handler having enriched the variants. This is coherent, though slightly implicit.
+
+8. **Merge sequence**: Wave 1 (wt-infra + wt-skills) then Wave 2 (wt-pub-cmds + wt-int-cmds + wt-mgmt-cmds) then Wave 3 (wt-agents) — confirmed correct at plan lines 3078–3097.
+
+9. **Command arguments match spec CLI syntax**: All argument tables and `argument-hint` strings match the spec's CLI syntax blocks — confirmed.
+
+---
+
+### Summary of items to fix
+
+| # | Severity | Command(s) | Missing |
+|---|----------|------------|---------|
+| 1 | Critical | `connect.md` | Business Context section |
+| 2 | Important | `draft.md`, `analytics.md`, `queue.md` | Both Intelligence steps (Apply + Post-Command) |
+| 3 | Low | All 5 agents | `model: inherit` added beyond spec — document or remove intentionally |
+| 4 | Important | `status.md`, `profiles.md`, `webhooks.md` | Both Intelligence steps (Apply + Post-Command) |
+
+In total, 6 commands are missing one or both Intelligence steps, and 1 command is missing the Business Context section. Once those are addressed, the plan is ready to execute.</result>
+<usage><total_tokens>69201</total_tokens><tool_uses>10</tool_uses><duration_ms>89510</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a6505e5fb2760240e</task-id>
+<tool-use-id>toolu_01K5dKcwR5xuKZ8UkhL7ycgE</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Review plan chunk 1 against spec" completed</summary>
+<result>Now I have a thorough picture of both documents. Let me compile my findings.
+
+---
+
+Reviewing Chunk 1 (Tasks 1–8) of `/Users/lhalicki/coding_projects/founder-workspace/founderOS/docs/superpowers/plans/[9]-2026-03-13-social-media-posting.md` against `REDACTED.md`.
+
+---
+
+## Result: ❌ Issues Found
+
+The plan is largely complete and well-aligned with the spec. However, there are several specific gaps and one incorrect detail. They are grouped below by severity.
+
+---
+
+## Critical Issues
+
+**1. `node -c` syntax check will fail on ESM files — wrong verification command (Confidence: 90)**
+
+Tasks 1 and 2 both use `node -c <file>.mjs` as the verification step. However, `node -c` does not handle ES module syntax (`import`/`export`) correctly on many Node.js versions — it treats the file as CommonJS and throws `SyntaxError: Cannot use import statement in a module` rather than validating it. The correct approach is `node --input-type=module --eval "$(cat <file>)"` or simply `node <file> --help` / importing the module in a test script. Using `node -c` against a live API key is also impossible, so the `--validate-only` mode is the right CI-safe check.
+
+- Plan line 231: `Run: node -c _infrastructure/auth/resolve-env.mjs`
+- Plan line 541: `node -c scripts/late-tool.mjs`
+
+Fix: Replace both verification steps with a non-executing import check, e.g.:
+```bash
+node --input-type=module --eval "import './_infrastructure/auth/resolve-env.mjs'"
+```
+or rely on the `--validate-only` path for `late-tool.mjs`.
+
+---
+
+## Important Issues
+
+**2. `resolve-env.mjs` does not validate key format (no `LATE_API_KEY` length check) — spec requires `sk_` + 64 hex characters (Confidence: 85)**
+
+The spec states: "API key format: `sk_` prefix + 64 hex characters." The `resolveKey()` function in the plan only checks that the key starts with the provided `prefix`. There is no validation that the remainder is exactly 64 hex characters. The spec says "Validate key format before making API calls (fail fast on malformed keys)." The plan's `resolveKey` only does prefix checking, which is insufficient — `sk_` alone would pass.
+
+- Plan lines 206–212 (`resolveKey` function)
+- Spec lines 84, 87, 92–93
+
+Fix: Add format validation after the prefix check:
+```javascript
+const hexPart = key.slice(prefix.length);
+if (hexPart.length !== 64 || !/^[a-f0-9]+$/i.test(hexPart)) {
+  throw new Error(`${envVar} format invalid. Expected ${prefix}<64 hex chars>.`);
+}
+```
+
+**3. `late-tool.mjs` leaks the raw API key in the 401 error message (Confidence: 95)**
+
+At plan line 324–327, the 401 error message calls `getApiKey()` a second time to pass into `maskKey()`:
+```javascript
+throw Object.assign(
+  new Error(`Authentication failed. Verify your LATE_API_KEY (${maskKey(getApiKey())})`),
+  { code: 'LATE_AUTH_FAILED' }
+);
+```
+
+`getApiKey()` calls `resolveKey()` which re-reads the key from the environment. This is functionally correct — it produces a masked string. However, the spec mandates "NEVER log, echo, or include the API key in error messages." Because `maskKey()` is used, this is technically compliant. That said, there is a subtle risk: if `maskKey()` itself throws (e.g., key is undefined at that point due to a race), the unmasked key could surface in the exception message's stack. A safer pattern used in `notion-tool.mjs` is to resolve the key once and keep a reference. This is a low-severity concern but worth noting since the spec has an explicit "NEVER" rule.
+
+Fix: Resolve the key once at the top of `apiCall`, store in a local `const`, and use that reference for masking in the error.
+
+**4. `CLAUDE.md` scheduling list update is incomplete — spec says 10 scheduled namespaces, plan instruction is ambiguous (Confidence: 80)**
+
+The spec states: "The `social` namespace joins the 9 existing scheduled namespaces." The current `CLAUDE.md` scheduling list (visible in the founderOS CLAUDE.md context) reads:
+```
+briefing, review, followup, health, drive, slack, crm, morning, learn
+```
+That is 9 namespaces. Task 7, Step 2 of the plan instructs updating this line to:
+```
+briefing, review, followup, health, drive, slack, crm, morning, learn, social
+```
+This is correct. However, the plan does not specify *which exact line or section* in `CLAUDE.md` to update. The current `CLAUDE.md` embeds this list inside the `**Scheduling support**` bullet in the "Universal Patterns" section. Without a precise edit target the agent could insert it in the wrong location or duplicate it. The plan should reference the exact section header (`### Universal Patterns`) and the specific bullet text to find and update.
+
+---
+
+## Minor Issues (informational, confidence below threshold for blocking)
+
+**5. `late-media/SKILL.md` content omits the spec's "request 5 minutes maximum" TTL detail**
+
+The spec states: "If the API allows configuring TTL, request 5 minutes maximum." The plan's `late-media/SKILL.md` only says "TTL ~15 minutes, Late.dev-controlled" without mentioning the 5-minute minimum TTL request. This is a minor content gap that does not affect functionality but is in the spec. Confidence: 70 — below threshold for blocking, noting for completeness.
+
+**6. `wt-infra` worktree table maps to wrong skill tag**
+
+In the worktree/file mapping table (plan line 87), `wt-infra` is listed with `@plugin-dev:skill-development (skills), @plugin-dev:plugin-structure (CLI)`. Task 3 instructs using `@skill-creator:skill-creator` for skill files. The table references `@plugin-dev:skill-development` instead. This is an inconsistency between the table and the task instructions. Confidence: 65 — below threshold for blocking since the task instruction is the operative guidance.
+
+---
+
+## Summary
+
+All 10 checklist items are substantially covered. The plan correctly:
+- Covers all infrastructure components (resolve-env.mjs, late-tool.mjs, 5 late-skills, 5 mirrors, preflight entries, .gitignore)
+- Covers all 3 domain skills with correct frontmatter, globs, and "Activates when..." descriptions
+- Implements all 17 subcommands from the spec's table
+- Matches resolve-env.mjs spec requirements (walk-up, quote stripping, permission check, pluggable prefix)
+- Includes all 8 Notion DB properties with correct types and all 5 new Type values
+- Includes namespace table row, MCP tools entry, and scheduling list update for CLAUDE.md
+
+Two issues require fixing before implementation: the incorrect `node -c` verification command (will fail silently or misleadingly on ESM), and the missing hex-length validation in `resolveKey`. The API key masking inside the 401 error path is also worth tightening per the spec's explicit "NEVER" security rule.</result>
+<usage><total_tokens>48969</total_tokens><tool_uses>13</tool_uses><duration_ms>99292</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+prepre a prompt for executing the plan for new session

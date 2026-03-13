@@ -3,11 +3,12 @@
   "checkpoint_id": "fbbbf09cba7c",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 1,
+  "checkpoints_count": 4,
   "files_touched": [
     "founderOS/CLAUDE.md",
     "founderOS/_infrastructure/dispatcher/SKILL.md",
-    "founderOS/_infrastructure/dispatcher/result-template.md"
+    "founderOS/_infrastructure/dispatcher/result-template.md",
+    "founderOS/docs/superpowers/plans/[9]-2026-03-13-social-media-posting.md"
   ],
   "sessions": [
     {
@@ -16,13 +17,20 @@
       "context": "/fb/bbf09cba7c/0/context.md",
       "content_hash": "/fb/bbf09cba7c/0/content_hash.txt",
       "prompt": "/fb/bbf09cba7c/0/prompt.txt"
+    },
+    {
+      "metadata": "/fb/bbf09cba7c/1/metadata.json",
+      "transcript": "/fb/bbf09cba7c/1/full.jsonl",
+      "context": "/fb/bbf09cba7c/1/context.md",
+      "content_hash": "/fb/bbf09cba7c/1/content_hash.txt",
+      "prompt": "/fb/bbf09cba7c/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 101,
-    "cache_creation_tokens": 78044,
-    "cache_read_tokens": 2893358,
-    "output_tokens": 14135,
-    "api_call_count": 40
+    "input_tokens": 1199,
+    "cache_creation_tokens": 251405,
+    "cache_read_tokens": 4750548,
+    "output_tokens": 54674,
+    "api_call_count": 61
   }
 }
