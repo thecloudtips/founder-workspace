@@ -75,3 +75,11 @@ if we need to do something prepre pa promot for finishig the work if it is done 
 
 for devleopemnt remember to use the /skill-creator for skills and /plugin:dev for general things and qe review
 
+### Prompt 8
+
+ok asses the founderOS/docs/superpowers/plans/[2]-2026-03-11-memory-engine.md  plan what is missing form it 
+
+if we need to do something prepre pa promot for finishig the work if it is done updateh the superpowrs index so it reflects whare we are with developemnt 
+
+for devleopemnt remember to use the /skill-creator for skills and /plugin:dev for general things and qe review
+

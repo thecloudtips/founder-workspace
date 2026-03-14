@@ -3,25 +3,25 @@
   "checkpoint_id": "e4f158639784",
   "session_id": "ba5cec98-448b-4ffd-a711-b153ab243652",
   "strategy": "manual-commit",
-  "created_at": "2026-03-14T09:12:28.661508Z",
+  "created_at": "2026-03-14T09:19:52.904882Z",
   "branch": "main",
   "checkpoints_count": 1,
   "files_touched": [
     "founderOS/docs/superpowers/INDEX.md"
   ],
   "agent": "Claude Code",
-  "transcript_identifier_at_start": "a6e72cba-0b43-4591-8b34-1163f6a38ae6",
-  "checkpoint_transcript_start": 310,
-  "transcript_lines_at_start": 310,
+  "transcript_identifier_at_start": "93428649-d40d-482f-9e9c-79bef45aca10",
+  "checkpoint_transcript_start": 436,
+  "transcript_lines_at_start": 436,
   "token_usage": {
-    "input_tokens": 10,
-    "cache_creation_tokens": 27001,
-    "cache_read_tokens": 1423060,
-    "output_tokens": 4723,
-    "api_call_count": 8
+    "input_tokens": 13,
+    "cache_creation_tokens": 26484,
+    "cache_read_tokens": 2238432,
+    "output_tokens": 5564,
+    "api_call_count": 11
   },
   "initial_attribution": {
-    "calculated_at": "2026-03-14T09:12:28.61345Z",
+    "calculated_at": "2026-03-14T09:19:52.847624Z",
     "agent_lines": 0,
     "human_added": 0,
     "human_modified": 0,
