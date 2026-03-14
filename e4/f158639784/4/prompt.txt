@@ -1,0 +1,435 @@
+Execute the Evals Framework implementation plan at founderOS/docs/superpowers/plans/[9]-2026-03-12-evals-framework.md.
+
+  Use the superpowers:subagent-driven-development skill to execute it.
+
+  Key Context
+
+  - Working directory: founderOS/ (the submodule, not the workspace root)
+  - All new files go under: _infrastructure/intelligence/evals/ (create this directory first)
+  - Database: Extends existing intelligence.db — do NOT create a new database file
+  - Existing schema: _infrastructure/intelligence/hooks/schema/intelligence.sql — append to it, don't replace
+  - Existing SKILL.md files to modify: Read before editing — _infrastructure/intelligence/SKILL.md and _infrastructure/intelligence/hooks/SKILL.md
+  - Package.json: scripts/package.json (the only one in the repo)
+  - Agent directory: agents/intel/ does NOT exist yet — create it
+
+  Parallelization (4 worktree agents)
+
+  ┌─────────┬───────────────────────┬────────────────────────────────────────────────────┐
+  │  Agent  │        Chunks         │                    What It Does                    │
+  ├─────────┼───────────────────────┼────────────────────────────────────────────────────┤
+  │ Agent 1 │ Chunk 1 (Tasks 1-3)   │ Schema + db.mjs + package.json                     │
+  ├─────────┼───────────────────────┼────────────────────────────────────────────────────┤
+  │ Agent 2 │ Chunk 2 (Tasks 4-7)   │ telemetry.mjs, format.mjs, schema.mjs, sampler.mjs │
+  ├─────────┼───────────────────────┼────────────────────────────────────────────────────┤
+  │ Agent 3 │ Chunk 4 (Task 11)     │ eval-judge.md agent definition                     │
+  ├─────────┼───────────────────────┼────────────────────────────────────────────────────┤
+  │ Agent 4 │ Chunk 6 (Tasks 13-14) │ health.md command + intelligence SKILL.md update   │
+  └─────────┴───────────────────────┴────────────────────────────────────────────────────┘
+
+  After parallel agents complete, run sequentially:
+  - Chunk 3 (Tasks 8-10): eval-runner.mjs + rubrics (depends on Agents 1+2)
+  - Chunk 5 (Task 12): hooks SKILL.md update (depends on Chunk 3)
+  - Chunk 7 (Task 15): Verification + smoke test (depends on everything)
+
+  Important Reminders
+
+  - The .mjs files are real Node.js code — they must be syntactically valid and runnable
+  - Rubrics are JSON files, not markdown
+  - The eval-judge agent writes results via node db.mjs --write-eval CLI entry (not ESM node -e)
+  - sampler.mjs must return false when sample_rate === 0 (invoice namespace is deterministic-only)
+  - Run npm install --prefix scripts before the smoke test to install better-sqlite3
+  - After all chunks: commit, push, update founderOS submodule in workspace root
+
+---
+
+Base directory for this skill: /Users/lhalicki/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.2/skills/subagent-driven-development
+
+# Subagent-Driven Development
+
+Execute plan by dispatching fresh subagent per task, with two-stage review after each: spec compliance review first, then code quality review.
+
+**Why subagents:** You delegate tasks to specialized agents with isolated context. By precisely crafting their instructions and context, you ensure they stay focused and succeed at their task. They should never inherit your session's context or history — you construct exactly what they need. This also preserves your own context for coordination work.
+
+**Core principle:** Fresh subagent per task + two-stage review (spec then quality) = high quality, fast iteration
+
+## When to Use
+
+```dot
+digraph when_to_use {
+    "Have implementation plan?" [shape=diamond];
+    "Tasks mostly independent?" [shape=diamond];
+    "Stay in this session?" [shape=diamond];
+    "subagent-driven-development" [shape=box];
+    "executing-plans" [shape=box];
+    "Manual execution or brainstorm first" [shape=box];
+
+    "Have implementation plan?" -> "Tasks mostly independent?" [label="yes"];
+    "Have implementation plan?" -> "Manual execution or brainstorm first" [label="no"];
+    "Tasks mostly independent?" -> "Stay in this session?" [label="yes"];
+    "Tasks mostly independent?" -> "Manual execution or brainstorm first" [label="no - tightly coupled"];
+    "Stay in this session?" -> "subagent-driven-development" [label="yes"];
+    "Stay in this session?" -> "executing-plans" [label="no - parallel session"];
+}
+```
+
+**vs. Executing Plans (parallel session):**
+- Same session (no context switch)
+- Fresh subagent per task (no context pollution)
+- Two-stage review after each task: spec compliance first, then code quality
+- Faster iteration (no human-in-loop between tasks)
+
+## The Process
+
+```dot
+digraph process {
+    rankdir=TB;
+
+    subgraph cluster_per_task {
+        label="Per Task";
+        "Dispatch implementer subagent (./implementer-prompt.md)" [shape=box];
+        "Implementer subagent asks questions?" [shape=diamond];
+        "Answer questions, provide context" [shape=box];
+        "Implementer subagent implements, tests, commits, self-reviews" [shape=box];
+        "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)" [shape=box];
+        "Spec reviewer subagent confirms code matches spec?" [shape=diamond];
+        "Implementer subagent fixes spec gaps" [shape=box];
+        "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" [shape=box];
+        "Code quality reviewer subagent approves?" [shape=diamond];
+        "Implementer subagent fixes quality issues" [shape=box];
+        "Mark task complete in TodoWrite" [shape=box];
+    }
+
+    "Read plan, extract all tasks with full text, note context, create TodoWrite" [shape=box];
+    "More tasks remain?" [shape=diamond];
+    "Dispatch final code reviewer subagent for entire implementation" [shape=box];
+    "Use superpowers:finishing-a-development-branch" [shape=box style=filled fillcolor=lightgreen];
+
+    "Read plan, extract all tasks with full text, note context, create TodoWrite" -> "Dispatch implementer subagent (./implementer-prompt.md)";
+    "Dispatch implementer subagent (./implementer-prompt.md)" -> "Implementer subagent asks questions?";
+    "Implementer subagent asks questions?" -> "Answer questions, provide context" [label="yes"];
+    "Answer questions, provide context" -> "Dispatch implementer subagent (./implementer-prompt.md)";
+    "Implementer subagent asks questions?" -> "Implementer subagent implements, tests, commits, self-reviews" [label="no"];
+    "Implementer subagent implements, tests, commits, self-reviews" -> "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)";
+    "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)" -> "Spec reviewer subagent confirms code matches spec?";
+    "Spec reviewer subagent confirms code matches spec?" -> "Implementer subagent fixes spec gaps" [label="no"];
+    "Implementer subagent fixes spec gaps" -> "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)" [label="re-review"];
+    "Spec reviewer subagent confirms code matches spec?" -> "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" [label="yes"];
+    "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" -> "Code quality reviewer subagent approves?";
+    "Code quality reviewer subagent approves?" -> "Implementer subagent fixes quality issues" [label="no"];
+    "Implementer subagent fixes quality issues" -> "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" [label="re-review"];
+    "Code quality reviewer subagent approves?" -> "Mark task complete in TodoWrite" [label="yes"];
+    "Mark task complete in TodoWrite" -> "More tasks remain?";
+    "More tasks remain?" -> "Dispatch implementer subagent (./implementer-prompt.md)" [label="yes"];
+    "More tasks remain?" -> "Dispatch final code reviewer subagent for entire implementation" [label="no"];
+    "Dispatch final code reviewer subagent for entire implementation" -> "Use superpowers:finishing-a-development-branch";
+}
+```
+
+## Model Selection
+
+Use the least powerful model that can handle each role to conserve cost and increase speed.
+
+**Mechanical implementation tasks** (isolated functions, clear specs, 1-2 files): use a fast, cheap model. Most implementation tasks are mechanical when the plan is well-specified.
+
+**Integration and judgment tasks** (multi-file coordination, pattern matching, debugging): use a standard model.
+
+**Architecture, design, and review tasks**: use the most capable available model.
+
+**Task complexity signals:**
+- Touches 1-2 files with a complete spec → cheap model
+- Touches multiple files with integration concerns → standard model
+- Requires design judgment or broad codebase understanding → most capable model
+
+## Handling Implementer Status
+
+Implementer subagents report one of four statuses. Handle each appropriately:
+
+**DONE:** Proceed to spec compliance review.
+
+**DONE_WITH_CONCERNS:** The implementer completed the work but flagged doubts. Read the concerns before proceeding. If the concerns are about correctness or scope, address them before review. If they're observations (e.g., "this file is getting large"), note them and proceed to review.
+
+**NEEDS_CONTEXT:** The implementer needs information that wasn't provided. Provide the missing context and re-dispatch.
+
+**BLOCKED:** The implementer cannot complete the task. Assess the blocker:
+1. If it's a context problem, provide more context and re-dispatch with the same model
+2. If the task requires more reasoning, re-dispatch with a more capable model
+3. If the task is too large, break it into smaller pieces
+4. If the plan itself is wrong, escalate to the human
+
+**Never** ignore an escalation or force the same model to retry without changes. If the implementer said it's stuck, something needs to change.
+
+## Prompt Templates
+
+- `./implementer-prompt.md` - Dispatch implementer subagent
+- `./spec-reviewer-prompt.md` - Dispatch spec compliance reviewer subagent
+- `./code-quality-reviewer-prompt.md` - Dispatch code quality reviewer subagent
+
+## Example Workflow
+
+```
+You: I'm using Subagent-Driven Development to execute this plan.
+
+[Read plan file once: docs/superpowers/plans/feature-plan.md]
+[Extract all 5 tasks with full text and context]
+[Create TodoWrite with all tasks]
+
+Task 1: Hook installation script
+
+[Get Task 1 text and context (already extracted)]
+[Dispatch implementation subagent with full task text + context]
+
+Implementer: "Before I begin - should the hook be installed at user or system level?"
+
+You: "User level (~/.config/superpowers/hooks/)"
+
+Implementer: "Got it. Implementing now..."
+[Later] Implementer:
+  - Implemented install-hook command
+  - Added tests, 5/5 passing
+  - Self-review: Found I missed --force flag, added it
+  - Committed
+
+[Dispatch spec compliance reviewer]
+Spec reviewer: ✅ Spec compliant - all requirements met, nothing extra
+
+[Get git SHAs, dispatch code quality reviewer]
+Code reviewer: Strengths: Good test coverage, clean. Issues: None. Approved.
+
+[Mark Task 1 complete]
+
+Task 2: Recovery modes
+
+[Get Task 2 text and context (already extracted)]
+[Dispatch implementation subagent with full task text + context]
+
+Implementer: [No questions, proceeds]
+Implementer:
+  - Added verify/repair modes
+  - 8/8 tests passing
+  - Self-review: All good
+  - Committed
+
+[Dispatch spec compliance reviewer]
+Spec reviewer: ❌ Issues:
+  - Missing: Progress reporting (spec says "report every 100 items")
+  - Extra: Added --json flag (not requested)
+
+[Implementer fixes issues]
+Implementer: Removed --json flag, added progress reporting
+
+[Spec reviewer reviews again]
+Spec reviewer: ✅ Spec compliant now
+
+[Dispatch code quality reviewer]
+Code reviewer: Strengths: Solid. Issues (Important): Magic number (100)
+
+[Implementer fixes]
+Implementer: Extracted PROGRESS_INTERVAL constant
+
+[Code reviewer reviews again]
+Code reviewer: ✅ Approved
+
+[Mark Task 2 complete]
+
+...
+
+[After all tasks]
+[Dispatch final code-reviewer]
+Final reviewer: All requirements met, ready to merge
+
+Done!
+```
+
+## Advantages
+
+**vs. Manual execution:**
+- Subagents follow TDD naturally
+- Fresh context per task (no confusion)
+- Parallel-safe (subagents don't interfere)
+- Subagent can ask questions (before AND during work)
+
+**vs. Executing Plans:**
+- Same session (no handoff)
+- Continuous progress (no waiting)
+- Review checkpoints automatic
+
+**Efficiency gains:**
+- No file reading overhead (controller provides full text)
+- Controller curates exactly what context is needed
+- Subagent gets complete information upfront
+- Questions surfaced before work begins (not after)
+
+**Quality gates:**
+- Self-review catches issues before handoff
+- Two-stage review: spec compliance, then code quality
+- Review loops ensure fixes actually work
+- Spec compliance prevents over/under-building
+- Code quality ensures implementation is well-built
+
+**Cost:**
+- More subagent invocations (implementer + 2 reviewers per task)
+- Controller does more prep work (extracting all tasks upfront)
+- Review loops add iterations
+- But catches issues early (cheaper than debugging later)
+
+## Red Flags
+
+**Never:**
+- Start implementation on main/master branch without explicit user consent
+- Skip reviews (spec compliance OR code quality)
+- Proceed with unfixed issues
+- Dispatch multiple implementation subagents in parallel (conflicts)
+- Make subagent read plan file (provide full text instead)
+- Skip scene-setting context (subagent needs to understand where task fits)
+- Ignore subagent questions (answer before letting them proceed)
+- Accept "close enough" on spec compliance (spec reviewer found issues = not done)
+- Skip review loops (reviewer found issues = implementer fixes = review again)
+- Let implementer self-review replace actual review (both are needed)
+- **Start code quality review before spec compliance is ✅** (wrong order)
+- Move to next task while either review has open issues
+
+**If subagent asks questions:**
+- Answer clearly and completely
+- Provide additional context if needed
+- Don't rush them into implementation
+
+**If reviewer finds issues:**
+- Implementer (same subagent) fixes them
+- Reviewer reviews again
+- Repeat until approved
+- Don't skip the re-review
+
+**If subagent fails task:**
+- Dispatch fix subagent with specific instructions
+- Don't try to fix manually (context pollution)
+
+## Integration
+
+**Required workflow skills:**
+- **superpowers:using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
+- **superpowers:writing-plans** - Creates the plan this skill executes
+- **superpowers:requesting-code-review** - Code review template for reviewer subagents
+- **superpowers:finishing-a-development-branch** - Complete development after all tasks
+
+**Subagents should use:**
+- **superpowers:test-driven-development** - Subagents follow TDD for each task
+
+**Alternative workflow:**
+- **superpowers:executing-plans** - Use for parallel session instead of same-session execution
+
+---
+
+<task-notification>
+<task-id>adad2740d83f3d196</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Implement Chunk 2: telemetry, format, schema, sampler" completed</summary>
+<result>I need Bash permission to run `node --check` and `git commit` for the 4 files. These are essential steps in the task — verifying syntax and committing each file separately. Could you grant Bash access so I can proceed with verification and commits?
+
+Here's what I've completed so far:
+- Created all 4 files with exact content as specified:
+  - `/Users/lhalicki/coding_projects/founder-workspace/founderOS/_infrastructure/intelligence/evals/checks/telemetry.mjs`
+  - `/Users/lhalicki/coding_projects/founder-workspace/founderOS/_infrastructure/intelligence/evals/checks/format.mjs`
+  - `/Users/lhalicki/coding_projects/founder-workspace/founderOS/_infrastructure/intelligence/evals/checks/schema.mjs`
+  - `/Users/lhalicki/coding_projects/founder-workspace/founderOS/_infrastructure/intelligence/evals/sampler.mjs`
+
+To complete the task I need to:
+1. Run `node --check` on each file to verify syntax
+2. Run 4 separate `git commit` commands (one per task)
+
+Please grant Bash access to proceed.</result>
+<usage><total_tokens>16840</total_tokens><tool_uses>7</tool_uses><duration_ms>37279</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>ad682d889f275da8d</task-id>
+<tool-use-id>toolu_011utJuZ4QbsiTbmD3Rgs6Ec</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Implement Chunk 1: Schema + db.mjs + package.json" completed</summary>
+<result>All three tasks are complete and committed as commit `d8ec16e`.
+
+**Summary:**
+
+**Task 1 — intelligence.sql** (`_infrastructure/intelligence/hooks/schema/intelligence.sql`): Appended 4 eval tables after the existing config INSERT block — `eval_dimensions` (with 6 seed rows), `eval_rubrics`, `exec_log` (with composite index), and `eval_results` (with 3 indexes).
+
+**Task 2 — db.mjs** (`_infrastructure/intelligence/evals/db.mjs`): Created with all 8 exported functions (`openDb`, `ensureSchema`, `insertExecLog`, `updateExecLogT1`, `insertEvalResult`, `getLatestEwma`, `getHealthData`, `cleanupOldData`, `wasRegressionWarned`) plus the CLI entry point for the eval-judge agent. EWMA alpha = 0.15, retention = 90 days, cleanup every 100 inserts.
+
+**Task 3 — package.json** (`scripts/package.json`): Added `"better-sqlite3": "^11.0.0"` to dependencies alongside the existing `@notionhq/client`.</result>
+<usage><total_tokens>27778</total_tokens><tool_uses>8</tool_uses><duration_ms>79449</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a82e8c9a5a801cba3</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Implement Chunk 4: eval-judge agent definition" completed</summary>
+<result>Done. Here's a summary:
+
+**File created:** `/Users/lhalicki/coding_projects/founder-workspace/founderOS/agents/intel/eval-judge.md`
+
+**Committed:** `44cf4d1` — `feat(evals): add eval-judge background agent`
+
+The agent definition includes:
+- YAML frontmatter: `name: eval-judge`, `model: haiku`, `color: yellow`, `tools: ["Read", "Bash"]`
+- 5-step evaluation process: load rubric, evaluate each dimension with Boolean YES/NO, compute weighted score, write to intelligence.db via `db.mjs --write-eval`, print summary
+- Scoring thresholds: PASS >= 0.70, WARN >= 0.50, FAIL < 0.50
+- Rules enforcing silent background operation and 30-second execution limit</result>
+<usage><total_tokens>14168</total_tokens><tool_uses>5</tool_uses><duration_ms>29534</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>af16047e686031aec</task-id>
+<tool-use-id>toolu_01NhFzNpDF3NgpZhBmseypR4</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Implement Chunk 6: health command + SKILL.md update" completed</summary>
+<result>Both tasks complete. Here's what was done:
+
+**Task 13 — `commands/intel/health.md` created** at `/Users/lhalicki/coding_projects/founder-workspace/founderOS/commands/intel/health.md`
+- Follows the same frontmatter pattern as `commands/intel/status.md`
+- Includes preflight check, observation blocks (start/end), 7-step quality dashboard with cold-start handling, SQL queries for overall score, per-namespace trends, regression detection, and lowest-dimension analysis
+- Committed: `69febc3`
+
+**Task 14 — `_infrastructure/intelligence/SKILL.md` updated** at `/Users/lhalicki/coding_projects/founder-workspace/founderOS/_infrastructure/intelligence/SKILL.md`
+- Added `| Evals | evals/eval-runner.mjs + evals/db.mjs + evals/checks/ | Phase 1 |` row to the Modules table
+- Added full "Evals Integration" section at end of file covering components, data flow diagram, regression detection, and column naming note
+- Committed: `850c6bd`</result>
+<usage><total_tokens>24936</total_tokens><tool_uses>7</tool_uses><duration_ms>72777</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a1a7fe9c036d2477f</task-id>
+<tool-use-id>toolu_01Tig422uu2hm8CjTxbHgvJV</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Implement Chunk 3: eval-runner + rubrics" completed</summary>
+<result>All tasks complete. Here's a summary:
+
+**Task 8 — universal.json** — Created at `_infrastructure/intelligence/evals/rubrics/universal.json` with 6-dimension Tier 2 rubric (completeness, accuracy, tone, actionability, format, hallucination), 20% sample rate, 0.70 threshold. Committed as `feat(evals): add universal rubric` (c528402).
+
+**Task 9 — Namespace overrides** — Created 3 files in `_infrastructure/intelligence/evals/rubrics/overrides/`:
+- `inbox.json` — requires Subject:/Body: sections, 50–500 words, bans "Dear Sir/Madam"
+- `invoice.json` — requires JSON fields (line_items, subtotal, total, due_date), 0% Tier 2 sample rate (math-only verification)
+- `prep.json` — requires Agenda/Attendees sections, 25% sample rate
+
+Committed as `feat(evals): add namespace rubric overrides` (531b99e).
+
+**Task 10 — eval-runner.mjs** — Created at `_infrastructure/intelligence/evals/eval-runner.mjs` (219 lines). `node --check` passed with no errors. Implements both modes: post-task eval (Tier 0 telemetry + Tier 1 format/schema checks + sampling decision) and regression check (EWMA threshold at 0.65 with 30-day suppression). Committed as `feat(evals): add main eval runner` (2d447bf).</result>
+<usage><total_tokens>19513</total_tokens><tool_uses>11</tool_uses><duration_ms>79415</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
