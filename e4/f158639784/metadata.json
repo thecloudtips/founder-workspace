@@ -3,10 +3,11 @@
   "checkpoint_id": "e4f158639784",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 3,
+  "checkpoints_count": 4,
   "files_touched": [
     "founderOS/docs/superpowers/INDEX.md",
     "founderOS/docs/superpowers/plans/2026-03-14-scout-namespace.md",
+    "founderOS/docs/superpowers/plans/[9]-2026-03-12-evals-framework.md",
     "founderOS/docs/superpowers/specs/[13]-2026-03-14-intelligence-plugin-package-design.md"
   ],
   "sessions": [
@@ -30,13 +31,20 @@
       "context": "/e4/f158639784/2/context.md",
       "content_hash": "/e4/f158639784/2/content_hash.txt",
       "prompt": "/e4/f158639784/2/prompt.txt"
+    },
+    {
+      "metadata": "/e4/f158639784/3/metadata.json",
+      "transcript": "/e4/f158639784/3/full.jsonl",
+      "context": "/e4/f158639784/3/context.md",
+      "content_hash": "/e4/f158639784/3/content_hash.txt",
+      "prompt": "/e4/f158639784/3/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 52,
-    "cache_creation_tokens": 252989,
-    "cache_read_tokens": 3837127,
-    "output_tokens": 29121,
-    "api_call_count": 34
+    "input_tokens": 86,
+    "cache_creation_tokens": 351855,
+    "cache_read_tokens": 7910805,
+    "output_tokens": 54811,
+    "api_call_count": 65
   }
 }

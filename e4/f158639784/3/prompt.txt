@@ -1,0 +1,223 @@
+Create an implementation plan for the Evals Framework — spec [9].
+
+  Read the design spec at `founderOS/docs/superpowers/specs/[9]-2026-03-12-evals-framework-design.md` and the research at `founderOS/docs/specs/evals-research.md`.
+
+  Use the superpowers:writing-plans skill to write the plan.
+
+  The plan goes to: `founderOS/docs/superpowers/plans/[9]-2026-03-12-evals-framework.md`
+
+  ## Context
+
+  - The evals framework is Phase 1 only (from the spec's Phasing section). Phases 2-3 are deferred.
+  - The Intelligence Engine [3] is fully complete — hooks, learning tiers 1-3, self-healing, routing, and observation blocks in all 82 command files. The evals framework extends this existing infrastructure.
+  - The `_infrastructure/intelligence/evals/` directory does NOT exist yet — everything is greenfield.
+  - Existing intel commands: approve, config, healing, patterns, reset, status. The new `health.md` command goes alongside these.
+  - The eval judge agent goes in `agents/intel/eval-judge.md`.
+  - Database tables extend the existing `intelligence.db` (not a new database).
+  - `better-sqlite3` needs to be added to `scripts/package.json` (which already has `@notionhq/client`).
+
+  ## Plan Structure
+
+  Follow the same plan format as the other superpowers plans (e.g., `plans/[3]-2026-03-11-intelligence-engine.md`). Use:
+  - Chunks that can be independently tested
+  - `- [ ]` checkbox syntax for step tracking
+  - Explicit file paths for every new/modified file
+  - Commit messages after each task
+
+  ## Implementation Approach
+
+  - Use subagent-driven development (superpowers:subagent-driven-development) for execution
+  - Use /skill-creator (skill-creator:skill-creator) when writing or modifying any SKILL.md files
+  - Use /plugin-dev namespace skills for general correctness review and quality validation
+  - Plan for 3-4 parallel worktree agents where tasks are independent
+
+  ## Deliverables (Phase 1 only)
+
+  ### New Files
+  1. `_infrastructure/intelligence/evals/eval-runner.mjs` — Main Node.js entry point (~200 lines)
+  2. `_infrastructure/intelligence/evals/checks/telemetry.mjs` — Tier 0: token count, duration, hashes
+  3. `_infrastructure/intelligence/evals/checks/format.mjs` — Tier 1: sections, word count, forbidden patterns
+  4. `_infrastructure/intelligence/evals/checks/schema.mjs` — Tier 1: JSON/structure validation
+  5. `_infrastructure/intelligence/evals/db.mjs` — SQLite read/write, migration, EWMA computation
+  6. `_infrastructure/intelligence/evals/sampler.mjs` — Sampling decision logic (20% default)
+  7. `_infrastructure/intelligence/evals/rubrics/universal.json` — Default 6-dimension rubric
+  8. `_infrastructure/intelligence/evals/rubrics/overrides/inbox.json` — Inbox namespace override
+  9. `_infrastructure/intelligence/evals/rubrics/overrides/invoice.json` — Invoice namespace override
+  10. `_infrastructure/intelligence/evals/rubrics/overrides/prep.json` — Prep namespace override
+  11. `agents/intel/eval-judge.md` — Haiku background agent for Tier 2 scoring
+  12. `commands/intel/health.md` — Quality dashboard command
+
+  ### Modified Files
+  13. `scripts/package.json` — Add `better-sqlite3` dependency
+  14. `_infrastructure/intelligence/hooks/schema/intelligence.sql` — Add 4 eval tables
+  15. `_infrastructure/intelligence/SKILL.md` — Reference evals module
+  16. `_infrastructure/intelligence/hooks/SKILL.md` — Add post-task eval trigger and pre-task regression check
+
+  ### Chunks
+
+  Chunk 1: Database schema + db.mjs module (foundation — everything depends on this)
+  Chunk 2: Tier 0 + Tier 1 checks (telemetry.mjs, format.mjs, schema.mjs, sampler.mjs)
+  Chunk 3: Eval runner + rubrics (eval-runner.mjs, universal.json, 3 overrides) — depends on Chunks 1+2
+  Chunk 4: Eval judge agent (eval-judge.md) — can parallel with Chunk 3
+  Chunk 5: Hook integration (modify hooks SKILL.md for post-task eval trigger + pre-task regression check)
+  Chunk 6: Health command + integration (commands/intel/health.md, update intelligence SKILL.md)
+  Chunk 7: Verification + smoke test
+
+  ## Important Notes
+
+  - The eval runner is REAL Node.js code (not markdown skills). It must be syntactically correct and runnable.
+  - Rubrics are JSON files, not markdown.
+  - The eval judge agent is a markdown agent definition (like other agents in agents/).
+  - The health command is a markdown command (like other commands in commands/intel/).
+  - Hook integration modifies existing SKILL.md files to add eval steps — read before editing.
+  - `better-sqlite3` is a native module — note platform considerations in the plan.
+  - All eval data goes in the existing `intelligence.db`, not a new database file.
+
+  After writing the plan, commit it and push. Update the superpowers INDEX.md to show plan [9] exists. Do NOT start implementing — just write the plan.
+
+---
+
+Base directory for this skill: /Users/lhalicki/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.2/skills/writing-plans
+
+# Writing Plans
+
+## Overview
+
+Write comprehensive implementation plans assuming the engineer has zero context for our codebase and questionable taste. Document everything they need to know: which files to touch for each task, code, testing, docs they might need to check, how to test it. Give them the whole plan as bite-sized tasks. DRY. YAGNI. TDD. Frequent commits.
+
+Assume they are a skilled developer, but know almost nothing about our toolset or problem domain. Assume they don't know good test design very well.
+
+**Announce at start:** "I'm using the writing-plans skill to create the implementation plan."
+
+**Context:** This should be run in a dedicated worktree (created by brainstorming skill).
+
+**Save plans to:** `docs/superpowers/plans/YYYY-MM-DD-<feature-name>.md`
+- (User preferences for plan location override this default)
+
+## Scope Check
+
+If the spec covers multiple independent subsystems, it should have been broken into sub-project specs during brainstorming. If it wasn't, suggest breaking this into separate plans — one per subsystem. Each plan should produce working, testable software on its own.
+
+## File Structure
+
+Before defining tasks, map out which files will be created or modified and what each one is responsible for. This is where decomposition decisions get locked in.
+
+- Design units with clear boundaries and well-defined interfaces. Each file should have one clear responsibility.
+- You reason best about code you can hold in context at once, and your edits are more reliable when files are focused. Prefer smaller, focused files over large ones that do too much.
+- Files that change together should live together. Split by responsibility, not by technical layer.
+- In existing codebases, follow established patterns. If the codebase uses large files, don't unilaterally restructure - but if a file you're modifying has grown unwieldy, including a split in the plan is reasonable.
+
+This structure informs the task decomposition. Each task should produce self-contained changes that make sense independently.
+
+## Bite-Sized Task Granularity
+
+**Each step is one action (2-5 minutes):**
+- "Write the failing test" - step
+- "Run it to make sure it fails" - step
+- "Implement the minimal code to make the test pass" - step
+- "Run the tests and make sure they pass" - step
+- "Commit" - step
+
+## Plan Document Header
+
+**Every plan MUST start with this header:**
+
+```markdown
+# [Feature Name] Implementation Plan
+
+> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** [One sentence describing what this builds]
+
+**Architecture:** [2-3 sentences about approach]
+
+**Tech Stack:** [Key technologies/libraries]
+
+---
+```
+
+## Task Structure
+
+````markdown
+### Task N: [Component Name]
+
+**Files:**
+- Create: `exact/path/to/file.py`
+- Modify: `exact/path/to/existing.py:123-145`
+- Test: `tests/exact/path/to/test.py`
+
+- [ ] **Step 1: Write the failing test**
+
+```python
+def test_specific_behavior():
+    result = function(input)
+    assert result == expected
+```
+
+- [ ] **Step 2: Run test to verify it fails**
+
+Run: `pytest tests/path/test.py::test_name -v`
+Expected: FAIL with "function not defined"
+
+- [ ] **Step 3: Write minimal implementation**
+
+```python
+def function(input):
+    return expected
+```
+
+- [ ] **Step 4: Run test to verify it passes**
+
+Run: `pytest tests/path/test.py::test_name -v`
+Expected: PASS
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add tests/path/test.py src/path/file.py
+git commit -m "feat: add specific feature"
+```
+````
+
+## Remember
+- Exact file paths always
+- Complete code in plan (not "add validation")
+- Exact commands with expected output
+- Reference relevant skills with @ syntax
+- DRY, YAGNI, TDD, frequent commits
+
+## Plan Review Loop
+
+After completing each chunk of the plan:
+
+1. Dispatch plan-document-reviewer subagent (see plan-document-reviewer-prompt.md) with precisely crafted review context — never your session history. This keeps the reviewer focused on the plan, not your thought process.
+   - Provide: chunk content, path to spec document
+2. If ❌ Issues Found:
+   - Fix the issues in the chunk
+   - Re-dispatch reviewer for that chunk
+   - Repeat until ✅ Approved
+3. If ✅ Approved: proceed to next chunk (or execution handoff if last chunk)
+
+**Chunk boundaries:** Use `## Chunk N: <name>` headings to delimit chunks. Each chunk should be ≤1000 lines and logically self-contained.
+
+**Review loop guidance:**
+- Same agent that wrote the plan fixes it (preserves context)
+- If loop exceeds 5 iterations, surface to human for guidance
+- Reviewers are advisory - explain disagreements if you believe feedback is incorrect
+
+## Execution Handoff
+
+After saving the plan:
+
+**"Plan complete and saved to `docs/superpowers/plans/<filename>.md`. Ready to execute?"**
+
+**Execution path depends on harness capabilities:**
+
+**If harness has subagents (Claude Code, etc.):**
+- **REQUIRED:** Use superpowers:subagent-driven-development
+- Do NOT offer a choice - subagent-driven is the standard approach
+- Fresh subagent per task + two-stage review
+
+**If harness does NOT have subagents:**
+- Execute plan in current session using superpowers:executing-plans
+- Batch execution with checkpoints for review
