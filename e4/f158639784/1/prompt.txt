@@ -1,0 +1,38 @@
+│  #  │                       What                        │            Status            │
+  ├─────┼───────────────────────────────────────────────────┼──────────────────────────────┤
+  │ 1   │ [3] Intelligence Engine — finish learning/healing │ No deps, unblocks evals      │
+  ├─────┼───────────────────────────────────────────────────┼──────────────────────────────┤
+  │ 2   │ [6] Notion CLI Migration — foundational           │ 21 namespaces need it        │
+  ├─────┼───────────────────────────────────────────────────┼──────────────────────────────┤
+  │ 3   │ [2] Memory Engine — Notion sync                   │ Blocked by [6]               │
+  ├─────┼───────────────────────────────────────────────────┼──────────────────────────────┤
+  │ 4   │ [9] Evals Framework — implement                   │ Blocked by [3]               │
+  ├─────┼───────────────────────────────────────────────────┼──────────────────────────────┤
+  │ 5   │ [11] Humanize Content — needs a plan first        │ Independent, can parallelize │
+  ├─────┼───────────────────────────────────────────────────┼──────────────────────────────┤
+  │ 6   │ [12] Scout Namespace — plan ready                 │ Independent, can parallelize │
+  ├─────┼───────────────────────────────────────────────────┼──────────────────────────────┤
+  │ 7   │ [4b] Marketplace Distribution — low urgency       │ Nice-to-have                 │
+
+are you sure #3 is not finished 
+
+check it 
+
+if still needs work prpere a promot for fnisishing this point
+
+---
+
+ok gow about the inteligence engine ?
+
+---
+
+yes i need a prompt for 1 and 2 combined 
+3 we should ofload to new spec (we will prepre this late)
+
+---
+
+yes do the stub
+
+---
+
+ok update the promot that it will not coante the package prepreation and i will run it in a new session
