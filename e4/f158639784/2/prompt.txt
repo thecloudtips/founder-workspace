@@ -261,3 +261,7 @@ Each file received:
 <usage><total_tokens>130006</total_tokens><tool_uses>75</tool_uses><duration_ms>261841</duration_ms></usage>
 </task-notification>
 Full transcript available at: REDACTED.output
+
+---
+
+ok update the index for superpowrs folder founderOS/docs/superpowers so we have alos lcer picture waht is done and what is in the pipeline

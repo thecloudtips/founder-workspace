@@ -63,3 +63,7 @@ Task: Finish Intelligence Engine — Wire Learning/Healing + Full Plugin Rollout
 
 | N...
 
+### Prompt 6
+
+ok update the index for superpowrs folder founderOS/docs/superpowers so we have alos lcer picture waht is done and what is in the pipeline
+

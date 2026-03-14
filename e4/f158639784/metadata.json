@@ -5,8 +5,7 @@
   "branch": "main",
   "checkpoints_count": 3,
   "files_touched": [
-    "founderOS/_infrastructure/intelligence/SKILL.md",
-    "founderOS/_infrastructure/intelligence/learning/SKILL.md",
+    "founderOS/docs/superpowers/INDEX.md",
     "founderOS/docs/superpowers/plans/2026-03-14-scout-namespace.md",
     "founderOS/docs/superpowers/specs/[13]-2026-03-14-intelligence-plugin-package-design.md"
   ],
@@ -34,10 +33,10 @@
     }
   ],
   "token_usage": {
-    "input_tokens": 68,
-    "cache_creation_tokens": 320099,
-    "cache_read_tokens": 3791929,
-    "output_tokens": 50073,
-    "api_call_count": 40
+    "input_tokens": 47,
+    "cache_creation_tokens": 234674,
+    "cache_read_tokens": 2535765,
+    "output_tokens": 28193,
+    "api_call_count": 29
   }
 }
