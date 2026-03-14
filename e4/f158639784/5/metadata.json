@@ -1,0 +1,30 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "e4f158639784",
+  "session_id": "8d3ba799-4819-47cf-8827-c054f45b489e",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-14T10:46:37.061812Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "founderOS/docs/superpowers/plans/[11]-2026-03-14-humanize-content.md"
+  ],
+  "agent": "Claude Code",
+  "transcript_identifier_at_start": "2b772cb9-6d9c-46c4-859a-9b278e169058",
+  "token_usage": {
+    "input_tokens": 17,
+    "cache_creation_tokens": 66383,
+    "cache_read_tokens": 929565,
+    "output_tokens": 14140,
+    "api_call_count": 9
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-03-14T10:46:37.015904Z",
+    "agent_lines": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 831,
+    "total_committed": 831,
+    "agent_percentage": 0
+  }
+}
