@@ -1,0 +1,263 @@
+Task: Finish Intelligence Engine — Wire Learning/Healing + Full Plugin Rollout
+
+  You are completing the Intelligence Engine (spec [3]). The infrastructure SKILLs, commands, and schemas are ALL already written. Your job is to wire them into the runtime execution flow and roll out observation
+  blocks to all plugins.
+
+  SCOPE: Only Part 1 (wire tiers 2-3 + routing) and Part 2 (plugin rollout).
+
+  OUT OF SCOPE: Do NOT create any plugin package, manifest, INSTALL.md, README.md, QUICKSTART.md, or HQ registration. That work is tracked separately in spec [13].
+
+  What exists (do NOT rewrite):
+
+  - _infrastructure/intelligence/ — all modules (hooks, learning, self-healing, routing)
+  - commands/intel/ — all 6 commands
+  - skills/infrastructure/intelligence-*/ — 10 skills
+  - _infrastructure/intelligence/hooks/schema/intelligence.sql — SQLite schema
+  - 3 pilot plugins already integrated: inbox:triage, briefing:briefing, prep:prep
+
+  Part 1: Wire Tiers 2-3 + Routing into Execution Flow
+
+  Read these SKILLs first to understand what they specify:
+  - _infrastructure/intelligence/learning/workflow-optimization/SKILL.md
+  - _infrastructure/intelligence/learning/confidence-gating/SKILL.md
+  - _infrastructure/intelligence/routing/SKILL.md
+
+  Then integrate them by updating the relevant infrastructure skills so the plugin execution flow includes:
+
+  1. Workflow Optimization (Tier 2):
+    - Chain detection: after each post_command event, check for commands within 5 min in same session
+    - Minimum 3 observations before suggesting a chain
+    - Graduated response: suggest at confidence 0.5, auto-trigger at 0.8 or user-approved
+    - Wire into _infrastructure/intelligence/learning/SKILL.md as part of the OBSERVE→DISTILL cycle
+  2. Confidence-Gated Autonomy (Tier 3):
+    - Decision-point aggregation from decision_point events
+    - Escalation ladder: Ask → Suggest (≥0.6) → Act+Notify (≥0.8 or approved) → Silent (approved only)
+    - Demotion: single rejection drops to "Ask"
+    - Max autonomy cap via learning.autonomy.max_level config
+    - Wire into the pre-command injection flow
+  3. Routing Module:
+    - Pattern promotion: intelligence patterns with confidence ≥0.8 + 3 confirmations → Memory Engine (convert 0.0-1.0 → 0-100)
+    - Context injection: before commands, query routing for top 5 applicable patterns
+    - Conflict resolution: approved > active, specific > general, higher confidence wins
+    - Wire into _infrastructure/intelligence/SKILL.md master reference
+
+  Part 2: Full Plugin Rollout (27 remaining plugins)
+
+  The 3 pilots (inbox:triage, briefing:briefing, prep:prep) already have observation blocks. Study their pattern, then replicate to ALL remaining plugins.
+
+  Each plugin command file needs:
+
+  Step 0 (pre_command) — add before existing logic:
+  Step 0: Intelligence Observation
+
+  Log pre_command event to intelligence store:
+  - plugin: "<namespace>"
+  - command: "<command>"
+  - event_type: "pre_command"
+  - payload: { input_summary, session_id }
+  Check for applicable learned patterns and inject if confidence ≥ active threshold.
+
+  Final Step (post_command) — add after output:
+  Final Step: Intelligence Observation
+
+  Log post_command event:
+  - plugin: "<namespace>"
+  - command: "<command>"
+  - event_type: "post_command"
+  - payload: { outcome_summary, duration_ms }
+  - outcome: "success" | "partial" | "error"
+  Trigger taste-learning check (Tier 1).
+  Trigger chain detection (Tier 2) if previous command within 5 min.
+  Trigger self-healing classification if outcome = "error".
+
+  Plugins to update (27 remaining across 4 pillars):
+
+  Pillar 1: actions, review, followup, meeting, newsletter
+  Pillar 2: report, health, invoice, proposal, contract, sow, compete, expense
+  Pillar 3: notion, drive, slack, client, crm, morning, kb, linkedin
+  Pillar 4: savings, prompt, workflow, workflow-doc, learn, goal
+
+  Use parallel subagents (3-4 worktree agents) to process pillars concurrently.
+
+  Quality & Skill Authoring Standards
+
+  - Use /skill-creator (skill-creator:skill-creator) when writing or modifying any SKILL.md files — ensures proper YAML frontmatter, progressive disclosure structure, and description accuracy for triggering.
+  - Use /plugin-dev namespace skills (plugin-dev:skill-development, plugin-dev:plugin-structure) for general correctness review and quality validation of all modified plugin components — ensures command files,
+  skill files, and agent configs follow Founder OS conventions and pass structural validation.
+
+  Verification:
+
+  After completing both parts:
+  1. Confirm all 30 plugins have pre_command + post_command observation blocks
+  2. Confirm learning SKILL.md references Tier 2 chain detection and Tier 3 autonomy
+  3. Confirm routing module is wired into the master intelligence SKILL.md
+  4. List any commands that have complex decision logic where decision_point annotations should be added
+  5. Run plugin-dev:plugin-validator against modified skills to confirm structural correctness
+
+  On completion:
+
+  - Commit all changes
+  - Push to remote
+  - Do NOT create any plugin package or documentation files
+
+---
+
+<task-notification>
+<task-id>a817ec6daf2837da4</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Pillar 1 observation blocks" completed</summary>
+<result>All 16 files processed. Here is a summary of what was done:
+
+**All 16 command files received Intelligence Engine observation blocks (BLOCK A + BLOCK B):**
+
+| # | File | Plugin ID | Command ID |
+|---|------|-----------|------------|
+| 1 | `actions/extract.md` | `action-items` | `actions-extract` |
+| 2 | `actions/extract-file.md` | `action-items` | `actions-extract-file` |
+| 3 | `review/review.md` | `weekly-review` | `review-review` |
+| 4 | `followup/check.md` | `follow-up-tracker` | `followup-check` |
+| 5 | `followup/nudge.md` | `follow-up-tracker` | `followup-nudge` |
+| 6 | `followup/remind.md` | `follow-up-tracker` | `followup-remind` |
+| 7 | `meeting/analyze.md` | `meeting-intel` | `meeting-analyze` |
+| 8 | `meeting/intel.md` | `meeting-intel` | `meeting-intel` |
+| 9 | `newsletter/draft.md` | `newsletter-engine` | `newsletter-draft` |
+| 10 | `newsletter/newsletter.md` | `newsletter-engine` | `newsletter-newsletter` |
+| 11 | `newsletter/outline.md` | `newsletter-engine` | `newsletter-outline` |
+| 12 | `newsletter/research.md` | `newsletter-engine` | `newsletter-research` |
+| 13 | `inbox/drafts-approved.md` | `inbox-zero` | `inbox-drafts-approved` |
+| 14 | `briefing/review.md` | `daily-briefing` | `briefing-review` |
+| 15 | `prep/prep.md` | `meeting-prep` | `prep-prep` |
+| 16 | `prep/today.md` | `meeting-prep` | `prep-today` |
+
+Each file received:
+- **BLOCK A** (3 sections: Observation: Start, Intelligence: Apply Learned Patterns, Self-Healing: Error Recovery) inserted after the 3 content lines of "## Step 0: Memory Context"
+- **BLOCK B** (Observation: End) inserted immediately before "## Final: Memory Update"
+
+Files `inbox/triage.md` and `briefing/briefing.md` were not touched, as instructed.</result>
+<usage><total_tokens>108382</total_tokens><tool_uses>48</tool_uses><duration_ms>165832</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a018a2e88528aee4d</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Pillar 2 observation blocks" completed</summary>
+<result>All 16 files have been processed. Here is a summary:
+
+**Completed -- 15 files updated with both Block A and Block B:**
+
+| # | File | Plugin ID | Command ID |
+|---|------|-----------|------------|
+| 1 | `report/from-template.md` | `report-generator` | `report-from-template` |
+| 2 | `report/generate.md` | `report-generator` | `report-generate` |
+| 3 | `health/report.md` | `client-health` | `health-report` |
+| 5 | `invoice/batch.md` | `invoice-processor` | `invoice-batch` |
+| 6 | `invoice/process.md` | `invoice-processor` | `invoice-process` |
+| 7 | `proposal/create.md` | `proposal-automator` | `proposal-create` |
+| 8 | `proposal/from-brief.md` | `proposal-automator` | `proposal-from-brief` |
+| 9 | `contract/analyze.md` | `contract-analyzer` | `contract-analyze` |
+| 10 | `contract/compare.md` | `contract-analyzer` | `contract-compare` |
+| 11 | `sow/from-brief.md` | `sow-generator` | `sow-from-brief` |
+| 12 | `sow/generate.md` | `sow-generator` | `sow-generate` |
+| 13 | `compete/matrix.md` | `competitive-intel` | `compete-matrix` |
+| 14 | `compete/research.md` | `competitive-intel` | `compete-research` |
+| 15 | `expense/report.md` | `expense-report` | `expense-report` |
+| 16 | `expense/summary.md` | `expense-report` | `expense-summary` |
+
+**Skipped -- 1 file already had both blocks:**
+
+| # | File | Plugin ID | Command ID |
+|---|------|-----------|------------|
+| 4 | `health/scan.md` | `client-health` | `health-scan` |
+
+All files are under `/Users/lhalicki/coding_projects/founder-workspace/founderOS/commands/`. Each received:
+- **Block A** (Observation: Start, Intelligence: Apply Learned Patterns, Self-Healing: Error Recovery) inserted after the 3 content lines of "## Step 0: Memory Context"
+- **Block B** (Observation: End) inserted immediately before "## Final: Memory Update"</result>
+<usage><total_tokens>110467</total_tokens><tool_uses>46</tool_uses><duration_ms>199383</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>afe58445cdc274d22</task-id>
+<tool-use-id>toolu_01QmYMnJbutbVsG16MnMywiH</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Pillar 3 observation blocks" completed</summary>
+<result>All 23 files have been processed. Here is a summary of what was done:
+
+**Completed**: All 23 command files received Intelligence Engine observation blocks (Block A and Block B).
+
+**Block A** (inserted after "Step 0: Memory Context" section) contains three sections:
+- **Observation: Start** -- records a `pre_command` event with plugin ID, command ID, session UUID, and input payload
+- **Intelligence: Apply Learned Patterns** -- queries the patterns table for active/approved patterns matching the plugin and command
+- **Self-Healing: Error Recovery** -- classifies errors into transient/recoverable/degradable/fatal and applies appropriate recovery strategies
+
+**Block B** (inserted before "## Final: Memory Update") contains:
+- **Observation: End** -- records a `post_command` event with outcome, payload summary, duration, and error details
+
+**Files modified** (all under `/Users/lhalicki/coding_projects/founder-workspace/founderOS/commands/`):
+
+| # | File | Plugin ID | Command ID |
+|---|------|-----------|------------|
+| 1 | `notion/create.md` | `notion-command-center` | `notion-create` |
+| 2 | `notion/query.md` | `notion-command-center` | `notion-query` |
+| 3 | `notion/template.md` | `notion-command-center` | `notion-template` |
+| 4 | `notion/update.md` | `notion-command-center` | `notion-update` |
+| 5 | `drive/ask.md` | `drive-brain` | `drive-ask` |
+| 6 | `drive/organize.md` | `drive-brain` | `drive-organize` |
+| 7 | `drive/search.md` | `drive-brain` | `drive-search` |
+| 8 | `drive/summarize.md` | `drive-brain` | `drive-summarize` |
+| 9 | `slack/catch-up.md` | `slack-digest` | `slack-catch-up` |
+| 10 | `slack/digest.md` | `slack-digest` | `slack-digest` |
+| 11 | `client/brief.md` | `client-context` | `client-brief` |
+| 12 | `client/load.md` | `client-context` | `client-load` |
+| 13 | `crm/context.md` | `crm-sync` | `crm-context` |
+| 14 | `crm/sync-email.md` | `crm-sync` | `crm-sync-email` |
+| 15 | `crm/sync-meeting.md` | `crm-sync` | `crm-sync-meeting` |
+| 16 | `morning/quick.md` | `morning-sync` | `morning-quick` |
+| 17 | `morning/sync.md` | `morning-sync` | `morning-sync` |
+| 18 | `kb/ask.md` | `knowledge-base` | `kb-ask` |
+| 19 | `kb/find.md` | `knowledge-base` | `kb-find` |
+| 20 | `kb/index.md` | `knowledge-base` | `kb-index` |
+| 21 | `linkedin/from-doc.md` | `linkedin-post` | `linkedin-from-doc` |
+| 22 | `linkedin/post.md` | `linkedin-post` | `linkedin-post` |
+| 23 | `linkedin/variations.md` | `linkedin-post` | `linkedin-variations` |</result>
+<usage><total_tokens>139294</total_tokens><tool_uses>69</tool_uses><duration_ms>253750</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a64ff5a38d5d9c9d2</task-id>
+<tool-use-id>toolu_01Mb36cxTGBTEhUjtfjvRtcu</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Pillar 4 observation blocks" completed</summary>
+<result>All 25 files processed. Here is the summary:
+
+**Completed: 25 files, 50 edits (2 per file: Block A + Block B)**
+
+| Namespace | Files | Plugin ID | Command IDs |
+|-----------|-------|-----------|-------------|
+| savings | 4 | `time-savings` | `savings-configure`, `savings-monthly-roi`, `savings-quick`, `savings-weekly` |
+| prompt | 5 | `prompt-library` | `prompt-add`, `prompt-get`, `prompt-list`, `prompt-optimize`, `prompt-share` |
+| workflow | 6 | `workflow-automator` | `workflow-create`, `workflow-edit`, `workflow-list`, `workflow-run`, `workflow-schedule`, `workflow-status` |
+| workflow-doc | 2 | `workflow-documenter` | `workflow-doc-diagram`, `workflow-doc-document` |
+| learn | 3 | `learning-log` | `learn-log`, `learn-search`, `learn-weekly` |
+| goal | 5 | `goal-tracker` | `goal-check`, `goal-close`, `goal-create`, `goal-report`, `goal-update` |
+
+Each file received:
+- **Block A** (Observation: Start + Intelligence: Apply Learned Patterns + Self-Healing: Error Recovery) inserted after the 3 content lines of "## Step 0: Memory Context"
+- **Block B** (Observation: End) inserted immediately before "## Final: Memory Update"</result>
+<usage><total_tokens>130006</total_tokens><tool_uses>75</tool_uses><duration_ms>261841</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
