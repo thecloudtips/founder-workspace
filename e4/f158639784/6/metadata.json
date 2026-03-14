@@ -1,0 +1,32 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "e4f158639784",
+  "session_id": "7176bcec-9c11-4132-8a0a-c6196838fe0b",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-14T10:46:50.980894Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "founderOS/_infrastructure/humanize-content/SKILL.md",
+    "founderOS/commands/newsletter/draft.md",
+    "founderOS/docs/superpowers/INDEX.md"
+  ],
+  "agent": "Claude Code",
+  "transcript_identifier_at_start": "980f1bb7-de99-4d82-a202-0109922b15f5",
+  "token_usage": {
+    "input_tokens": 52,
+    "cache_creation_tokens": 178299,
+    "cache_read_tokens": 5617685,
+    "output_tokens": 23772,
+    "api_call_count": 37
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-03-14T10:46:50.926019Z",
+    "agent_lines": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 0,
+    "agent_percentage": 0
+  }
+}

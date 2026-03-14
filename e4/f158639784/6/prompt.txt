@@ -1,0 +1,714 @@
+Implement the Humanize Content superpower (spec [11]) from the plan at `founderOS/docs/superpowers/plans/[11]-2026-03-14-humanize-content.md`.
+
+  Use the superpowers:subagent-driven-development skill to execute this plan.
+
+  ## Key Context
+
+  - Design spec: `founderOS/docs/superpowers/specs/[11]-2026-03-14-humanize-content-design.md`
+  - Plan: `founderOS/docs/superpowers/plans/[11]-2026-03-14-humanize-content.md`
+  - 11 tasks across 4 chunks. Chunks 1 and 3 are parallel internally.
+
+  ## Chunk Summary
+
+  - **Chunk 1** (4 parallel agents): Create reference files in `_infrastructure/humanize-content/references/` — Tasks 1-4. All use `/skill-creator`.
+  - **Chunk 2** (1 agent): Create core `_infrastructure/humanize-content/SKILL.md` — Task 5. Uses `/skill-creator`. Depends on Chunk 1.
+  - **Chunk 3** (3 parallel agents): Integrate humanizer into commands — Tasks 6 (linkedin: post, from-doc, variations), 7 (newsletter: draft, newsletter), 8 (social: post, draft, cross-post). All use `/plugin-dev`
+   command-development.
+  - **Chunk 4** (1 agent): Review with plugin-dev:skill-reviewer (Task 9), update INDEX.md (Task 10), push (Task 11).
+
+  ## Constraints
+
+  - No external scripts, no Bash validation, no validate.mjs — all validation is inline LLM self-checks in SKILL.md
+  - Don't change: allowed-tools in command frontmatter, founder-voice skills, inbox tone-matching, agent pipeline configs, Notion DB schemas
+  - Humanizer Read calls go AFTER existing namespace skills in each command's load section
+  - Use numbered backtick format for Read calls (matching existing command patterns)
+  - Excluded commands: newsletter/outline.md, social/schedule.md
+
+---
+
+Base directory for this skill: /Users/lhalicki/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.2/skills/subagent-driven-development
+
+# Subagent-Driven Development
+
+Execute plan by dispatching fresh subagent per task, with two-stage review after each: spec compliance review first, then code quality review.
+
+**Why subagents:** You delegate tasks to specialized agents with isolated context. By precisely crafting their instructions and context, you ensure they stay focused and succeed at their task. They should never inherit your session's context or history — you construct exactly what they need. This also preserves your own context for coordination work.
+
+**Core principle:** Fresh subagent per task + two-stage review (spec then quality) = high quality, fast iteration
+
+## When to Use
+
+```dot
+digraph when_to_use {
+    "Have implementation plan?" [shape=diamond];
+    "Tasks mostly independent?" [shape=diamond];
+    "Stay in this session?" [shape=diamond];
+    "subagent-driven-development" [shape=box];
+    "executing-plans" [shape=box];
+    "Manual execution or brainstorm first" [shape=box];
+
+    "Have implementation plan?" -> "Tasks mostly independent?" [label="yes"];
+    "Have implementation plan?" -> "Manual execution or brainstorm first" [label="no"];
+    "Tasks mostly independent?" -> "Stay in this session?" [label="yes"];
+    "Tasks mostly independent?" -> "Manual execution or brainstorm first" [label="no - tightly coupled"];
+    "Stay in this session?" -> "subagent-driven-development" [label="yes"];
+    "Stay in this session?" -> "executing-plans" [label="no - parallel session"];
+}
+```
+
+**vs. Executing Plans (parallel session):**
+- Same session (no context switch)
+- Fresh subagent per task (no context pollution)
+- Two-stage review after each task: spec compliance first, then code quality
+- Faster iteration (no human-in-loop between tasks)
+
+## The Process
+
+```dot
+digraph process {
+    rankdir=TB;
+
+    subgraph cluster_per_task {
+        label="Per Task";
+        "Dispatch implementer subagent (./implementer-prompt.md)" [shape=box];
+        "Implementer subagent asks questions?" [shape=diamond];
+        "Answer questions, provide context" [shape=box];
+        "Implementer subagent implements, tests, commits, self-reviews" [shape=box];
+        "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)" [shape=box];
+        "Spec reviewer subagent confirms code matches spec?" [shape=diamond];
+        "Implementer subagent fixes spec gaps" [shape=box];
+        "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" [shape=box];
+        "Code quality reviewer subagent approves?" [shape=diamond];
+        "Implementer subagent fixes quality issues" [shape=box];
+        "Mark task complete in TodoWrite" [shape=box];
+    }
+
+    "Read plan, extract all tasks with full text, note context, create TodoWrite" [shape=box];
+    "More tasks remain?" [shape=diamond];
+    "Dispatch final code reviewer subagent for entire implementation" [shape=box];
+    "Use superpowers:finishing-a-development-branch" [shape=box style=filled fillcolor=lightgreen];
+
+    "Read plan, extract all tasks with full text, note context, create TodoWrite" -> "Dispatch implementer subagent (./implementer-prompt.md)";
+    "Dispatch implementer subagent (./implementer-prompt.md)" -> "Implementer subagent asks questions?";
+    "Implementer subagent asks questions?" -> "Answer questions, provide context" [label="yes"];
+    "Answer questions, provide context" -> "Dispatch implementer subagent (./implementer-prompt.md)";
+    "Implementer subagent asks questions?" -> "Implementer subagent implements, tests, commits, self-reviews" [label="no"];
+    "Implementer subagent implements, tests, commits, self-reviews" -> "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)";
+    "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)" -> "Spec reviewer subagent confirms code matches spec?";
+    "Spec reviewer subagent confirms code matches spec?" -> "Implementer subagent fixes spec gaps" [label="no"];
+    "Implementer subagent fixes spec gaps" -> "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)" [label="re-review"];
+    "Spec reviewer subagent confirms code matches spec?" -> "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" [label="yes"];
+    "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" -> "Code quality reviewer subagent approves?";
+    "Code quality reviewer subagent approves?" -> "Implementer subagent fixes quality issues" [label="no"];
+    "Implementer subagent fixes quality issues" -> "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" [label="re-review"];
+    "Code quality reviewer subagent approves?" -> "Mark task complete in TodoWrite" [label="yes"];
+    "Mark task complete in TodoWrite" -> "More tasks remain?";
+    "More tasks remain?" -> "Dispatch implementer subagent (./implementer-prompt.md)" [label="yes"];
+    "More tasks remain?" -> "Dispatch final code reviewer subagent for entire implementation" [label="no"];
+    "Dispatch final code reviewer subagent for entire implementation" -> "Use superpowers:finishing-a-development-branch";
+}
+```
+
+## Model Selection
+
+Use the least powerful model that can handle each role to conserve cost and increase speed.
+
+**Mechanical implementation tasks** (isolated functions, clear specs, 1-2 files): use a fast, cheap model. Most implementation tasks are mechanical when the plan is well-specified.
+
+**Integration and judgment tasks** (multi-file coordination, pattern matching, debugging): use a standard model.
+
+**Architecture, design, and review tasks**: use the most capable available model.
+
+**Task complexity signals:**
+- Touches 1-2 files with a complete spec → cheap model
+- Touches multiple files with integration concerns → standard model
+- Requires design judgment or broad codebase understanding → most capable model
+
+## Handling Implementer Status
+
+Implementer subagents report one of four statuses. Handle each appropriately:
+
+**DONE:** Proceed to spec compliance review.
+
+**DONE_WITH_CONCERNS:** The implementer completed the work but flagged doubts. Read the concerns before proceeding. If the concerns are about correctness or scope, address them before review. If they're observations (e.g., "this file is getting large"), note them and proceed to review.
+
+**NEEDS_CONTEXT:** The implementer needs information that wasn't provided. Provide the missing context and re-dispatch.
+
+**BLOCKED:** The implementer cannot complete the task. Assess the blocker:
+1. If it's a context problem, provide more context and re-dispatch with the same model
+2. If the task requires more reasoning, re-dispatch with a more capable model
+3. If the task is too large, break it into smaller pieces
+4. If the plan itself is wrong, escalate to the human
+
+**Never** ignore an escalation or force the same model to retry without changes. If the implementer said it's stuck, something needs to change.
+
+## Prompt Templates
+
+- `./implementer-prompt.md` - Dispatch implementer subagent
+- `./spec-reviewer-prompt.md` - Dispatch spec compliance reviewer subagent
+- `./code-quality-reviewer-prompt.md` - Dispatch code quality reviewer subagent
+
+## Example Workflow
+
+```
+You: I'm using Subagent-Driven Development to execute this plan.
+
+[Read plan file once: docs/superpowers/plans/feature-plan.md]
+[Extract all 5 tasks with full text and context]
+[Create TodoWrite with all tasks]
+
+Task 1: Hook installation script
+
+[Get Task 1 text and context (already extracted)]
+[Dispatch implementation subagent with full task text + context]
+
+Implementer: "Before I begin - should the hook be installed at user or system level?"
+
+You: "User level (~/.config/superpowers/hooks/)"
+
+Implementer: "Got it. Implementing now..."
+[Later] Implementer:
+  - Implemented install-hook command
+  - Added tests, 5/5 passing
+  - Self-review: Found I missed --force flag, added it
+  - Committed
+
+[Dispatch spec compliance reviewer]
+Spec reviewer: ✅ Spec compliant - all requirements met, nothing extra
+
+[Get git SHAs, dispatch code quality reviewer]
+Code reviewer: Strengths: Good test coverage, clean. Issues: None. Approved.
+
+[Mark Task 1 complete]
+
+Task 2: Recovery modes
+
+[Get Task 2 text and context (already extracted)]
+[Dispatch implementation subagent with full task text + context]
+
+Implementer: [No questions, proceeds]
+Implementer:
+  - Added verify/repair modes
+  - 8/8 tests passing
+  - Self-review: All good
+  - Committed
+
+[Dispatch spec compliance reviewer]
+Spec reviewer: ❌ Issues:
+  - Missing: Progress reporting (spec says "report every 100 items")
+  - Extra: Added --json flag (not requested)
+
+[Implementer fixes issues]
+Implementer: Removed --json flag, added progress reporting
+
+[Spec reviewer reviews again]
+Spec reviewer: ✅ Spec compliant now
+
+[Dispatch code quality reviewer]
+Code reviewer: Strengths: Solid. Issues (Important): Magic number (100)
+
+[Implementer fixes]
+Implementer: Extracted PROGRESS_INTERVAL constant
+
+[Code reviewer reviews again]
+Code reviewer: ✅ Approved
+
+[Mark Task 2 complete]
+
+...
+
+[After all tasks]
+[Dispatch final code-reviewer]
+Final reviewer: All requirements met, ready to merge
+
+Done!
+```
+
+## Advantages
+
+**vs. Manual execution:**
+- Subagents follow TDD naturally
+- Fresh context per task (no confusion)
+- Parallel-safe (subagents don't interfere)
+- Subagent can ask questions (before AND during work)
+
+**vs. Executing Plans:**
+- Same session (no handoff)
+- Continuous progress (no waiting)
+- Review checkpoints automatic
+
+**Efficiency gains:**
+- No file reading overhead (controller provides full text)
+- Controller curates exactly what context is needed
+- Subagent gets complete information upfront
+- Questions surfaced before work begins (not after)
+
+**Quality gates:**
+- Self-review catches issues before handoff
+- Two-stage review: spec compliance, then code quality
+- Review loops ensure fixes actually work
+- Spec compliance prevents over/under-building
+- Code quality ensures implementation is well-built
+
+**Cost:**
+- More subagent invocations (implementer + 2 reviewers per task)
+- Controller does more prep work (extracting all tasks upfront)
+- Review loops add iterations
+- But catches issues early (cheaper than debugging later)
+
+## Red Flags
+
+**Never:**
+- Start implementation on main/master branch without explicit user consent
+- Skip reviews (spec compliance OR code quality)
+- Proceed with unfixed issues
+- Dispatch multiple implementation subagents in parallel (conflicts)
+- Make subagent read plan file (provide full text instead)
+- Skip scene-setting context (subagent needs to understand where task fits)
+- Ignore subagent questions (answer before letting them proceed)
+- Accept "close enough" on spec compliance (spec reviewer found issues = not done)
+- Skip review loops (reviewer found issues = implementer fixes = review again)
+- Let implementer self-review replace actual review (both are needed)
+- **Start code quality review before spec compliance is ✅** (wrong order)
+- Move to next task while either review has open issues
+
+**If subagent asks questions:**
+- Answer clearly and completely
+- Provide additional context if needed
+- Don't rush them into implementation
+
+**If reviewer finds issues:**
+- Implementer (same subagent) fixes them
+- Reviewer reviews again
+- Repeat until approved
+- Don't skip the re-review
+
+**If subagent fails task:**
+- Dispatch fix subagent with specific instructions
+- Don't try to fix manually (context pollution)
+
+## Integration
+
+**Required workflow skills:**
+- **superpowers:using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
+- **superpowers:writing-plans** - Creates the plan this skill executes
+- **superpowers:requesting-code-review** - Code review template for reviewer subagents
+- **superpowers:finishing-a-development-branch** - Complete development after all tasks
+
+**Subagents should use:**
+- **superpowers:test-driven-development** - Subagents follow TDD for each task
+
+**Alternative workflow:**
+- **superpowers:executing-plans** - Use for parallel session instead of same-session execution
+
+---
+
+<task-notification>
+<task-id>a0aea75378b4db517</task-id>
+<tool-use-id>toolu_01U4W4E3TB1shUVvVUz9nbHq</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Create banned-vocabulary.md" completed</summary>
+<result>File created at `/Users/lhalicki/coding_projects/founder-workspace/founderOS/_infrastructure/humanize-content/references/banned-vocabulary.md`.
+
+Summary of what was written:
+
+- Valid YAML frontmatter with `name` and `description` fields
+- All 23 Tier 1 words listed in a table with one or more natural replacements each
+- Tier 2 section split into three sub-groups: Transition Phrases, Filler Phrases, and Structural Patterns — each with a table noting which tones allow exceptions
+- Claude-Specific Tells section covering em dashes (with before/after examples), meta-commentary phrases, reflexive hedging, scope inflation, and uniform prose rhythm
+- No external script references anywhere in the file</result>
+<usage><total_tokens>13144</total_tokens><tool_uses>1</tool_uses><duration_ms>31969</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a5f1d7150c5677954</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Create tone-presets.md" completed</summary>
+<result>The file has been created at `/Users/lhalicki/coding_projects/founder-workspace/founderOS/_infrastructure/humanize-content/references/tone-presets.md`.
+
+Here is a summary of what was produced:
+
+**File created:** `_infrastructure/humanize-content/references/tone-presets.md`
+
+**Content covers all acceptance criteria:**
+
+- All 5 presets defined with identical dimension structure (Formality, Warmth, Sentence Rhythm table, plus Vocabulary level, Contraction usage, First-person usage, Tier 2 overrides)
+- Professional preset clearly marked as the default in both the summary table and the section header
+- Each preset has a "Best For" line
+- Tier 2 override rules are explicit per preset:
+  - Professional: no overrides
+  - Friendly: no overrides
+  - Casual: additionally bans formal connectors ("however", "nevertheless", etc.) and flags sentences over 25 words
+  - Authoritative: allows "best practices", "stakeholders", "paradigm"
+  - Conversational: no hard bans added, but notes formal connectors should be replaced as style preference, and documents rhetorical question and direct reader address expectations
+- Closing section explains how presets are applied by the skill at generation time
+
+No commit was made. Ready for the next Chunk 1 task.</result>
+<usage><total_tokens>13561</total_tokens><tool_uses>2</tool_uses><duration_ms>41603</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a54ab1c5f46242934</task-id>
+<tool-use-id>toolu_01CL1QkZfgkbzpXMepzgPVNP</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Create structural-anti-patterns.md" completed</summary>
+<result>File created at `/Users/lhalicki/coding_projects/founder-workspace/founderOS/_infrastructure/humanize-content/references/structural-anti-patterns.md`.
+
+**What was created:**
+
+The file covers all four required anti-pattern categories:
+
+1. **Rhythm Patterns** — AI default SD < 3 words, human target SD > 5 words, with three concrete before/after examples showing rhythm correction across product, founder, and technical writing contexts.
+
+2. **Parallel Construction Tells** — Detection rules for consecutive sentences with matching grammar and lists with identical item structure, plus fixes showing how to break parallelism by mixing sentence types.
+
+3. **Formulaic Transitions** — Two tables: one listing AI transitions to eliminate with reasons, one mapping each to natural replacements ("Furthermore" → "But here's the thing", "Consequently" → "So / Which means", etc.). Includes a usage note on avoiding over-rotating to replacements.
+
+4. **Predictable Patterns** — Four sub-patterns covered: topic/support/conclusion paragraph structure, 3-or-5 item list counts, balanced paragraph lengths, and section length symmetry — each with detection rule and fix guidance.
+
+The file ends with a Phase B checklist that distills all detection rules into actionable checkboxes for validation use.
+
+No commit made — ready for you to commit after all Chunk 1 tasks complete.</result>
+<usage><total_tokens>14201</total_tokens><tool_uses>2</tool_uses><duration_ms>75455</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>ad372aa121b8bb383</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Create namespace reference files" completed</summary>
+<result>All 3 files created. Here is a summary:
+
+**Files created** in `/Users/lhalicki/coding_projects/founder-workspace/founderOS/_infrastructure/humanize-content/references/`:
+
+- `linkedin-humanization.md` — covers hook preservation (lines 1-2 untouched, rewrites from line 3), 3K character hard limit with trim-from-least-critical logic, whitespace patterns, high burstiness target (SD > 5 words), emoji flag-controlled behavior, and hashtag block exclusion.
+
+- `newsletter-humanization.md` — covers H2/H3 heading preservation, 150-300 word section targets with post-rewrite verification, moderate burstiness target (SD > 4 words), thematic section transitions with banned connector phrases, and CTA block exclusion from burstiness rewrites.
+
+- `social-humanization.md` — covers short-form relaxation (under 100 words: only banned vocab check, no SD check), per-platform character limits (X: 280/25K, LinkedIn: 3K), per-post thread humanization, cross-platform adaptation sequencing (humanize then adapt), and @mention/#hashtag preservation.
+
+All files have valid frontmatter with `name` and `description` fields. No external script references in any file.</result>
+<usage><total_tokens>14374</total_tokens><tool_uses>4</tool_uses><duration_ms>64538</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>ac62f3815a33677fd</task-id>
+<tool-use-id>toolu_01QNTeCWUAwzQDd9m941uvo7</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Create core SKILL.md" completed</summary>
+<result>All required sections are present. The file was created at `REDACTED.md` — 253 lines.
+
+Here is what was done:
+
+**File created**: `REDACTED.md`
+
+**Structure**: YAML frontmatter + 8 top-level sections matching the task spec exactly:
+1. Overview — quality improvement positioning, two-phase pipeline, loading pattern, relationship to namespace skills
+2. How This Skill Is Used — load order, flag passthrough, timing
+3. Phase A: Generation-Time Guidance — tone loading, structural guidance (burstiness/sentence variety/transitions), vocabulary constraints (Tier 1/2/Anglo-Saxon table), voice markers
+4. Phase B: Post-Processing Validation — 7-check validation table with short-form adjustment, the auto-fix loop (max 2 iterations, surgical replacement only), quality summary format with field definitions
+5. Namespace-Specific Rules — table mapping LinkedIn/Newsletter/Social to their reference files and key overrides, plus override precedence rules
+6. Tone Presets Reference — summary table of all 5 presets with pointer to the full definitions
+7. Ethical Framing — reach impact framing, explicit list of what this skill does NOT do, quality-metrics-only reporting
+8. Integration Pattern — code block showing how commands load this skill
+9. Error Handling — graceful degradation table for all failure modes
+
+**Pattern compliance**: Follows the same YAML frontmatter + structured markdown format as `_infrastructure/memory/SKILL.md` and `_infrastructure/preflight/SKILL.md`. All reference paths use `references/` relative paths. No external scripts, no Bash calls in Phase B, no validate.mjs references.</result>
+<usage><total_tokens>30344</total_tokens><tool_uses>8</tool_uses><duration_ms>127443</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a0f66109c46aab45c</task-id>
+<tool-use-id>toolu_01VMztU9Uxbdqd2vmHzw3S33</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Integrate humanizer into LinkedIn" completed</summary>
+<result>All changes applied. Here is a summary:
+
+## Changes Applied
+
+### `commands/linkedin/post.md`
+- `argument-hint` frontmatter: appended `[--tone=professional|friendly|casual|authoritative|conversational]`
+- "Load All Skills" section: added items 5 and 6 (humanizer SKILL.md and linkedin-humanization.md) after the template read; appended the humanize-content note to the existing apply line
+- "Parse Arguments" section: added `--tone` flag after `--output=PATH`
+
+### `commands/linkedin/from-doc.md`
+- `argument-hint` frontmatter: appended `[--tone=professional|friendly|casual|authoritative|conversational]`
+- "Load Skills" section: added items 5 and 6 (humanizer SKILL.md and linkedin-humanization.md) after the template read; added humanize-content note block
+- "Parse Arguments" section: added `--tone` flag after `--output=PATH`
+
+### `commands/linkedin/variations.md`
+- `argument-hint` frontmatter: appended `[--tone=professional|friendly|casual|authoritative|conversational]`
+- "Load Skills" section: added items 4 and 5 (humanizer SKILL.md and linkedin-humanization.md) after the 3 existing skill reads; added humanize-content note block
+- "Parse Input" section: added `--tone` flag after `--count=N`
+
+All changes respect the load order requirement (humanizer after existing namespace skills), use the numbered backtick format matching each file's existing pattern, and do not touch `allowed-tools`, `execution-mode`, `result-format`, or `description` frontmatter fields.</result>
+<usage><total_tokens>31298</total_tokens><tool_uses>12</tool_uses><duration_ms>39738</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>aa21aa3e128dc64a1</task-id>
+<tool-use-id>toolu_01Ca4GjSwXrK2C2eruY2oeT5</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Integrate humanizer into Newsletter" completed</summary>
+<result>All changes applied. Here is a summary of what was done:
+
+**`commands/newsletter/draft.md`**
+- Updated `argument-hint` frontmatter to include `[--tone=professional|friendly|casual|authoritative|conversational]`
+- Added items 4 and 5 in the "Load Skills" section loading `humanize-content/SKILL.md` and `humanize-content/references/newsletter-humanization.md`, with a note about the `--tone` flag
+- Added `--tone` flag entry to "Parse Arguments" section (default: `professional`)
+
+**`commands/newsletter/newsletter.md`**
+- Updated `argument-hint` frontmatter to include `[--tone=professional|friendly|casual|authoritative|conversational]`
+- Added items 5 and 6 in the "Load All Skills" section loading the humanizer SKILL.md and newsletter-humanization.md reference, after the existing 4 skills
+- Updated the skills note to include "Apply humanize-content for natural-sounding prose during Phase 3."
+- Added `--tone` flag entry to "Parse Arguments" section (default: `professional`)
+
+**`commands/newsletter/outline.md` was not touched.**
+
+Load order in both files is: topic-research (newsletter.md only), newsletter-writing, founder-voice, template, then humanizer — satisfying the acceptance criteria.</result>
+<usage><total_tokens>28298</total_tokens><tool_uses>8</tool_uses><duration_ms>39923</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a09c931857d307fc2</task-id>
+<tool-use-id>toolu_01DkrzP9Yu76uHWb8NY7kChP</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Integrate humanizer into Social" completed</summary>
+<result>All changes applied. Here is a summary:
+
+**post.md** (`/Users/lhalicki/coding_projects/founder-workspace/founderOS/commands/social/post.md`):
+- `argument-hint`: added `[--tone=professional|friendly|casual|authoritative|conversational]` before `[--format=...]`
+- Skills section: added items 4 and 5 (humanizer SKILL.md + social-humanization.md), renumbered former 4/5 to 6/7
+- Arguments table: added `--tone` row between `--audience` and `--format`
+
+**draft.md** (`/Users/lhalicki/coding_projects/founder-workspace/founderOS/commands/social/draft.md`):
+- `argument-hint`: added `[--tone=professional|friendly|casual|authoritative|conversational]` before `[--format=...]`
+- Skills section: added items 4 and 5 (humanizer SKILL.md + social-humanization.md) after platform-adaptation
+- Arguments table: added `--tone` row between `--media` and `--format`
+
+**cross-post.md** (`/Users/lhalicki/coding_projects/founder-workspace/founderOS/commands/social/cross-post.md`):
+- `argument-hint`: added `[--tone=professional|friendly|casual|authoritative|conversational]` before `[--format=...]`
+- Skills section: added items 5 and 6 (humanizer SKILL.md + social-humanization.md) after cross-posting skill, renumbered former item 5 (media) to 7
+- Arguments table: added `--tone` row between `--team` and `--format`
+
+All acceptance criteria met: `--tone` present in all 3 argument-hints, humanizer loads after platform-adaptation/cross-posting in all 3 files, `--audience` unchanged, `schedule.md` not touched, and load order (late-common, late-publish, platform-adaptation, humanizer) is preserved.</result>
+<usage><total_tokens>25559</total_tokens><tool_uses>12</tool_uses><duration_ms>47984</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a8e0ebfb0008b673d</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Review all humanize-content changes" completed</summary>
+<result>Now I have everything I need. Let me also double-check the Tier 1 word count in `banned-vocabulary.md` to make sure there are exactly 23.
+
+The Tier 1 table has these entries: delve, landscape, leverage, tapestry, multifaceted, paramount, foster, facilitate, navigate, embark, elevate, holistic, robust, seamless, cutting-edge, groundbreaking, pivotal, testament, realm, plethora, myriad, meticulous, underscore. That's 23 items. Now let me compile the full review.
+
+---
+
+## Review: Humanize Content Superpower Implementation
+
+Reviewing all files rooted at `/Users/lhalicki/coding_projects/founder-workspace/founderOS`.
+
+---
+
+## Infrastructure Files (7 files)
+
+### SKILL.md — `REDACTED.md`
+
+Phase A has 4 guidance sections: Tone Loading (§1), Structural Guidance (§2), Vocabulary Constraints (§3), Voice Markers (§4). Phase B has the 7-check validation table, an auto-fix loop with max 2 iterations, and a quality summary using `checks_passed=N/7` format. No external script references. All reference file paths use `references/` relative paths.
+
+✅ SKILL.md — Phase A (4 sections), Phase B (7-check table + auto-fix loop, max 2 iterations), quality summary format correct, no external scripts.
+
+### references/banned-vocabulary.md
+
+Tier 1: exactly 23 words with replacements. Tier 2 is grouped into three categories: Transition Phrases, Filler Phrases, and Structural Patterns, each with tone override notes. Claude-specific tells section is present covering em dashes, meta-commentary, reflexive hedging, scope inflation, and uniform prose rhythm.
+
+✅ banned-vocabulary.md — 23 Tier 1 words, Tier 2 grouped with tone overrides, Claude tells section present.
+
+### references/structural-anti-patterns.md
+
+Contains 4 anti-pattern categories: Rhythm Patterns (§1), Parallel Construction Tells (§2), Formulaic Transitions (§3), Predictable Structural Patterns (§4, with 4 sub-patterns). Before/after examples are present. Transition replacement table is present. Burstiness SD > 5 target is stated.
+
+✅ structural-anti-patterns.md — 4 categories, before/after examples, transition table, SD > 5 target.
+
+### references/tone-presets.md
+
+All 5 presets present (Professional, Friendly, Casual, Authoritative, Conversational) with identical structure (formality, warmth, sentence rhythm dimensions, vocabulary level, contraction usage, first-person usage, Tier 2 overrides). Default is Professional.
+
+✅ tone-presets.md — All 5 presets with consistent structure, default = Professional, Tier 2 overrides per preset.
+
+### references/linkedin-humanization.md
+
+Hook preservation present (first 2 lines protected), 3K character limit enforced, high burstiness (SD > 5) stated, emoji handling present, hashtag rules present.
+
+✅ linkedin-humanization.md — Hook preservation, 3K limit, SD > 5 burstiness, emoji handling, hashtag rules.
+
+### references/newsletter-humanization.md
+
+Heading preservation present (H2/H3 never modified), paragraph length targets are 150-300 words, burstiness SD > 4 stated, section transitions present, CTA preservation present.
+
+✅ newsletter-humanization.md — Heading preservation, 150-300 word paragraphs, SD > 4 burstiness, section transitions, CTA preservation.
+
+### references/social-humanization.md
+
+Short-form relaxation present (< 100 words), platform limits present (X: 280 single / 25K thread, LinkedIn: 3K), thread handling present, cross-platform order present (humanize source first, then adapt), hashtag/mention preservation present.
+
+✅ social-humanization.md — Short-form relaxation, platform limits, thread handling, cross-platform order, hashtag/mention preservation.
+
+---
+
+## Command Integrations (8 modified files)
+
+### commands/linkedin/post.md
+
+- `--tone` flag: present in `argument-hint` and documented in Parse Arguments section.
+- Humanizer Read calls (items 5 and 6 in "Load All Skills"): appear AFTER the 4 existing namespace skills (linkedin-writing, hook-creation, founder-voice, template).
+- `allowed-tools`: `["Read", "Write"]` — unchanged.
+
+✅ linkedin/post.md — `--tone` in argument-hint, documented in Parse Arguments, humanizer reads after existing skills, frontmatter unchanged.
+
+### commands/linkedin/from-doc.md
+
+- `--tone` flag: present in `argument-hint` and documented in Parse Arguments section.
+- Humanizer Read calls (items 5 and 6 in "Load Skills"): appear AFTER the 4 existing namespace skills.
+- `allowed-tools`: `["Read", "Write"]` — unchanged.
+
+✅ linkedin/from-doc.md — `--tone` in argument-hint, documented in Parse Arguments, humanizer reads after existing skills, frontmatter unchanged.
+
+### commands/linkedin/variations.md
+
+- `--tone` flag: present in `argument-hint` and documented in Parse Input section.
+- Humanizer Read calls (items 4 and 5 in "Load Skills"): appear AFTER the 3 existing namespace skills. Note: this file has no template Read (correct for variations which is ephemeral), so humanizer is correctly positioned after all namespace skills.
+- `allowed-tools`: `["Read"]` — unchanged.
+
+✅ linkedin/variations.md — `--tone` in argument-hint, documented in Parse Input, humanizer reads after existing skills, frontmatter unchanged.
+
+### commands/newsletter/draft.md
+
+- `--tone` flag: present in `argument-hint` and documented in Parse Arguments section.
+- `allowed-tools`: `["Read"]` — unchanged.
+
+❌ **ISSUE — newsletter/draft.md: Malformed "Load Skills" section (line 21)**
+
+The Load Skills section uses an inconsistent format. The first 3 skills and the template are written as prose sentences with explicit `Read` instructions, but the humanizer entries are listed as bare numbered items without the "Read" instruction verb:
+
+```
+4. `${CLAUDE_PLUGIN_ROOT}/_infrastructure/humanize-content/SKILL.md`
+5. `${CLAUDE_PLUGIN_ROOT}/_infrastructure/humanize-content/references/newsletter-humanization.md`
+```
+
+Every other command file in this implementation wraps each skill path in an explicit `Read` statement (e.g., "Read `...SKILL.md`"). In `newsletter/draft.md`, items 4 and 5 are bare file paths with no `Read` verb, making them ambiguous instructions. The command may not actually load the humanizer skill if the model interprets the numbered list as merely informational rather than directive. The other 7 command files all use unambiguous `Read` statements for the humanizer paths.
+
+File: `/Users/lhalicki/coding_projects/founder-workspace/founderOS/commands/newsletter/draft.md`, lines 21-22.
+
+Confidence: 85. The inconsistency is clear and functional — the bare paths without "Read" instructions break the pattern established by all other 7 command files and may cause the humanizer to not be loaded.
+
+Suggested fix: Match the pattern used in every other command file:
+
+```markdown
+4. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/humanize-content/SKILL.md`
+5. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/humanize-content/references/newsletter-humanization.md`
+```
+
+### commands/newsletter/newsletter.md
+
+- `--tone` flag: present in `argument-hint` and documented in Parse Arguments section.
+- Humanizer Read calls (items 5 and 6 in "Load All Skills"): appear AFTER the 4 existing namespace skills (topic-research, newsletter-writing, founder-voice, template).
+- `allowed-tools`: `["Read"]` — unchanged.
+
+✅ newsletter/newsletter.md — `--tone` in argument-hint, documented in Parse Arguments, humanizer reads after existing skills, frontmatter unchanged.
+
+### commands/social/post.md
+
+- `--tone` flag: present in `argument-hint` (as a quoted string, matching the social commands' style) and documented in the Arguments table.
+- Humanizer Read calls (items 4 and 5 in "Skills"): appear AFTER the 3 existing namespace skills (late-common, late-publish, platform-adaptation). The conditional skills (posting-cadence, late-media) correctly remain after the humanizer.
+- `allowed-tools`: `["Read", "Write", "Bash"]` — unchanged.
+
+✅ social/post.md — `--tone` in argument-hint, documented in Arguments table, humanizer reads after existing namespace skills, frontmatter unchanged.
+
+### commands/social/draft.md
+
+- `--tone` flag: present in `argument-hint` and documented in Arguments table.
+- Humanizer Read calls (items 4 and 5 in "Skills"): appear AFTER the 3 existing namespace skills.
+- `allowed-tools`: `["Read", "Write", "Bash"]` — unchanged.
+
+✅ social/draft.md — `--tone` in argument-hint, documented in Arguments table, humanizer reads after existing skills, frontmatter unchanged.
+
+### commands/social/cross-post.md
+
+- `--tone` flag: present in `argument-hint` and documented in Arguments table.
+- Humanizer Read calls (items 5 and 6 in "Skills"): appear AFTER the 4 existing namespace skills (late-common, late-publish, platform-adaptation, cross-posting). Conditional media skill remains after humanizer.
+- `allowed-tools`: `["Read", "Write", "Bash"]` — unchanged.
+
+✅ social/cross-post.md — `--tone` in argument-hint, documented in Arguments table, humanizer reads after existing skills, frontmatter unchanged.
+
+---
+
+## Exclusions Verification
+
+- `commands/newsletter/outline.md` — No humanize references found. Not modified.
+- `commands/social/schedule.md` — No humanize references found. Not modified.
+
+✅ Excluded files not modified.
+
+---
+
+## Cross-Reference Checks
+
+- Reference file paths in SKILL.md use `references/` relative paths. ✅
+- LinkedIn burstiness SD > 5 is stated in both `linkedin-humanization.md` (line 20) and `SKILL.md` Namespace-Specific Rules table. ✅
+- Newsletter burstiness SD > 4 is stated in `newsletter-humanization.md` (line 16) and `SKILL.md` Namespace-Specific Rules table. ✅
+- Tone preset names are consistent across all files — "Professional, Friendly, Casual, Authoritative, Conversational" appears uniformly in SKILL.md, tone-presets.md, and all 8 command argument-hints. ✅
+- No external script references anywhere in the 7 infrastructure files. ✅
+
+---
+
+## Summary
+
+**Result: FAIL — 1 issue found**
+
+### Critical
+
+None.
+
+### Important
+
+❌ `/Users/lhalicki/coding_projects/founder-workspace/founderOS/commands/newsletter/draft.md`, lines 21-22: The humanizer skill paths in the "Load Skills" section are listed as bare numbered items without `Read` verb instructions, unlike all other 7 command files which use explicit `Read` calls. This may cause the humanizer to not be loaded before content generation begins, which would silently skip the entire Phase A + Phase B pipeline for `newsletter:draft`.</result>
+<usage><total_tokens>67937</total_tokens><tool_uses>29</tool_uses><duration_ms>89467</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
