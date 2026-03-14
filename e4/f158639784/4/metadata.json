@@ -3,24 +3,25 @@
   "checkpoint_id": "e4f158639784",
   "session_id": "ab146e58-5779-4e11-867c-3eb3424c1ee4",
   "strategy": "manual-commit",
-  "created_at": "2026-03-14T10:05:24.833901Z",
+  "created_at": "2026-03-14T10:07:15.710419Z",
   "branch": "main",
   "checkpoints_count": 1,
   "files_touched": [
-    "founderOS/_infrastructure/intelligence/evals/db.mjs",
-    "founderOS/_infrastructure/intelligence/hooks/SKILL.md"
+    "founderOS/docs/superpowers/INDEX.md"
   ],
   "agent": "Claude Code",
-  "transcript_identifier_at_start": "9b7ca901-29af-49c7-91fe-b7126dc097a1",
+  "transcript_identifier_at_start": "af808c69-3b65-41ad-bce1-f876e9613751",
+  "checkpoint_transcript_start": 418,
+  "transcript_lines_at_start": 418,
   "token_usage": {
-    "input_tokens": 51,
-    "cache_creation_tokens": 101350,
-    "cache_read_tokens": 5468147,
-    "output_tokens": 23981,
-    "api_call_count": 42
+    "input_tokens": 15,
+    "cache_creation_tokens": 6857,
+    "cache_read_tokens": 2050579,
+    "output_tokens": 3031,
+    "api_call_count": 13
   },
   "initial_attribution": {
-    "calculated_at": "2026-03-14T10:05:24.799082Z",
+    "calculated_at": "2026-03-14T10:07:15.668101Z",
     "agent_lines": 0,
     "human_added": 0,
     "human_modified": 0,

@@ -5,8 +5,6 @@
   "branch": "main",
   "checkpoints_count": 5,
   "files_touched": [
-    "founderOS/_infrastructure/intelligence/evals/db.mjs",
-    "founderOS/_infrastructure/intelligence/hooks/SKILL.md",
     "founderOS/docs/superpowers/INDEX.md",
     "founderOS/docs/superpowers/plans/2026-03-14-scout-namespace.md",
     "founderOS/docs/superpowers/plans/[9]-2026-03-12-evals-framework.md",
@@ -50,10 +48,10 @@
     }
   ],
   "token_usage": {
-    "input_tokens": 137,
-    "cache_creation_tokens": 453205,
-    "cache_read_tokens": 13378952,
-    "output_tokens": 78792,
-    "api_call_count": 107
+    "input_tokens": 101,
+    "cache_creation_tokens": 358712,
+    "cache_read_tokens": 9961384,
+    "output_tokens": 57842,
+    "api_call_count": 78
   }
 }

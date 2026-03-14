@@ -433,3 +433,7 @@ Committed as `feat(evals): add namespace rubric overrides` (531b99e).
 <usage><total_tokens>19513</total_tokens><tool_uses>11</tool_uses><duration_ms>79415</duration_ms></usage>
 </task-notification>
 Full transcript available at: REDACTED.output
+
+---
+
+ok wht we should do next ?

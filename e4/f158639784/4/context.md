@@ -85,3 +85,7 @@ Execute plan by dispatching fresh subagent per task, with two-stage review after
 
 **Task 8 — universal.json** — Created at `_infrastructure/in...
 
+### Prompt 8
+
+ok wht we should do next ?
+
