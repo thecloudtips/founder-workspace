@@ -3,7 +3,7 @@
   "checkpoint_id": "e4f158639784",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 9,
+  "checkpoints_count": 10,
   "files_touched": [
     "docs/INDEX.md",
     "docs/agent-specs/INDEX.md",
@@ -74,6 +74,27 @@
     "docs/superpowers/specs/[7]-2026-03-11-preflight-checks-design.md",
     "docs/superpowers/specs/[8]-2026-03-12-default-subagent-delegation-design.md",
     "docs/superpowers/specs/[9]-2026-03-12-evals-framework-design.md",
+    "founder-os-dist/CHANGELOG.md",
+    "founder-os-dist/LICENSE",
+    "founder-os-dist/README.md",
+    "founder-os-dist/bin/founder-os.js",
+    "founder-os-dist/lib/claude-md.js",
+    "founder-os-dist/lib/installer.js",
+    "founder-os-dist/lib/manifest.js",
+    "founder-os-dist/lib/output.js",
+    "founder-os-dist/lib/settings-json.js",
+    "founder-os-dist/lib/uninstaller.js",
+    "founder-os-dist/lib/updater.js",
+    "founder-os-dist/package.json",
+    "founder-os-dist/template/.claude/CLAUDE.md",
+    "founder-os-dist/template/.claude/settings.json",
+    "founder-os-dist/tests/helpers.sh",
+    "founder-os-dist/tests/test-claude-md-merge.sh",
+    "founder-os-dist/tests/test-init-fresh.sh",
+    "founder-os-dist/tests/test-init-update.sh",
+    "founder-os-dist/tests/test-settings-merge.sh",
+    "founder-os-dist/tests/test-uninstall.sh",
+    "founder-os-dist/tests/test-version-status.sh",
     "founderOS/_infrastructure/humanize-content/SKILL.md",
     "founderOS/commands/newsletter/draft.md",
     "founderOS/commands/scout/catalog.md",
@@ -83,7 +104,8 @@
     "founderOS/docs/superpowers/plans/2026-03-14-scout-namespace.md",
     "founderOS/docs/superpowers/plans/[11]-2026-03-14-humanize-content.md",
     "founderOS/docs/superpowers/plans/[9]-2026-03-12-evals-framework.md",
-    "founderOS/docs/superpowers/specs/[13]-2026-03-14-intelligence-plugin-package-design.md"
+    "founderOS/docs/superpowers/specs/[13]-2026-03-14-intelligence-plugin-package-design.md",
+    "founderOS/scripts/release-npm.sh"
   ],
   "sessions": [
     {
@@ -148,13 +170,20 @@
       "context": "/e4/f158639784/8/context.md",
       "content_hash": "/e4/f158639784/8/content_hash.txt",
       "prompt": "/e4/f158639784/8/prompt.txt"
+    },
+    {
+      "metadata": "/e4/f158639784/9/metadata.json",
+      "transcript": "/e4/f158639784/9/full.jsonl",
+      "context": "/e4/f158639784/9/context.md",
+      "content_hash": "/e4/f158639784/9/content_hash.txt",
+      "prompt": "/e4/f158639784/9/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 3619,
-    "cache_creation_tokens": 869741,
-    "cache_read_tokens": 21299709,
-    "output_tokens": 119807,
-    "api_call_count": 165
+    "input_tokens": 3664,
+    "cache_creation_tokens": 1159450,
+    "cache_read_tokens": 27095874,
+    "output_tokens": 146439,
+    "api_call_count": 208
   }
 }

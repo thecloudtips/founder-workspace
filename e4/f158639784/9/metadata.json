@@ -1,0 +1,51 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "e4f158639784",
+  "session_id": "b5949d9e-0044-451a-9230-a8f7d3508773",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-15T13:20:57.747092Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "founder-os-dist/CHANGELOG.md",
+    "founder-os-dist/LICENSE",
+    "founder-os-dist/README.md",
+    "founder-os-dist/bin/founder-os.js",
+    "founder-os-dist/lib/claude-md.js",
+    "founder-os-dist/lib/installer.js",
+    "founder-os-dist/lib/manifest.js",
+    "founder-os-dist/lib/output.js",
+    "founder-os-dist/lib/settings-json.js",
+    "founder-os-dist/lib/uninstaller.js",
+    "founder-os-dist/lib/updater.js",
+    "founder-os-dist/package.json",
+    "founder-os-dist/template/.claude/CLAUDE.md",
+    "founder-os-dist/template/.claude/settings.json",
+    "founder-os-dist/tests/helpers.sh",
+    "founder-os-dist/tests/test-claude-md-merge.sh",
+    "founder-os-dist/tests/test-init-fresh.sh",
+    "founder-os-dist/tests/test-init-update.sh",
+    "founder-os-dist/tests/test-settings-merge.sh",
+    "founder-os-dist/tests/test-uninstall.sh",
+    "founder-os-dist/tests/test-version-status.sh",
+    "founderOS/scripts/release-npm.sh"
+  ],
+  "agent": "Claude Code",
+  "transcript_identifier_at_start": "4775dc9e-870d-4350-afde-c7fe15bec2c5",
+  "token_usage": {
+    "input_tokens": 45,
+    "cache_creation_tokens": 289709,
+    "cache_read_tokens": 5796165,
+    "output_tokens": 26632,
+    "api_call_count": 43
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-03-15T13:20:57.704804Z",
+    "agent_lines": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 0,
+    "agent_percentage": 0
+  }
+}

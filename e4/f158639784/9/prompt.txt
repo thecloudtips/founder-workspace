@@ -1,0 +1,55 @@
+Implement the NPM Distribution System for Founder OS following the plan at `docs/superpowers/plans/[14]-2026-03-15-npm-distribution.md` with spec at
+  `docs/superpowers/specs/[14]-2026-03-15-npm-distribution-design.md`.
+
+  ## Goal
+  Create the `founder-os` npm package in the `founder-os-dist/` repo so users can run `npx founder-os@latest --init` to install founderOS into any Claude Code project.
+
+  ## Architecture Summary
+  - Node.js CLI (`bin/founder-os.js`) using only built-in modules (fs, path, crypto)
+  - Copies bundled template files into `.founderOS/` (engine) and `.claude/` (commands/skills/agents)
+  - Manifest with SHA-256 checksums for safe idempotent updates
+  - Release script in founderOS dev repo assembles the npm package, rewriting `${CLAUDE_PLUGIN_ROOT}` paths to relative paths
+
+  ## Implementation Chunks (5 total)
+
+  **Chunk 1 — CLI Core** (Wave 1, sequential — everything depends on this)
+  - `lib/output.js` — console formatting
+  - `lib/manifest.js` — manifest read/write, checksum computation
+  - `lib/installer.js` — fresh install (copy template → generate manifest)
+  - `lib/updater.js` — update logic (diff checksums, merge, skip user-modified)
+  - `lib/uninstaller.js` — remove managed files, restore backups
+  - `lib/claude-md.js` — CLAUDE.md marker-based merge
+  - `lib/settings-json.js` — settings.json deep merge
+  - `bin/founder-os.js` — CLI entry point (--init, --update, --uninstall, --status, --version)
+
+  **Chunk 2 — Template Content** (Wave 2, parallel with Chunks 3-4)
+  - `template/.claude/CLAUDE.md` — generated from spec with section markers
+  - `template/.claude/settings.json` — base permissions config
+
+  **Chunk 3 — Release Script** (Wave 2, parallel)
+  - `scripts/release-npm.sh` in founderOS dev repo — assembles npm package from dev repo with path rewriting
+
+  **Chunk 4 — Package Metadata** (Wave 2, parallel)
+  - `package.json`, `README.md`, `LICENSE`, `CHANGELOG.md` in founder-os-dist/
+
+  **Chunk 5 — Integration Tests** (Wave 3, depends on all above)
+  - Shell-based tests: fresh install, update, existing .claude/ merge, uninstall, CLAUDE.md merge, settings merge
+
+  ## Critical Implementation Notes
+  - Uninstaller MUST recompute checksums on disk (not trust stored manifest status)
+  - Updater MUST carry forward `replaced-existing` status and backup paths
+  - `--status` command MUST recompute checksums to detect drift
+  - On corrupted/partial installs, delete existing `.founderOS/` before fresh install
+  - All work happens in `founder-os-dist/` repo (the submodule), except the release script which goes in `founderOS/scripts/`
+
+  ## Working Directories
+  - Main workspace: `/Users/lhalicki/coding_projects/founder-workspace/`
+  - Distribution repo (target): `founder-os-dist/`
+  - Dev repo (release script only): `founderOS/`
+
+  ## Workflow
+  1. Read the full plan file first — it has detailed step-by-step code for every task
+  2. Use `superpowers:executing-plans` or `superpowers:subagent-driven-development` skill
+  3. Review gate after each chunk before committing
+  4. Use TDD where feasible (Chunk 5 tests can be written alongside Chunk 1)
+  5. Commit each chunk separately, push at session end
