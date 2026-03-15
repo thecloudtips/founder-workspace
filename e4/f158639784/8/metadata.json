@@ -1,9 +1,11 @@
 {
   "cli_version": "0.4.2",
   "checkpoint_id": "e4f158639784",
+  "session_id": "87d43814-25b6-444b-84c1-28c1a1638e4d",
   "strategy": "manual-commit",
+  "created_at": "2026-03-15T11:47:38.666364Z",
   "branch": "main",
-  "checkpoints_count": 9,
+  "checkpoints_count": 1,
   "files_touched": [
     "docs/INDEX.md",
     "docs/agent-specs/INDEX.md",
@@ -73,88 +75,24 @@
     "docs/superpowers/specs/[6]-2026-03-12-notion-cli-migration-design.md",
     "docs/superpowers/specs/[7]-2026-03-11-preflight-checks-design.md",
     "docs/superpowers/specs/[8]-2026-03-12-default-subagent-delegation-design.md",
-    "docs/superpowers/specs/[9]-2026-03-12-evals-framework-design.md",
-    "founderOS/_infrastructure/humanize-content/SKILL.md",
-    "founderOS/commands/newsletter/draft.md",
-    "founderOS/commands/scout/catalog.md",
-    "founderOS/commands/scout/find.md",
-    "founderOS/commands/scout/sources.md",
-    "founderOS/docs/superpowers/INDEX.md",
-    "founderOS/docs/superpowers/plans/2026-03-14-scout-namespace.md",
-    "founderOS/docs/superpowers/plans/[11]-2026-03-14-humanize-content.md",
-    "founderOS/docs/superpowers/plans/[9]-2026-03-12-evals-framework.md",
-    "founderOS/docs/superpowers/specs/[13]-2026-03-14-intelligence-plugin-package-design.md"
+    "docs/superpowers/specs/[9]-2026-03-12-evals-framework-design.md"
   ],
-  "sessions": [
-    {
-      "metadata": "/e4/f158639784/0/metadata.json",
-      "transcript": "/e4/f158639784/0/full.jsonl",
-      "context": "/e4/f158639784/0/context.md",
-      "content_hash": "/e4/f158639784/0/content_hash.txt",
-      "prompt": "/e4/f158639784/0/prompt.txt"
-    },
-    {
-      "metadata": "/e4/f158639784/1/metadata.json",
-      "transcript": "/e4/f158639784/1/full.jsonl",
-      "context": "/e4/f158639784/1/context.md",
-      "content_hash": "/e4/f158639784/1/content_hash.txt",
-      "prompt": "/e4/f158639784/1/prompt.txt"
-    },
-    {
-      "metadata": "/e4/f158639784/2/metadata.json",
-      "transcript": "/e4/f158639784/2/full.jsonl",
-      "context": "/e4/f158639784/2/context.md",
-      "content_hash": "/e4/f158639784/2/content_hash.txt",
-      "prompt": "/e4/f158639784/2/prompt.txt"
-    },
-    {
-      "metadata": "/e4/f158639784/3/metadata.json",
-      "transcript": "/e4/f158639784/3/full.jsonl",
-      "context": "/e4/f158639784/3/context.md",
-      "content_hash": "/e4/f158639784/3/content_hash.txt",
-      "prompt": "/e4/f158639784/3/prompt.txt"
-    },
-    {
-      "metadata": "/e4/f158639784/4/metadata.json",
-      "transcript": "/e4/f158639784/4/full.jsonl",
-      "context": "/e4/f158639784/4/context.md",
-      "content_hash": "/e4/f158639784/4/content_hash.txt",
-      "prompt": "/e4/f158639784/4/prompt.txt"
-    },
-    {
-      "metadata": "/e4/f158639784/5/metadata.json",
-      "transcript": "/e4/f158639784/5/full.jsonl",
-      "context": "/e4/f158639784/5/context.md",
-      "content_hash": "/e4/f158639784/5/content_hash.txt",
-      "prompt": "/e4/f158639784/5/prompt.txt"
-    },
-    {
-      "metadata": "/e4/f158639784/6/metadata.json",
-      "transcript": "/e4/f158639784/6/full.jsonl",
-      "context": "/e4/f158639784/6/context.md",
-      "content_hash": "/e4/f158639784/6/content_hash.txt",
-      "prompt": "/e4/f158639784/6/prompt.txt"
-    },
-    {
-      "metadata": "/e4/f158639784/7/metadata.json",
-      "transcript": "/e4/f158639784/7/full.jsonl",
-      "context": "/e4/f158639784/7/context.md",
-      "content_hash": "/e4/f158639784/7/content_hash.txt",
-      "prompt": "/e4/f158639784/7/prompt.txt"
-    },
-    {
-      "metadata": "/e4/f158639784/8/metadata.json",
-      "transcript": "/e4/f158639784/8/full.jsonl",
-      "context": "/e4/f158639784/8/context.md",
-      "content_hash": "/e4/f158639784/8/content_hash.txt",
-      "prompt": "/e4/f158639784/8/prompt.txt"
-    }
-  ],
+  "agent": "Claude Code",
+  "transcript_identifier_at_start": "c7ed750f-29f0-4194-ab76-3d099a189f3e",
   "token_usage": {
-    "input_tokens": 3619,
-    "cache_creation_tokens": 869741,
-    "cache_read_tokens": 21299709,
-    "output_tokens": 119807,
-    "api_call_count": 165
+    "input_tokens": 13,
+    "cache_creation_tokens": 31882,
+    "cache_read_tokens": 709017,
+    "output_tokens": 1451,
+    "api_call_count": 9
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-03-15T11:47:38.658755Z",
+    "agent_lines": 42913,
+    "human_added": 668,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 43581,
+    "agent_percentage": 98.46722195452146
   }
 }

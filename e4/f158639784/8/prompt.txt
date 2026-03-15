@@ -1,0 +1,5 @@
+move the docs forlder from fouderOS subdirecotry to the root and from now one lets keep the docs trakicng inthe root
+
+---
+
+ok commit all changes and updateh root git
