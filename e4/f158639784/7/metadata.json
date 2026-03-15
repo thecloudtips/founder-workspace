@@ -1,0 +1,32 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "e4f158639784",
+  "session_id": "6b88ad63-bbeb-4f5b-b1ef-5b15399c3c77",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-15T11:11:21.964336Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "founderOS/commands/scout/catalog.md",
+    "founderOS/commands/scout/find.md",
+    "founderOS/commands/scout/sources.md"
+  ],
+  "agent": "Claude Code",
+  "transcript_identifier_at_start": "5976910b-1117-4a9d-afbc-7f632c28e5ce",
+  "token_usage": {
+    "input_tokens": 3436,
+    "cache_creation_tokens": 234465,
+    "cache_read_tokens": 4082058,
+    "output_tokens": 22602,
+    "api_call_count": 32
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-03-15T11:11:21.904146Z",
+    "agent_lines": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 0,
+    "agent_percentage": 0
+  }
+}
