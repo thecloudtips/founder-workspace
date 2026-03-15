@@ -3,7 +3,7 @@
   "checkpoint_id": "e4f158639784",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 10,
+  "checkpoints_count": 11,
   "files_touched": [
     "docs/INDEX.md",
     "docs/agent-specs/INDEX.md",
@@ -96,6 +96,8 @@
     "founder-os-dist/tests/test-uninstall.sh",
     "founder-os-dist/tests/test-version-status.sh",
     "founderOS/_infrastructure/humanize-content/SKILL.md",
+    "founderOS/_infrastructure/notion-db-templates/founder-os-hq-manifest.json",
+    "founderOS/_infrastructure/notion-db-templates/hq-deliverables.json",
     "founderOS/commands/newsletter/draft.md",
     "founderOS/commands/scout/catalog.md",
     "founderOS/commands/scout/find.md",
@@ -177,13 +179,20 @@
       "context": "/e4/f158639784/9/context.md",
       "content_hash": "/e4/f158639784/9/content_hash.txt",
       "prompt": "/e4/f158639784/9/prompt.txt"
+    },
+    {
+      "metadata": "/e4/f158639784/10/metadata.json",
+      "transcript": "/e4/f158639784/10/full.jsonl",
+      "context": "/e4/f158639784/10/context.md",
+      "content_hash": "/e4/f158639784/10/content_hash.txt",
+      "prompt": "/e4/f158639784/10/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 3664,
-    "cache_creation_tokens": 1159450,
-    "cache_read_tokens": 27095874,
-    "output_tokens": 146439,
-    "api_call_count": 208
+    "input_tokens": 4774,
+    "cache_creation_tokens": 1269485,
+    "cache_read_tokens": 29520918,
+    "output_tokens": 153710,
+    "api_call_count": 234
   }
 }

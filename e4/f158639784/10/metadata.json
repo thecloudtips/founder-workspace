@@ -1,0 +1,31 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "e4f158639784",
+  "session_id": "d9398c44-f3e1-4623-83df-be4d21f54285",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-15T23:49:15.884422Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "founderOS/_infrastructure/notion-db-templates/founder-os-hq-manifest.json",
+    "founderOS/_infrastructure/notion-db-templates/hq-deliverables.json"
+  ],
+  "agent": "Claude Code",
+  "transcript_identifier_at_start": "475064b9-2dc9-4dcc-a2cc-719fc4f18645",
+  "token_usage": {
+    "input_tokens": 1110,
+    "cache_creation_tokens": 110035,
+    "cache_read_tokens": 2425044,
+    "output_tokens": 7271,
+    "api_call_count": 26
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-03-15T23:49:15.866966Z",
+    "agent_lines": 0,
+    "human_added": 5,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 5,
+    "agent_percentage": 0
+  }
+}
