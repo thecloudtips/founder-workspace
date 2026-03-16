@@ -62,3 +62,25 @@ ok a question waht we should do with the linkedin namespace taht we have already
 
 i would say we should defere it only to concpetual and context tasks like doing the raw content, the ideas topic facts etc adn these infor is beng passed to the newly speced comands and social is posting or doing the monitoring waht do you think ??
 
+### Prompt 10
+
+write me a prompt for this for new session 
+
+plan should assume writhe skill files with /skill-creator skill
+and general work with /plugin:dev namespace 
+we should use subagent drive developemnt
+
+### Prompt 11
+
+i meant prompt forprepreing plan with superpowers :)
+
+### Prompt 12
+
+Base directory for this skill: /Users/lhalicki/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.2/skills/writing-plans
+
+# Writing Plans
+
+## Overview
+
+Write comprehensive implementation plans assuming the engineer has zero context for our codebase and questionable taste. Document everything they need to know: which files to touch for each task, code, testing, docs they might need to check, how to test it. Give them the whole plan as bite-sized tasks. DRY. YAGNI. TDD. Frequent commits...
+
