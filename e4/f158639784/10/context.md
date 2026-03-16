@@ -25,3 +25,34 @@ yes go ahead
 
 ok commit, update the root git and push all
 
+### Prompt 6
+
+i would liek to enrich the social posting plugin lets specit out and plan the implemnantation 
+
+i have this notion db https://www.notion.so/2592776a246180669cb0ffa20b84b4ed?v=2592776a246180948805000cecd28e2c&source=copy_link
+
+it contains multiple social meddia posts templates with examples 
+
+i would like to have a kind of persisitent memory inside our plugin taht will be used for post creation 
+
+this can be a new table in sqlite or set of .md jsob or xml  files in the rpoject 
+
+please advise opt...
+
+### Prompt 7
+
+Base directory for this skill: /Users/lhalicki/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.2/skills/brainstorming
+
+# Brainstorming Ideas Into Designs
+
+Help turn ideas into fully formed designs and specs through natural collaborative dialogue.
+
+Start by understanding the current project context, then ask questions one at a time to refine the idea. Once you understand what you're building, present the design and get user approval.
+
+<HARD-GATE>
+Do NOT invoke any implementation ski...
+
+### Prompt 8
+
+why json is recommended ?
+

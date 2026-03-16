@@ -65,6 +65,7 @@
     "docs/superpowers/specs/[12]-2026-03-14-scout-namespace-design.md",
     "docs/superpowers/specs/[13]-2026-03-14-intelligence-plugin-package-design.md",
     "docs/superpowers/specs/[14]-2026-03-15-npm-distribution-design.md",
+    "docs/superpowers/specs/[15]-2026-03-15-social-template-engine-design.md",
     "docs/superpowers/specs/[1]-2026-03-11-aios-enrichment-design.md",
     "docs/superpowers/specs/[2]-2026-03-11-memory-engine-design.md",
     "docs/superpowers/specs/[3]-2026-03-11-intelligence-engine-design.md",
@@ -189,10 +190,10 @@
     }
   ],
   "token_usage": {
-    "input_tokens": 4774,
-    "cache_creation_tokens": 1269485,
-    "cache_read_tokens": 29520918,
-    "output_tokens": 153710,
-    "api_call_count": 234
+    "input_tokens": 3716,
+    "cache_creation_tokens": 1221296,
+    "cache_read_tokens": 33371408,
+    "output_tokens": 166213,
+    "api_call_count": 251
   }
 }
