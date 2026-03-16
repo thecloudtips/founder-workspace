@@ -5,6 +5,7 @@
   "branch": "main",
   "checkpoints_count": 2,
   "files_touched": [
+    "docs/superpowers/plans/[16]-2026-03-15-content-ideation-refactor.md",
     "docs/superpowers/specs/[16]-2026-03-15-linkedin-content-ideation-refactor-design.md",
     "founderOS/CLAUDE.md",
     "founderOS/skills/social/posting-cadence/SKILL.md",
@@ -27,10 +28,10 @@
     }
   ],
   "token_usage": {
-    "input_tokens": 548,
-    "cache_creation_tokens": 270497,
-    "cache_read_tokens": 11842092,
-    "output_tokens": 47479,
-    "api_call_count": 86
+    "input_tokens": 520,
+    "cache_creation_tokens": 187292,
+    "cache_read_tokens": 9447492,
+    "output_tokens": 42372,
+    "api_call_count": 64
   }
 }
