@@ -1,0 +1,32 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "68f44c1abf88",
+  "session_id": "022fe63b-0821-42c0-add4-617f24d622c7",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-16T01:02:14.981621Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "founderOS/CLAUDE.md",
+    "founderOS/skills/social/posting-cadence/SKILL.md",
+    "founderOS/skills/social/templates/_index.yaml"
+  ],
+  "agent": "Claude Code",
+  "transcript_identifier_at_start": "ffd19994-1b49-40ae-bf01-f891b2f4cb47",
+  "token_usage": {
+    "input_tokens": 502,
+    "cache_creation_tokens": 158109,
+    "cache_read_tokens": 6634803,
+    "output_tokens": 28360,
+    "api_call_count": 49
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-03-16T01:02:14.9346Z",
+    "agent_lines": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 0,
+    "agent_percentage": 0
+  }
+}

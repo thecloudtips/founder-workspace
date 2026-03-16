@@ -1,0 +1,1024 @@
+Execute the implementation plan for spec [15] Social Content Template Engine.
+
+  Read the plan at docs/superpowers/plans/[15]-2026-03-15-social-template-engine.md and execute it using /superpowers:subagent-driven-development.
+
+  The plan has 10 tasks in 3 waves:
+  - Wave 1 (parallel): Import ~90 templates from Notion DB + create template-engine skill via /skill-creator
+  - Wave 2 (parallel): Build _index.yaml, init _performance.yaml, create 3 commands via /plugin-dev:command-development
+  - Wave 3 (sequential): Update posting-cadence globs, update CLAUDE.md, push all
+
+  Notion DB for template import: https://www.notion.so/2592776a246180669cb0ffa20b84b4ed
+
+  After all tasks complete, commit to founderOS, update workspace root submodule, and push both.
+
+---
+
+Base directory for this skill: /Users/lhalicki/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.2/skills/subagent-driven-development
+
+# Subagent-Driven Development
+
+Execute plan by dispatching fresh subagent per task, with two-stage review after each: spec compliance review first, then code quality review.
+
+**Why subagents:** You delegate tasks to specialized agents with isolated context. By precisely crafting their instructions and context, you ensure they stay focused and succeed at their task. They should never inherit your session's context or history — you construct exactly what they need. This also preserves your own context for coordination work.
+
+**Core principle:** Fresh subagent per task + two-stage review (spec then quality) = high quality, fast iteration
+
+## When to Use
+
+```dot
+digraph when_to_use {
+    "Have implementation plan?" [shape=diamond];
+    "Tasks mostly independent?" [shape=diamond];
+    "Stay in this session?" [shape=diamond];
+    "subagent-driven-development" [shape=box];
+    "executing-plans" [shape=box];
+    "Manual execution or brainstorm first" [shape=box];
+
+    "Have implementation plan?" -> "Tasks mostly independent?" [label="yes"];
+    "Have implementation plan?" -> "Manual execution or brainstorm first" [label="no"];
+    "Tasks mostly independent?" -> "Stay in this session?" [label="yes"];
+    "Tasks mostly independent?" -> "Manual execution or brainstorm first" [label="no - tightly coupled"];
+    "Stay in this session?" -> "subagent-driven-development" [label="yes"];
+    "Stay in this session?" -> "executing-plans" [label="no - parallel session"];
+}
+```
+
+**vs. Executing Plans (parallel session):**
+- Same session (no context switch)
+- Fresh subagent per task (no context pollution)
+- Two-stage review after each task: spec compliance first, then code quality
+- Faster iteration (no human-in-loop between tasks)
+
+## The Process
+
+```dot
+digraph process {
+    rankdir=TB;
+
+    subgraph cluster_per_task {
+        label="Per Task";
+        "Dispatch implementer subagent (./implementer-prompt.md)" [shape=box];
+        "Implementer subagent asks questions?" [shape=diamond];
+        "Answer questions, provide context" [shape=box];
+        "Implementer subagent implements, tests, commits, self-reviews" [shape=box];
+        "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)" [shape=box];
+        "Spec reviewer subagent confirms code matches spec?" [shape=diamond];
+        "Implementer subagent fixes spec gaps" [shape=box];
+        "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" [shape=box];
+        "Code quality reviewer subagent approves?" [shape=diamond];
+        "Implementer subagent fixes quality issues" [shape=box];
+        "Mark task complete in TodoWrite" [shape=box];
+    }
+
+    "Read plan, extract all tasks with full text, note context, create TodoWrite" [shape=box];
+    "More tasks remain?" [shape=diamond];
+    "Dispatch final code reviewer subagent for entire implementation" [shape=box];
+    "Use superpowers:finishing-a-development-branch" [shape=box style=filled fillcolor=lightgreen];
+
+    "Read plan, extract all tasks with full text, note context, create TodoWrite" -> "Dispatch implementer subagent (./implementer-prompt.md)";
+    "Dispatch implementer subagent (./implementer-prompt.md)" -> "Implementer subagent asks questions?";
+    "Implementer subagent asks questions?" -> "Answer questions, provide context" [label="yes"];
+    "Answer questions, provide context" -> "Dispatch implementer subagent (./implementer-prompt.md)";
+    "Implementer subagent asks questions?" -> "Implementer subagent implements, tests, commits, self-reviews" [label="no"];
+    "Implementer subagent implements, tests, commits, self-reviews" -> "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)";
+    "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)" -> "Spec reviewer subagent confirms code matches spec?";
+    "Spec reviewer subagent confirms code matches spec?" -> "Implementer subagent fixes spec gaps" [label="no"];
+    "Implementer subagent fixes spec gaps" -> "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)" [label="re-review"];
+    "Spec reviewer subagent confirms code matches spec?" -> "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" [label="yes"];
+    "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" -> "Code quality reviewer subagent approves?";
+    "Code quality reviewer subagent approves?" -> "Implementer subagent fixes quality issues" [label="no"];
+    "Implementer subagent fixes quality issues" -> "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" [label="re-review"];
+    "Code quality reviewer subagent approves?" -> "Mark task complete in TodoWrite" [label="yes"];
+    "Mark task complete in TodoWrite" -> "More tasks remain?";
+    "More tasks remain?" -> "Dispatch implementer subagent (./implementer-prompt.md)" [label="yes"];
+    "More tasks remain?" -> "Dispatch final code reviewer subagent for entire implementation" [label="no"];
+    "Dispatch final code reviewer subagent for entire implementation" -> "Use superpowers:finishing-a-development-branch";
+}
+```
+
+## Model Selection
+
+Use the least powerful model that can handle each role to conserve cost and increase speed.
+
+**Mechanical implementation tasks** (isolated functions, clear specs, 1-2 files): use a fast, cheap model. Most implementation tasks are mechanical when the plan is well-specified.
+
+**Integration and judgment tasks** (multi-file coordination, pattern matching, debugging): use a standard model.
+
+**Architecture, design, and review tasks**: use the most capable available model.
+
+**Task complexity signals:**
+- Touches 1-2 files with a complete spec → cheap model
+- Touches multiple files with integration concerns → standard model
+- Requires design judgment or broad codebase understanding → most capable model
+
+## Handling Implementer Status
+
+Implementer subagents report one of four statuses. Handle each appropriately:
+
+**DONE:** Proceed to spec compliance review.
+
+**DONE_WITH_CONCERNS:** The implementer completed the work but flagged doubts. Read the concerns before proceeding. If the concerns are about correctness or scope, address them before review. If they're observations (e.g., "this file is getting large"), note them and proceed to review.
+
+**NEEDS_CONTEXT:** The implementer needs information that wasn't provided. Provide the missing context and re-dispatch.
+
+**BLOCKED:** The implementer cannot complete the task. Assess the blocker:
+1. If it's a context problem, provide more context and re-dispatch with the same model
+2. If the task requires more reasoning, re-dispatch with a more capable model
+3. If the task is too large, break it into smaller pieces
+4. If the plan itself is wrong, escalate to the human
+
+**Never** ignore an escalation or force the same model to retry without changes. If the implementer said it's stuck, something needs to change.
+
+## Prompt Templates
+
+- `./implementer-prompt.md` - Dispatch implementer subagent
+- `./spec-reviewer-prompt.md` - Dispatch spec compliance reviewer subagent
+- `./code-quality-reviewer-prompt.md` - Dispatch code quality reviewer subagent
+
+## Example Workflow
+
+```
+You: I'm using Subagent-Driven Development to execute this plan.
+
+[Read plan file once: docs/superpowers/plans/feature-plan.md]
+[Extract all 5 tasks with full text and context]
+[Create TodoWrite with all tasks]
+
+Task 1: Hook installation script
+
+[Get Task 1 text and context (already extracted)]
+[Dispatch implementation subagent with full task text + context]
+
+Implementer: "Before I begin - should the hook be installed at user or system level?"
+
+You: "User level (~/.config/superpowers/hooks/)"
+
+Implementer: "Got it. Implementing now..."
+[Later] Implementer:
+  - Implemented install-hook command
+  - Added tests, 5/5 passing
+  - Self-review: Found I missed --force flag, added it
+  - Committed
+
+[Dispatch spec compliance reviewer]
+Spec reviewer: ✅ Spec compliant - all requirements met, nothing extra
+
+[Get git SHAs, dispatch code quality reviewer]
+Code reviewer: Strengths: Good test coverage, clean. Issues: None. Approved.
+
+[Mark Task 1 complete]
+
+Task 2: Recovery modes
+
+[Get Task 2 text and context (already extracted)]
+[Dispatch implementation subagent with full task text + context]
+
+Implementer: [No questions, proceeds]
+Implementer:
+  - Added verify/repair modes
+  - 8/8 tests passing
+  - Self-review: All good
+  - Committed
+
+[Dispatch spec compliance reviewer]
+Spec reviewer: ❌ Issues:
+  - Missing: Progress reporting (spec says "report every 100 items")
+  - Extra: Added --json flag (not requested)
+
+[Implementer fixes issues]
+Implementer: Removed --json flag, added progress reporting
+
+[Spec reviewer reviews again]
+Spec reviewer: ✅ Spec compliant now
+
+[Dispatch code quality reviewer]
+Code reviewer: Strengths: Solid. Issues (Important): Magic number (100)
+
+[Implementer fixes]
+Implementer: Extracted PROGRESS_INTERVAL constant
+
+[Code reviewer reviews again]
+Code reviewer: ✅ Approved
+
+[Mark Task 2 complete]
+
+...
+
+[After all tasks]
+[Dispatch final code-reviewer]
+Final reviewer: All requirements met, ready to merge
+
+Done!
+```
+
+## Advantages
+
+**vs. Manual execution:**
+- Subagents follow TDD naturally
+- Fresh context per task (no confusion)
+- Parallel-safe (subagents don't interfere)
+- Subagent can ask questions (before AND during work)
+
+**vs. Executing Plans:**
+- Same session (no handoff)
+- Continuous progress (no waiting)
+- Review checkpoints automatic
+
+**Efficiency gains:**
+- No file reading overhead (controller provides full text)
+- Controller curates exactly what context is needed
+- Subagent gets complete information upfront
+- Questions surfaced before work begins (not after)
+
+**Quality gates:**
+- Self-review catches issues before handoff
+- Two-stage review: spec compliance, then code quality
+- Review loops ensure fixes actually work
+- Spec compliance prevents over/under-building
+- Code quality ensures implementation is well-built
+
+**Cost:**
+- More subagent invocations (implementer + 2 reviewers per task)
+- Controller does more prep work (extracting all tasks upfront)
+- Review loops add iterations
+- But catches issues early (cheaper than debugging later)
+
+## Red Flags
+
+**Never:**
+- Start implementation on main/master branch without explicit user consent
+- Skip reviews (spec compliance OR code quality)
+- Proceed with unfixed issues
+- Dispatch multiple implementation subagents in parallel (conflicts)
+- Make subagent read plan file (provide full text instead)
+- Skip scene-setting context (subagent needs to understand where task fits)
+- Ignore subagent questions (answer before letting them proceed)
+- Accept "close enough" on spec compliance (spec reviewer found issues = not done)
+- Skip review loops (reviewer found issues = implementer fixes = review again)
+- Let implementer self-review replace actual review (both are needed)
+- **Start code quality review before spec compliance is ✅** (wrong order)
+- Move to next task while either review has open issues
+
+**If subagent asks questions:**
+- Answer clearly and completely
+- Provide additional context if needed
+- Don't rush them into implementation
+
+**If reviewer finds issues:**
+- Implementer (same subagent) fixes them
+- Reviewer reviews again
+- Repeat until approved
+- Don't skip the re-review
+
+**If subagent fails task:**
+- Dispatch fix subagent with specific instructions
+- Don't try to fix manually (context pollution)
+
+## Integration
+
+**Required workflow skills:**
+- **superpowers:using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
+- **superpowers:writing-plans** - Creates the plan this skill executes
+- **superpowers:requesting-code-review** - Code review template for reviewer subagents
+- **superpowers:finishing-a-development-branch** - Complete development after all tasks
+
+**Subagents should use:**
+- **superpowers:test-driven-development** - Subagents follow TDD for each task
+
+**Alternative workflow:**
+- **superpowers:executing-plans** - Use for parallel session instead of same-session execution
+
+---
+
+<task-notification>
+<task-id>a018c7895cd1a39c4</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Create empty _performance.yaml" completed</summary>
+<result>DONE. File created at `/Users/lhalicki/coding_projects/founder-workspace/founderOS/skills/social/templates/_performance.yaml` with the exact content specified.</result>
+<usage><total_tokens>39642</total_tokens><tool_uses>1</tool_uses><duration_ms>3845</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>ab9ed11a521df7b20</task-id>
+<tool-use-id>toolu_016fziQn4uXiVaQYtcXeUPJP</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Create template-engine SKILL.md" completed</summary>
+<result>**Status:** DONE
+
+**Files created:**
+- `/Users/lhalicki/coding_projects/founder-workspace/founderOS/skills/social/template-engine/SKILL.md`
+
+**Verification checklist:**
+- YAML frontmatter has `name`, `description`, and `globs` — all present.
+- `globs` includes both `commands/social/compose.md` and `commands/social/ab-test.md` — confirmed.
+- All file paths use `${CLAUDE_PLUGIN_ROOT}` prefix — confirmed (`_index.yaml`, `_performance.yaml`, and `{name}.md` template paths all use it).
+- Content covers all 4 required sections: Template Selection Algorithm (7 steps), Combination Strategies (technique stacking + section assembly + judgment criteria), Performance-Based Ranking (weight formula, neutral new templates, minimum threshold, topic matching), and Engagement Score Formula (`likes + comments×2 + shares×3`).</result>
+<usage><total_tokens>21662</total_tokens><tool_uses>6</tool_uses><duration_ms>51355</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a4e5effba9b6ed363</task-id>
+<tool-use-id>toolu_01E6mmkKu7tjDc1sdxZs6PWW</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Import templates Mar24-Aug24" completed</summary>
+<result>The duplicates show that existing files already had these same IDs. My 30 files are all successfully written. The doubles are from pre-existing files that were already in the directory. All 30 new files were created correctly.
+
+Here is the complete list of the 30 files created this session:
+
+**March 2024 (5 files)**
+
+| File | ID | Technique | Platforms |
+|---|---|---|---|
+| `contrarian-amateur-advice.md` | mar24-1 | contrarian | linkedin |
+| `reversal-worst-case-safety.md` | mar24-2 | reversal | linkedin |
+| `reversal-escape-rat-race.md` | mar24-3 | reversal | linkedin |
+| `contrarian-beginners-amateurs-pros.md` | mar24-4 | contrarian | linkedin |
+| `reversal-hustling-in-reverse.md` | mar24-5 | reversal | linkedin |
+
+**April 2024 (5 files)**
+
+| File | ID | Technique | Platforms |
+|---|---|---|---|
+| `reversal-narrative-build-business.md` | apr24-1 | reversal | x |
+| `question-reward-for-promotion.md` | apr24-2 | question | x |
+| `story-smashes-the-myth.md` | apr24-3 | story | x |
+| `list-daily-activities-persona.md` | apr24-4 | list | x |
+| `reversal-hard-vs-harder.md` | apr24-5 | reversal | x |
+
+**May 2024 (5 files)**
+
+| File | ID | Technique | Platforms |
+|---|---|---|---|
+| `story-dont-trade-mental-health.md` | may24-1 | story | linkedin |
+| `question-underestimating-the-crowd.md` | may24-2 | question | x |
+| `contrarian-regular-people-succeed.md` | may24-3 | contrarian | linkedin |
+| `contrarian-bad-thing-reserved-for-doers.md` | may24-4 | contrarian | x |
+| `simplification-greatness-is-basic.md` | may24-5 | simplification | x |
+
+**June 2024 (5 files)**
+
+| File | ID | Technique | Platforms |
+|---|---|---|---|
+| `contrarian-prediction-high-performers-quit.md` | jun24-1 | contrarian | linkedin |
+| `contrarian-ill-never-vs-ill-always.md` | jun24-2 | contrarian | x |
+| `question-simple-observation-life.md` | jun24-3 | question | x |
+| `list-six-fundamentals-role.md` | jun24-4 | list | linkedin |
+| `reversal-success-marker-flip.md` | jun24-5 | reversal | x |
+
+**July 2024 (5 files)**
+
+| File | ID | Technique | Platforms |
+|---|---|---|---|
+| `reversal-life-hack-worst-case.md` | jul24-1 | reversal | x |
+| `contrarian-mediocre-with-execution.md` | jul24-2 | contrarian | linkedin |
+| `misdirection-once-you-realize.md` | jul24-3 | misdirection | x |
+| `anaphora-discomfort-observation.md` | jul24-4 | anaphora | linkedin |
+| `list-how-to-get-started.md` | jul24-5 | list | x |
+
+**August 2024 (5 files)**
+
+| File | ID | Technique | Platforms |
+|---|---|---|---|
+| `contrarian-unlearning-most-valuable-skill.md` | aug24-1 | contrarian | linkedin |
+| `reversal-cliche-flip.md` | aug24-2 | reversal | x |
+| `simplification-daily-exercise-routine.md` | aug24-3 | simplification | linkedin |
+| `misdirection-unsuccessful-vs-successful.md` | aug24-4 | misdirection | x |
+| `list-simple-daily-activities.md` | aug24-5 | list | linkedin |
+
+All 30 files written to `/Users/lhalicki/coding_projects/founder-workspace/founderOS/skills/social/templates/`. No commits made.</result>
+<usage><total_tokens>43495</total_tokens><tool_uses>41</tool_uses><duration_ms>258637</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>ab3c7b2d0b7d8e4ba</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Import templates Sep23-Feb24" completed</summary>
+<result>The directory already had 92 pre-existing files, and I've added 31 new ones (123 total). All 31 new files from this session are confirmed created. Here is a full summary of what was written:
+
+---
+
+## Files Created (31 total)
+
+**September 2023 (5 templates)**
+
+| File | ID | Technique | Platforms |
+|---|---|---|---|
+| `simplification-two-steps.md` | sep23-1 | simplification | x |
+| `contrarian-industry-disintegration.md` | sep23-2 | contrarian | x |
+| `story-procrastination-tomorrows.md` | sep23-3 | story | x |
+| `contrarian-more-vs-better.md` | sep23-4 | contrarian | x |
+| `reversal-dead-wrong-lesson.md` | sep23-5 | reversal | x |
+
+**October 2023 (6 templates — 5 + 1 bonus)**
+
+| File | ID | Technique | Platforms |
+|---|---|---|---|
+| `reversal-rewarded-for.md` | oct23-1 | reversal | x |
+| `reversal-stop-start-reframe.md` | oct23-2 | reversal | x |
+| `story-years-of-experience-wisdom.md` | oct23-3 | story | x |
+| `simplification-contrast-101.md` | oct23-4 | simplification | x |
+| `contrarian-fear-paralysis-list.md` | oct23-5 | contrarian | linkedin |
+| `contrarian-bet-on-yourself.md` | oct23-bonus | contrarian | linkedin |
+
+**November 2023 (5 templates)**
+
+| File | ID | Technique | Platforms |
+|---|---|---|---|
+| `reversal-smart-vs-wise.md` | nov23-1 | reversal | x |
+| `list-time-horizon-framework.md` | nov23-2 | list | x |
+| `simplification-playbook-one-each.md` | nov23-3 | simplification | x |
+| `simplification-daily-action-big-outcome.md` | nov23-4 | simplification | x |
+| `list-positive-mindset-signs.md` | nov23-5 | list | linkedin |
+
+**December 2023 (5 templates)**
+
+| File | ID | Technique | Platforms |
+|---|---|---|---|
+| `reversal-myths-vs-reality.md` | dec23-1 | reversal | x |
+| `story-shoutout-courage.md` | dec23-2 | story | x |
+| `contrarian-reality-check.md` | dec23-3 | contrarian | x |
+| `list-skill-to-business-steps.md` | dec23-4 | list | x |
+| `contrarian-zero-excuses.md` | dec23-5 | contrarian | x |
+
+**January 2024 (5 templates)**
+
+| File | ID | Technique | Platforms |
+|---|---|---|---|
+| `simplification-just-start.md` | jan24-1 | simplification | x |
+| `list-target-group-opportunity.md` | jan24-2 | list | x |
+| `simplification-best-advice-action-loop.md` | jan24-3 | simplification | x |
+| `question-unique-content-questions.md` | jan24-4 | question | x |
+| `story-build-your-own.md` | jan24-5 | story | x |
+
+**February 2024 (5 templates)**
+
+| File | ID | Technique | Platforms |
+|---|---|---|---|
+| `simplification-simple-things-list.md` | feb24-1 | simplification | x |
+| `misdirection-contrary-wishful-thinking.md` | feb24-2 | misdirection | x |
+| `anaphora-no-no-no-upside.md` | feb24-3 | anaphora | x |
+| `misdirection-hook-and-flip.md` | feb24-4 | misdirection | x |
+| `list-bombastic-side-project.md` | feb24-5 | list | x |
+
+**Notes:**
+- October 2023 had a bonus template (oct23-bonus) in addition to the 5 numbered ones — all 6 were extracted.
+- All files are written to `/Users/lhalicki/coding_projects/founder-workspace/founderOS/skills/social/templates/`.
+- No commits were made.</result>
+<usage><total_tokens>44777</total_tokens><tool_uses>40</tool_uses><duration_ms>268984</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a78c7a677321726c0</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Import templates Mar24-Aug24" completed</summary>
+<result>All 30 template IDs are fully covered. Here is the complete report:
+
+---
+
+## Result
+
+All 30 templates from March–August 2024 are present in `/Users/lhalicki/coding_projects/founder-workspace/founderOS/skills/social/templates/`.
+
+### Templates per month (5 each = 30 total)
+
+| Month | IDs | Count |
+|-------|-----|-------|
+| March 2024 | mar24-1 through mar24-5 | 5 |
+| April 2024 | apr24-1 through apr24-5 | 5 |
+| May 2024 | may24-1 through may24-5 | 5 |
+| June 2024 | jun24-1 through jun24-5 | 5 |
+| July 2024 | jul24-1 through jul24-5 | 5 |
+| August 2024 | aug24-1 through aug24-5 | 5 |
+
+### Key finding: Prior import passes already wrote all 30 files
+
+The templates directory already contained all 30 IDs from two earlier import sessions. Evidence:
+- First pass created canonical files (no month suffix): e.g., `reversal-hustling-in-reverse.md` (mar24-5)
+- Second pass created month-suffixed files for name collisions: e.g., `reversal-hustling-in-reverse-mar24.md` (also mar24-5)
+
+This resulted in **duplicate ID collisions** across 15 IDs — each of those has two files carrying the same ID. The second-pass files appear to be the more precisely named versions (better technique classification in some cases, e.g., `anaphora-embrace-discomfort-repetition.md` vs. `anaphora-discomfort-observation.md` for jul24-4).
+
+### Parsing issues / anomalies noted
+
+- **mar24-1** — Technique ambiguous: the template uses a scolding hook ("Don't X like an amateur") which is more `misdirection` than `contrarian`; existing files split between these two classifications.
+- **apr24-5** — Technique conflict: one file classifies as `reversal` (`reversal-hard-vs-harder.md`), another as `simplification` (`simplification-hard-but-harder.md`). The Notion content ("hard, but X is harder") reads as reversal/contrast.
+- **jun24-3** — Technique conflict: `contrarian-simple-observation-life.md` vs. `question-simple-observation-life.md`. The Notion text ("A simple observation about life: ...") leans `question`/`contrarian`.
+- **jul24-4** — Correctly classified as `anaphora` (uses repetition of "is uncomfortable").
+- **aug24-4** — `misdirection-unsuccessful-vs-successful.md`: uses polarizing words to lead readers then pivot — correct classification.
+- No examples section was present in the March/April/June Notion pages (only template + link); July and August pages included examples.</result>
+<usage><total_tokens>47202</total_tokens><tool_uses>28</tool_uses><duration_ms>404362</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>ab484fbbb5c12ea07</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Import templates Mar24-Aug24" completed</summary>
+<result>All 29 new files written successfully (jul24-1 `reversal-life-hack-worst-case.md` was already created by Batch 1 with correct content). Here is the report:
+
+---
+
+**Status:** DONE
+
+**Templates created per month:**
+- March 2024: 5 templates
+- April 2024: 5 templates
+- May 2024: 5 templates
+- June 2024: 5 templates
+- July 2024: 4 templates new (1 already existed from Batch 1 with correct content)
+- August 2024: 5 templates
+
+**Total files written this batch:** 29 new files (jul24-1 `reversal-life-hack-worst-case.md` was pre-existing with the correct content)
+
+**All filenames created:**
+
+March 2024:
+- `contrarian-dont-network-amateur.md`
+- `reversal-try-this-year-worst-outcome.md`
+- `reversal-visceral-escape-flip-script.md`
+- `contrarian-beginners-amateurs-pros-mar24.md`
+- `reversal-hustling-in-reverse-mar24.md`
+
+April 2024:
+- `reversal-narrative-build-business-apr24.md`
+- `question-reward-for-promotion-apr24.md`
+- `story-smashes-the-myth-apr24.md`
+- `list-daily-activities-persona-apr24.md`
+- `simplification-hard-but-harder.md`
+
+May 2024:
+- `story-dont-trade-mental-health-may24.md`
+- `question-underestimating-the-crowd-may24.md`
+- `contrarian-regular-people-succeed-may24.md`
+- `contrarian-bad-thing-reserved-for-doers-may24.md`
+- `simplification-greatness-is-basic-may24.md`
+
+June 2024:
+- `contrarian-bold-prediction-quit.md`
+- `contrarian-ill-never-but-ill.md`
+- `contrarian-simple-observation-life.md`
+- `list-six-fundamentals-hook.md`
+- `reversal-success-narrative-disruption.md`
+
+July 2024:
+- `reversal-life-hack-worst-case.md` (pre-existing from Batch 1, content verified correct)
+- `contrarian-positive-thing-not-worth-much.md`
+- `misdirection-once-you-realize-join-crowd.md`
+- `anaphora-embrace-discomfort-repetition.md`
+- `simplification-how-to-get-started-objection.md`
+
+August 2024:
+- `contrarian-unlearn-flip-skill.md`
+- `reversal-cliche-inverse-flip.md`
+- `simplification-time-limited-daily-exercise.md`
+- `misdirection-unsuccessful-vs-successful-belief.md`
+- `list-simple-daily-activities-routine.md`
+
+**Concerns:**
+- Several similar templates already existed from Batch 1 (e.g., `contrarian-unlearning-most-valuable-skill.md` vs new `contrarian-unlearn-flip-skill.md`; `list-simple-daily-activities.md` vs new `list-simple-daily-activities-routine.md`). The new files have distinct IDs (aug24-1 etc.) and month suffixes where needed to avoid overwriting prior work. The controller may want to review for duplicates and consolidate if the prior files came from the same source months.</result>
+<usage><total_tokens>47530</total_tokens><tool_uses>43</tool_uses><duration_ms>278792</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a2d71019406de647f</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Import templates Sep23-Feb24" completed</summary>
+<result>All 31 files are confirmed created with correct IDs. I notice the templates directory already had many existing files from prior work with duplicate IDs — this is expected since the directory was pre-populated. My new files are cleanly named without prefix conflicts.
+
+---
+
+**Status: DONE**
+
+**Templates created per month:**
+- September 2023: 5 templates (sep23-1 through sep23-5)
+- October 2023: 6 templates (oct23-1 through oct23-5, plus oct23-6 for the Bonus Template)
+- November 2023: 5 templates (nov23-1 through nov23-5)
+- December 2023: 5 templates (dec23-1 through dec23-5)
+- January 2024: 5 templates (jan24-1 through jan24-5)
+- February 2024: 5 templates (feb24-1 through feb24-5)
+
+**Total files written: 31**
+
+**Files created (all in `/Users/lhalicki/coding_projects/founder-workspace/founderOS/skills/social/templates/`):**
+
+September 2023:
+- `two-step-problem-solver.md` (sep23-1, simplification)
+- `massive-differentiator.md` (sep23-2, list)
+- `tomorrows-later.md` (sep23-3, story)
+- `more-vs-better.md` (sep23-4, contrarian)
+- `dead-wrong-lesson.md` (sep23-5, contrarian)
+
+October 2023:
+- `rewarded-for-impact.md` (oct23-1, reversal)
+- `stop-start-reframe.md` (oct23-2, reversal)
+- `years-of-experience-warning.md` (oct23-3, contrarian)
+- `contrast-101.md` (oct23-4, reversal)
+- `fear-paralysis-list.md` (oct23-5, contrarian)
+- `bet-on-yourself.md` (oct23-6, list) — Bonus Template
+
+November 2023:
+- `smart-vs-wise.md` (nov23-1, reversal)
+- `timeframe-planning-framework.md` (nov23-2, list)
+- `simple-playbook.md` (nov23-3, simplification)
+- `concrete-numbers-roadmap.md` (nov23-4, simplification)
+- `abundance-mindset-list.md` (nov23-5, list)
+
+December 2023:
+- `myth-vs-reality.md` (dec23-1, reversal)
+- `shoutout-courage.md` (dec23-2, story)
+- `contrary-to-popular-belief.md` (dec23-3, contrarian)
+- `skill-to-business-steps.md` (dec23-4, list)
+- `zero-excuses-truth.md` (dec23-5, contrarian)
+
+January 2024:
+- `just-start.md` (jan24-1, simplification)
+- `high-performer-pivot.md` (jan24-2, contrarian)
+- `best-advice-action-loop.md` (jan24-3, simplification)
+- `unique-content-questions.md` (jan24-4, question)
+- `build-your-own.md` (jan24-5, story)
+
+February 2024:
+- `simple-things-list.md` (feb24-1, simplification)
+- `contrary-to-wishful-thinking.md` (feb24-2, misdirection)
+- `anaphora-no-barriers.md` (feb24-3, anaphora)
+- `hook-and-flip-journey.md` (feb24-4, misdirection)
+- `bombastic-thread-opener.md` (feb24-5, list)
+
+**Concerns:** The templates directory already contained 145+ pre-existing files from prior runs, some with duplicate IDs (e.g., `simplification-two-steps.md` already had `id: sep23-1`). My new files use clean kebab-case names without technique prefixes, matching the spec's filename format. The duplicate IDs in pre-existing files may warrant a cleanup pass by the controller, but I did not create any filename collisions with existing files.</result>
+<usage><total_tokens>49283</total_tokens><tool_uses>43</tool_uses><duration_ms>290719</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>abc2808b1af0b45ab</task-id>
+<tool-use-id>toolu_01MFF2jxryCXiajrJddUGjA5</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Import templates Sep24-Feb25" completed</summary>
+<result>The file reads confirmed the IDs are correct. All 30 template files were successfully written. Here is the complete summary:
+
+---
+
+All 30 template files created in `/Users/lhalicki/coding_projects/founder-workspace/founderOS/skills/social/templates/`.
+
+## Files Created
+
+### September 2024 (sep24)
+
+| File | ID | Technique | Platforms |
+|---|---|---|---|
+| `list-amateurs-fix.md` | sep24-1 | list | linkedin |
+| `reversal-attractive-insight.md` | sep24-2 | reversal | x |
+| `contrarian-system-vs-better.md` | sep24-3 | contrarian | linkedin |
+| `simplification-secret-consistency.md` | sep24-4 | simplification | x |
+| `story-hidden-cost.md` | sep24-5 | story | linkedin |
+
+### October 2024 (oct24)
+
+| File | ID | Technique | Platforms |
+|---|---|---|---|
+| `reversal-then-vs-now.md` | oct24-1 | reversal | linkedin |
+| `contrarian-surprising-statistic.md` | oct24-2 | contrarian | x |
+| `contrarian-wrong-approach-vs-successful.md` | oct24-3 | contrarian | linkedin |
+| `reversal-hard-but-not-as-hard.md` | oct24-4 | reversal | x |
+| `question-better-question-reframe.md` | oct24-5 | question | linkedin |
+
+### November 2024 (nov24)
+
+| File | ID | Technique | Platforms |
+|---|---|---|---|
+| `contrarian-secret-weapon.md` | nov24-1 | contrarian | linkedin |
+| `misdirection-dangerous-addiction.md` | nov24-2 | misdirection | x |
+| `list-amateurs-fix-nov24.md` | nov24-3 | list | linkedin |
+| `contrarian-market-pays-more.md` | nov24-4 | contrarian | x |
+| `contrarian-never-do-popular-trend.md` | nov24-5 | contrarian | linkedin |
+
+### December 2024 (dec24)
+
+| File | ID | Technique | Platforms |
+|---|---|---|---|
+| `story-problem-destroys-goal.md` | dec24-1 | story | linkedin |
+| `misdirection-modern-luxury-wordplay.md` | dec24-2 | misdirection | x |
+| `reversal-definition-is-expensive.md` | dec24-3 | reversal | linkedin |
+| `anaphora-in-your-stages.md` | dec24-4 | anaphora | x |
+| `contrarian-misunderstand-core-concept.md` | dec24-5 | contrarian | linkedin |
+
+### January 2025 (jan25)
+
+| File | ID | Technique | Platforms |
+|---|---|---|---|
+| `anaphora-no-want-stop.md` | jan25-1 | anaphora | linkedin |
+| `misdirection-rarely-extraordinary.md` | jan25-2 | misdirection | x |
+| `question-sacrificed-valuable-thing.md` | jan25-3 | question | linkedin |
+| `reversal-dont-build-build.md` | jan25-4 | reversal | x |
+| `anaphora-more-less-they.md` | jan25-5 | anaphora | linkedin |
+
+### February 2025 (feb25)
+
+| File | ID | Technique | Platforms |
+|---|---|---|---|
+| `simplification-do-more-reps.md` | feb25-1 | simplification | x |
+| `story-obstacle-into-strength.md` | feb25-2 | story | linkedin |
+| `question-challenge-could-achieve.md` | feb25-3 | question | x |
+| `reversal-status-symbols-knocked-down.md` | feb25-4 | reversal | linkedin |
+| `list-never-regretted.md` | feb25-5 | list | x |
+
+**Note on duplicate names**: The `list-amateurs-fix-nov24.md` filename was given the month suffix because `list-amateurs-fix.md` was already used for sep24-1. All other files were given unique names. No files were committed.</result>
+<usage><total_tokens>64521</total_tokens><tool_uses>45</tool_uses><duration_ms>405145</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>aa2fcffde3508704a</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Import templates Sep23-Feb24" completed</summary>
+<result>The directory already had many pre-existing templates — most IDs appear 2-3 times across different filenames. All 31 templates I was asked to create now have at least one file each. The new files I created this session are the ones with clean, descriptive names (non-prefixed). All 9 existing files had the right IDs already, and the 22 other files I created fresh were successful.
+
+Here is the complete summary:
+
+---
+
+**Templates created/verified: 31 total across 6 months**
+
+Note: The templates directory already contained files from prior sessions covering these same months (with `reversal-`, `contrarian-`, `story-` prefixed naming). This session created **22 new files** with clean descriptive names. The remaining 9 target files already existed and had the correct IDs already assigned.
+
+**Templates per month:**
+
+| Month | Count | IDs |
+|---|---|---|
+| September 2023 | 5 | sep23-1 through sep23-5 |
+| October 2023 | 6 | oct23-1 through oct23-5, oct23-6 (bonus) |
+| November 2023 | 5 | nov23-1 through nov23-5 |
+| December 2023 | 5 | dec23-1 through dec23-5 |
+| January 2024 | 5 | jan24-1 through jan24-5 |
+| February 2024 | 5 | feb24-1 through feb24-5 |
+
+**New files written this session** (22 files at `/Users/lhalicki/coding_projects/founder-workspace/founderOS/skills/social/templates/`):
+- `two-ways-to-solve-it.md` (sep23-1, simplification, x)
+- `dead-wrong.md` (sep23-5, contrarian, x)
+- `rewarded-for-results.md` (oct23-1, reversal, x)
+- `stop-and-start.md` (oct23-2, reversal, x)
+- `years-of-experience.md` (oct23-3, story, x)
+- `101-contrast.md` (oct23-4, reversal, x)
+- `dont-let-fear-paralyze-you.md` (oct23-5, contrarian, linkedin)
+- `layered-timeframes.md` (nov23-2, list, x)
+- `the-playbook.md` (nov23-3, list, x)
+- `daily-action-to-big-goal.md` (nov23-4, simplification, x)
+- `clear-sign-of-quality.md` (nov23-5, list, linkedin)
+- `myths-vs-reality.md` (dec23-1, list, x)
+- `shout-out-to-courage.md` (dec23-2, story, x)
+- `step-by-step-guide.md` (dec23-4, list, x)
+- `zero-excuses.md` (dec23-5, contrarian, x)
+- `target-group-benefits.md` (jan24-2, list, x)
+- `best-advice-simple-steps.md` (jan24-3, simplification, x)
+- `build-it-yourself.md` (jan24-5, story, x)
+- `dont-overcomplicate.md` (feb24-1, simplification, x)
+- `no-no-no-no.md` (feb24-3, anaphora, x)
+- `hook-and-flip.md` (feb24-4, reversal, x)
+- `bombastic-opener.md` (feb24-5, misdirection, x)
+
+**Already-existing files confirmed correct** (9 files): `massive-differentiator.md`, `tomorrows-later.md`, `more-vs-better.md`, `bet-on-yourself.md`, `smart-vs-wise.md`, `contrary-to-popular-belief.md`, `just-start.md`, `unique-content-questions.md`, `contrary-to-wishful-thinking.md`
+
+**Parsing note:** October 2023 had a "Bonus Template" (not numbered #6). It was assigned id `oct23-6` and written to `bet-on-yourself.md`. The technique was classified as `misdirection` (based on the juxtaposition/bait structure), though the existing file classified it as `list` — the existing file was left as-is since it predated this session.</result>
+<usage><total_tokens>67656</total_tokens><tool_uses>53</tool_uses><duration_ms>538695</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>ae4b6fa511f54a8e5</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Import templates Sep24-Feb25" completed</summary>
+<result>All 30 IDs are confirmed covered. Let me compile the final list of files I created this session:
+
+**Status: DONE**
+
+---
+
+## Summary
+
+All 30 templates from September 2024 through February 2025 were fetched, parsed, classified, and written to `/Users/lhalicki/coding_projects/founder-workspace/founderOS/skills/social/templates/`.
+
+### Templates created per month (this session)
+
+- **September 2024** — 5 templates
+- **October 2024** — 5 templates (1 pre-existing from prior session, 4 new)
+- **November 2024** — 5 templates (3 pre-existing from prior session, 2 new)
+- **December 2024** — 5 templates (1 pre-existing from prior session, 4 new)
+- **January 2025** — 5 templates (2 pre-existing from prior session, 3 new)
+- **February 2025** — 5 templates (all new)
+
+**Total new files written this session: 24** (6 were already created by a prior parallel session with slightly different filenames, all with correct content and IDs)
+
+**Total files covering all 30 IDs: 30** (all IDs sep24-1 through feb25-5 confirmed present)
+
+### Files created this session
+
+`contrarian-amateurs-fix-three.md`, `reversal-attractive-aspiration.md`, `contrarian-old-way-better-way.md`, `simplification-secret-action.md`, `story-hidden-cost-sep24.md`, `reversal-old-vs-new-era.md`, `contrarian-wrong-approach-better.md`, `reversal-hard-vs-harder-oct24.md`, `question-fear-to-action.md`, `reversal-open-market-value.md`, `contrarian-never-do-popular.md`, `reversal-modern-luxury-wordplay.md`, `reversal-industry-definition-expensive.md`, `anaphora-stage-progression.md`, `contrarian-misunderstood-concept.md`, `anaphora-industry-evolved.md`, `misdirection-successful-rarely.md`, `question-sacrifice-for-shortterm.md`, `anaphora-more-vs-less.md`, `list-how-to-increase-basics.md`, `story-obstacle-doesnt-define.md`, `contrarian-most-could-by-obsessing.md`, `reversal-success-not-status-symbols.md`, `list-never-regretted-time-protection.md`
+
+### Concerns
+
+None. Duplicate IDs exist across multiple filenames (prior + current session both wrote some of the same IDs to different filenames), but all 30 IDs have valid, correctly-formatted template files. No commit was made.</result>
+<usage><total_tokens>63940</total_tokens><tool_uses>55</tool_uses><duration_ms>375552</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a942e41ae3e13f7bc</task-id>
+<tool-use-id>toolu_0155rbEuvcuhhjn6C6hfnDKT</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Import templates Sep24-Feb25" completed</summary>
+<result>All 30 templates are already present in the library with their correct IDs. The existing template library had pre-existing files from earlier runs. Here is the full mapping:
+
+**sep24:** sep24-1 through sep24-5 — all present
+**oct24:** oct24-1 through oct24-5 — all present
+**nov24:** nov24-1 through nov24-5 — all present (nov24-3 in `list-amateurs-fix-nov24.md`)
+**dec24:** dec24-1 through dec24-5 — all present
+**jan25:** jan25-1 through jan25-5 — all present
+**feb25:** feb25-1 through feb25-5 — all present
+
+All 30 templates accounted for. Now let me check which specific files have month-suffixed names and which are shared across the template library with their proper canonical names:
+
+Here is the final summary:
+
+---
+
+**Templates per month: 5 each, 30 total**
+
+All 30 templates are present in `/Users/lhalicki/coding_projects/founder-workspace/founderOS/skills/social/templates/`. The library already contained most of these templates from prior import runs; this run confirmed IDs and filled in any gaps.
+
+**ID-to-filename mapping:**
+
+| ID | Filename | Technique | Platform |
+|----|----------|-----------|----------|
+| sep24-1 | `list-amateurs-fix.md` | list | linkedin |
+| sep24-2 | `reversal-attractive-insight.md` | reversal | x |
+| sep24-3 | `contrarian-system-vs-better.md` | contrarian | linkedin |
+| sep24-4 | `simplification-secret-action.md` | simplification | x |
+| sep24-5 | `story-hidden-cost.md` | story | linkedin |
+| oct24-1 | `reversal-then-vs-now.md` | reversal | linkedin |
+| oct24-2 | `contrarian-surprising-statistic.md` | contrarian | x |
+| oct24-3 | `contrarian-wrong-approach-better.md` | contrarian | linkedin |
+| oct24-4 | `reversal-hard-but-not-as-hard.md` | reversal | x |
+| oct24-5 | `question-fear-to-action.md` | question | linkedin |
+| nov24-1 | `contrarian-secret-weapon.md` | contrarian | linkedin |
+| nov24-2 | `misdirection-dangerous-addiction.md` | misdirection | x |
+| nov24-3 | `list-amateurs-fix-nov24.md` | list | linkedin |
+| nov24-4 | `reversal-open-market-value.md` | reversal | x |
+| nov24-5 | `contrarian-never-do-popular.md` | contrarian | linkedin |
+| dec24-1 | `story-problem-destroys-goal.md` | story | linkedin |
+| dec24-2 | `reversal-modern-luxury-wordplay.md` | misdirection | x |
+| dec24-3 | `reversal-definition-is-expensive.md` | reversal | linkedin |
+| dec24-4 | `anaphora-in-your-stages.md` | anaphora | x |
+| dec24-5 | `contrarian-misunderstood-concept.md` | contrarian | linkedin |
+| jan25-1 | `anaphora-no-want-stop.md` | anaphora | linkedin |
+| jan25-2 | `misdirection-successful-rarely.md` | misdirection | x |
+| jan25-3 | `question-sacrifice-for-shortterm.md` | question | linkedin |
+| jan25-4 | `reversal-dont-build-build.md` | reversal | x |
+| jan25-5 | `anaphora-more-vs-less.md` | anaphora | linkedin |
+| feb25-1 | `list-how-to-increase-basics.md` | list | x |
+| feb25-2 | `story-obstacle-doesnt-define.md` | story | linkedin |
+| feb25-3 | `question-challenge-could-achieve.md` | question | x |
+| feb25-4 | `reversal-success-not-status-symbols.md` | reversal | linkedin |
+| feb25-5 | `list-never-regretted.md` | list | x |
+
+**Month-suffixed filename (for duplicate avoidance):** Only `list-amateurs-fix-nov24.md` uses a month suffix — all other templates had unique canonical names across the library. The pre-existing `list-amateurs-fix.md` already held sep24-1, so nov24-3 correctly received the `-nov24` suffix.
+
+**No parsing issues encountered.** All pages had exactly 5 templates each in the expected `### 📃 Template #N` format.</result>
+<usage><total_tokens>69481</total_tokens><tool_uses>93</tool_uses><duration_ms>705359</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a3b70d767f1072f35</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Create compose.md command" completed</summary>
+<result>**Status:** DONE
+
+**File created:** `/Users/lhalicki/coding_projects/founder-workspace/founderOS/commands/social/compose.md`
+
+The file follows the exact structure of `post.md` with all required sections in order:
+
+- YAML frontmatter with `allowed-tools: ["Read"]` (read-only), `execution-mode: background`, `result-format: full`
+- Skills section (4 entries: template-engine, platform-adaptation, humanize-content SKILL.md, and social-humanization.md reference)
+- Arguments table (8 arguments matching the spec)
+- Business Context (Optional)
+- Preflight Check — notes this is a read-only command with no external API dependencies and skips the `late` check
+- Step 0: Memory Context — queries `social templates`, `content creation`, `compose`
+- Intelligence: Apply Learned Patterns
+- Phase 1/3: Template Selection (reads `_index.yaml` + `_performance.yaml`, applies technique/platform/tag/performance filters)
+- Phase 2/3: Template Loading & Generation (reads template .md files, handles `--combine`, humanization, variations)
+- Phase 3/3: Output (shows generated text, template metadata, character count, next step suggestion)
+- Output format block
+- Note on --to-post explaining subagents cannot invoke other commands and showing the manual next step pattern
+- Self-Healing: Error Recovery (4 error cases)
+- Final Step: Observation Logging
+- Intelligence: Post-Command</result>
+<usage><total_tokens>22141</total_tokens><tool_uses>4</tool_uses><duration_ms>55625</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a69cd62faf25c962f</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Create templates.md command" completed</summary>
+<result>**Status:** DONE
+
+**Files created:**
+- `/Users/lhalicki/coding_projects/founder-workspace/founderOS/commands/social/templates.md`
+
+**Summary:**
+The command file was created following the exact structure of the existing social commands, particularly mirroring `social:compose.md` (which also uses `execution-mode: foreground`, `result-format: full`, and `allowed-tools: ["Read"]`). All canonical sections are present:
+
+- YAML frontmatter (exact values as specified)
+- `# social:templates` with a brief description paragraph
+- `## Skills` (1 numbered entry — template-engine SKILL.md)
+- `## Arguments` table (3 rows: subcommand, id, --technique)
+- `## Business Context (Optional)` — standard pattern
+- `## Preflight Check` — notes no external dependencies (same rationale as `social:compose`)
+- `## Step 0: Memory Context` — with relevant query terms
+- `## Intelligence: Apply Learned Patterns`
+- `## Phase 1/1: Execute Subcommand` — three sub-sections (`list`, `show`, `stats`) with full step-by-step logic and example outputs
+- `## Output` — notes foreground inline execution
+- `## Self-Healing: Error Recovery` — covers missing index, missing performance file, missing template file, missing subcommand, and `show` without ID
+- `## Final Step: Observation Logging`
+- `## Intelligence: Post-Command`</result>
+<usage><total_tokens>26946</total_tokens><tool_uses>7</tool_uses><duration_ms>62028</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a3467e07279289f99</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Create ab-test.md command" completed</summary>
+<result>The file has been created. Here is a summary of what was done:
+
+**File created:** `/Users/lhalicki/coding_projects/founder-workspace/founderOS/commands/social/ab-test.md`
+
+**Structure followed:** All canonical sections from `post.md` are present and adapted for the A/B testing workflow:
+- YAML frontmatter with `execution-mode: foreground` and `result-format: full` (per the spec)
+- Skills section (8 entries, numbered, including template-engine and late-status)
+- Arguments table (6 arguments including `--check`)
+- Business Context, Preflight Check, Step 0 Memory Context, and Intelligence: Apply Learned Patterns sections
+- **Two-invocation model** clearly documented:
+  - Invocation 1 (without `--check`): Phase 1/2 generates two variants using different templates and displays them for user approval (interactive), Phase 2/2 publishes variant A immediately and schedules variant B at `+stagger` hours, then writes a `pending_tests` entry to `_performance.yaml`
+  - Invocation 2 (with `--check`): Phase 1/2 fetches analytics (with graceful degradation to manual input), Phase 2/2 scores using `likes + (comments × 2) + (shares × 3)`, determines the winner, moves the test from `pending_tests` to `tests`, and updates `technique_scores`
+- Output, Self-Healing, Final Step: Observation Logging, and Intelligence: Post-Command sections
+
+**Status:** DONE. No commit was made.</result>
+<usage><total_tokens>24055</total_tokens><tool_uses>4</tool_uses><duration_ms>81675</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
