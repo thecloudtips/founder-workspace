@@ -56,3 +56,9 @@ Do NOT invoke any implementation ski...
 
 why json is recommended ?
 
+### Prompt 9
+
+ok a question waht we should do with the linkedin namespace taht we have already 
+
+i would say we should defere it only to concpetual and context tasks like doing the raw content, the ideas topic facts etc adn these infor is beng passed to the newly speced comands and social is posting or doing the monitoring waht do you think ??
+

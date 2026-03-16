@@ -210,3 +210,9 @@ If they agree to the companion, read the detailed guide before proceeding:
 ---
 
 why json is recommended ?
+
+---
+
+ok a question waht we should do with the linkedin namespace taht we have already 
+
+i would say we should defere it only to concpetual and context tasks like doing the raw content, the ideas topic facts etc adn these infor is beng passed to the newly speced comands and social is posting or doing the monitoring waht do you think ??

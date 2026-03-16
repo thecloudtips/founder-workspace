@@ -66,6 +66,7 @@
     "docs/superpowers/specs/[13]-2026-03-14-intelligence-plugin-package-design.md",
     "docs/superpowers/specs/[14]-2026-03-15-npm-distribution-design.md",
     "docs/superpowers/specs/[15]-2026-03-15-social-template-engine-design.md",
+    "docs/superpowers/specs/[16]-2026-03-15-linkedin-content-ideation-refactor-design.md",
     "docs/superpowers/specs/[1]-2026-03-11-aios-enrichment-design.md",
     "docs/superpowers/specs/[2]-2026-03-11-memory-engine-design.md",
     "docs/superpowers/specs/[3]-2026-03-11-intelligence-engine-design.md",
@@ -97,8 +98,6 @@
     "founder-os-dist/tests/test-uninstall.sh",
     "founder-os-dist/tests/test-version-status.sh",
     "founderOS/_infrastructure/humanize-content/SKILL.md",
-    "founderOS/_infrastructure/notion-db-templates/founder-os-hq-manifest.json",
-    "founderOS/_infrastructure/notion-db-templates/hq-deliverables.json",
     "founderOS/commands/newsletter/draft.md",
     "founderOS/commands/scout/catalog.md",
     "founderOS/commands/scout/find.md",
@@ -190,10 +189,10 @@
     }
   ],
   "token_usage": {
-    "input_tokens": 3716,
-    "cache_creation_tokens": 1221296,
-    "cache_read_tokens": 33371408,
-    "output_tokens": 166213,
-    "api_call_count": 251
+    "input_tokens": 3671,
+    "cache_creation_tokens": 1162835,
+    "cache_read_tokens": 27955732,
+    "output_tokens": 149000,
+    "api_call_count": 213
   }
 }
