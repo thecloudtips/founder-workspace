@@ -1,0 +1,102 @@
+can you prepea curent dist package i would like to install it and do some testing
+
+---
+
+ok first obeservation eva about hte packge itslef 
+
+os we are haivng entire and lcaude flowes forlders 
+/Users/lhalicki/coding_projects/fos-ws/node_modules/founder-os/.claude-flow
+/Users/lhalicki/coding_projects/fos-ws/node_modules/founder-os/.entire
+
+we do not need --init command do creat those
+
+---
+
+also d owe need this content after installation to be present 
+
+/Users/lhalicki/coding_projects/fos-ws/node_modules/founder-os/bin
+/Users/lhalicki/coding_projects/fos-ws/node_modules/founder-os/template
+/Users/lhalicki/coding_projects/fos-ws/node_modules/founder-os/tests
+
+---
+
+i would like to have jsut the npx command
+
+---
+
+ok let me test
+
+---
+
+give me whole npx command
+
+---
+
+wher i should paste the notion api key ?
+
+---
+
+the --init comand should crete the empty .env file and as well gitignore file wiht best practices definelty including the .env 
+there should be as  well example .env.example 
+and i htinkk the claude.md files should be in the project root not in .claude folder
+
+---
+
+now we are talking
+
+---
+
+when i have run the /setup:notion-hq claude have created a script /Users/lhalicki/coding_projects/fos-ws/.founderOS/scripts/setup-hq.mjs 
+and faced such errors while runnig the script 
+
+Here are all the errors encountered during setup:
+
+  Error 1: Search filter validation (Notion SDK v5.9)
+
+  body failed validation: body.filter.value should be `"page"` or `"data_source"`,
+  instead was `"database"`.
+  Context: The notion.search() SDK method no longer accepts "database" as a filter value. The SDK v5.9 changed it to "data_source".
+  Fix: Bypassed SDK entirely, used raw fetch() against https://api.notion.com/v1/search with Notion-Version: 2022-06-28 header, which still accepts "database".
+
+  ---
+  Error 2: Database creation — unknown properties param (Notion SDK v5.9)
+
+  @notionhq/client warn: unknown parameters were ignored {
+    unknownParams: [ 'properties' ],
+    knownParams: [ 'parent', 'title', 'description', 'is_inline',
+                   'initial_data_source', 'icon', 'cover' ]
+  }
+  Context: notion.databases.create() in SDK v5.9 no longer accepts properties as a parameter. It expects initial_data_source instead.
+  Fix: Bypassed SDK, used raw POST /v1/databases with properties in body (the REST API still supports it).
+
+  ---
+  Error 3: Database creation — parent.type undefined (Notion SDK v5.9)
+
+  body failed validation: body.parent.type should be defined,
+  instead was `undefined`.
+  Context: The SDK's databases.create() was passing { parent: { page_id: "..." } } without the type field. The raw API requires { parent: { type: "page_id", page_id: "..." } }.
+  Fix: Added explicit type: "page_id" in the parent object when using raw fetch.
+
+  ---
+  Error 4: Status property options not allowed on creation
+
+  body failed validation. Fix one:
+  body.properties.Status.status.options should be not present,
+  instead was `[{"name":"Candidate"},{"name":"Active"},{"name":"Approv...`.
+  body.properties.Status.status.groups should be not present,
+  instead was `[{"name":"Pending","options":["Candidate"]},{"name":"In...`.
+  Context: The [FOS] Intelligence database template defines a status type property with custom options and groups. Notion API does not allow setting status.options or status.groups during database creation — these can only be configured
+  via the Notion UI.
+  Fix: Changed status property creation to { status: {} } (empty config), leaving customization to the user in Notion UI.
+
+  ---
+  Root cause summary
+
+  The @notionhq/client package at v5.9.0 has breaking changes vs the Notion REST API v2022-06-28. The SDK's typed methods (databases.create, search) reject parameters that the REST API still accepts. The solution was to bypass the SDK
+  and call the REST API directly with fetch().
+
+can we do somethng about this ?
+
+---
+
+ok commit both submodeusl update the  root git and push all

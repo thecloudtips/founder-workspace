@@ -1,0 +1,31 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "e9a60a64d77a",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "docs/founder-os-development-timeline.md",
+    "founder-os-dist/lib/installer.js",
+    "founder-os-dist/lib/uninstaller.js",
+    "founder-os-dist/lib/updater.js",
+    "founderOS/scripts/notion-tool.mjs",
+    "founderOS/scripts/package.json"
+  ],
+  "sessions": [
+    {
+      "metadata": "/e9/a60a64d77a/0/metadata.json",
+      "transcript": "/e9/a60a64d77a/0/full.jsonl",
+      "context": "/e9/a60a64d77a/0/context.md",
+      "content_hash": "/e9/a60a64d77a/0/content_hash.txt",
+      "prompt": "/e9/a60a64d77a/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 86,
+    "cache_creation_tokens": 249269,
+    "cache_read_tokens": 6641836,
+    "output_tokens": 18170,
+    "api_call_count": 64
+  }
+}
