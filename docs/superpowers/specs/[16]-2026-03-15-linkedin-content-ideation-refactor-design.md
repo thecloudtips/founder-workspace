@@ -80,9 +80,23 @@ Each step is independent — users can enter at any point. `ideate:research` int
 
 ## Commands
 
-All commands follow the universal execution flow from the existing namespace conventions (Business Context, Preflight, Memory Context, Intelligence, Phases, Self-Healing, Observation Logging, Memory Update).
+All commands follow the universal execution flow from the existing namespace conventions. All command `.md` files include standard YAML frontmatter per Founder OS conventions.
 
-All command `.md` files include standard YAML frontmatter per Founder OS conventions.
+### Universal Execution Flow (all ideate commands)
+
+Every command in the `ideate` namespace wraps its command-specific phases in this standard flow:
+
+1. **Load Skills**: Read required skill files from `skills/ideate/`
+2. **Business Context** (Optional): Check `_infrastructure/context/active/` for personalization
+3. **Preflight Check**: Read `_infrastructure/preflight/SKILL.md`, run check for `ideate` namespace. If `blocked`, stop. If `degraded`, note unavailable sources.
+4. **Step 0: Memory Context**: Read `_infrastructure/memory/context-injection/SKILL.md`, query for relevant memories, inject into working context
+5. **Observation: Start**: Record `pre_command` event to Intelligence event store with session_id
+6. **Intelligence: Apply Learned Patterns**: Query Intelligence DB for active patterns matching plugin/command
+7. **Phase 1–N**: Command-specific execution phases (see each command below)
+8. **Self-Healing: Error Recovery**: Classify errors (transient/recoverable/degradable/fatal), apply recovery per `_infrastructure/intelligence/self-healing/SKILL.md`
+9. **Output**: Display results in chat (and optionally write to file)
+10. **Observation: End**: Record `post_command` event with outcome, duration, payload
+11. **Final: Memory Update**: Read `_infrastructure/memory/pattern-detection/SKILL.md`, log observation, check for emerging patterns
 
 ### Modified Commands
 
@@ -157,17 +171,26 @@ Extract content angles from documents for multi-platform ideation.
 ```yaml
 ---
 description: Extract key points from a document and generate content angles for social media
-argument-hint: "[file-path-or-paste] [--platform=linkedin|x|meta|tiktok] [--platforms=linkedin,x,tiktok] [--audience=founder|technical|marketer|cxo] [--framework=auto|story|listicle|contrarian|howto|lesson|insight|question] [--to-file=PATH]"
+argument-hint: "[file-path-or-paste] [--platforms=linkedin,x,meta,tiktok] [--audience=founder|technical|marketer|cxo] [--framework=auto|story|listicle|contrarian|howto|lesson|insight|question] [--to-file=PATH]"
 allowed-tools: ["Read", "Write"]
 execution-mode: background
 result-format: summary
 ---
 ```
 
+**Arguments:**
+
+| Argument | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `source` | Yes | — | File path or pasted text (positional). Supports `.md`, `.txt`, `.pdf`. |
+| `--platforms` | No | linkedin | Target platforms for angle scoring and recommendations (comma-separated) |
+| `--audience` | No | founder | Target reader segment |
+| `--framework` | No | auto | Post structure framework |
+| `--to-file` | No | — | Save output to file path (otherwise ephemeral) |
+
 **Key changes from `linkedin:from-doc`:**
 - Same extraction pipeline (Phase 1) but output is ideation material, not a formatted post
-- Adds `--platform` flag for platform-aware angle selection (TikTok favors visual/action angles, X favors punchy contrarian takes, Meta favors storytelling)
-- Adds `--platforms` (plural) to extract angles for multiple platforms in one pass
+- Adds `--platforms` flag for platform-aware angle selection (TikTok favors visual/action angles, X favors punchy contrarian takes, Meta favors storytelling). Supports multiple platforms in one pass.
 - Removes Notion logging and default file output
 - Phase 2 generates a content brief, not a finished post
 - No hashtag generation
@@ -192,13 +215,22 @@ result-format: summary
 ---
 ```
 
+**Arguments:**
+
+| Argument | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `draft-or-topic` | Yes | — | Topic string, pasted draft text, or prior command output (positional) |
+| `--platform` | No | linkedin | Target platform for style calibration |
+| `--audience` | No | founder | Target reader segment (inherited from prior post if available) |
+| `--count` | No | 3 | Number of variations to generate (max 5) |
+
 **Key changes from `linkedin:variations`:**
 - Adds `--platform` to vary output style guidance per platform
 - Variations are ideation-level (different angles, hooks, frameworks) not platform-formatted posts
 - Can generate cross-platform variations when used with different `--platform` values
 - Remains ephemeral (no file output, no Notion) — unchanged from original
 
-**Execution flow:** Same as `linkedin:variations` but outputs content briefs instead of formatted posts. Each variation uses a different framework + hook formula + tone shift. Display comparison table at end.
+**Execution flow:** Same as `linkedin:variations` but outputs content briefs instead of formatted posts. Each variation uses a different framework + hook formula + tone shift. For each variation, change at least TWO of: hook style, framework, tone. Display comparison table at end.
 
 ### New Commands
 
@@ -421,7 +453,9 @@ Replace row #24:
 | 24 | Content Ideation | `ideate` | draft, from-doc, variations, research, outline, facts | WebSearch (research only) | — |
 ```
 
-No HQ DB dependency — ideation output is ephemeral or piped to `social:compose`.
+The total namespace count remains **33** — `ideate` replaces `linkedin` at the same row number. No HQ DB dependency — ideation output is ephemeral or piped to `social:compose`.
+
+No entries in the Namespace Dependencies section reference `linkedin` directly, so no dependency note changes are needed.
 
 ### Preflight Check
 
@@ -431,7 +465,18 @@ The `ideate` namespace has minimal external dependencies:
 |-----------|-------------|-------|
 | WebSearch | `research` only | Optional — if unavailable, research runs without web data and notes the limitation |
 
-All other commands (`draft`, `from-doc`, `variations`, `outline`, `facts`) require only the Read tool and have no external dependencies. Preflight should reflect this minimal footprint.
+All other commands (`draft`, `from-doc`, `variations`, `outline`, `facts`) require only the Read tool and have no external dependencies. All six commands still run the preflight step per convention (even if the check passes trivially with no dependencies to validate).
+
+Add to `_infrastructure/preflight/dependency-registry.json`:
+
+```json
+{
+  "ideate": {
+    "required": [],
+    "optional": ["websearch"]
+  }
+}
+```
 
 ## Development Plan
 
@@ -447,13 +492,13 @@ All other commands (`draft`, `from-doc`, `variations`, `outline`, `facts`) requi
 | Agent | Deliverables |
 |-------|-------------|
 | **Agent C — New Commands** | Create `commands/ideate/research.md`, `outline.md`, `facts.md` following universal command execution flow. |
-| **Agent D — Integration** | Update `CLAUDE.md` namespace table. Verify no other files reference old `linkedin` namespace paths. |
+| **Agent D — Integration** | Update `CLAUDE.md` namespace table. Update [10] spec (`docs/superpowers/specs/[10]-*.md`) to replace stale `linkedin:post`/`linkedin:from-doc`/`linkedin:variations` references with `ideate:*`. Update `_infrastructure/preflight/dependency-registry.json`. Verify no other files reference old `linkedin` namespace paths. |
 
 ### Wave 3 (sequential, after Wave 2)
 
 - Delete `commands/linkedin/` directory (3 files)
 - Delete `skills/linkedin/` directory (3 skills + 3 reference files)
-- Final verification: grep for `linkedin:post`, `linkedin:from-doc`, `linkedin:variations`, `skills/linkedin/` across the codebase
+- Final verification: grep for `linkedin:post`, `linkedin:from-doc`, `linkedin:variations`, `skills/linkedin/`, `commands/linkedin/` across the entire codebase including `docs/superpowers/specs/`, `CLAUDE.md`, and `_infrastructure/`
 
 ### Dependencies
 
@@ -475,7 +520,7 @@ ideate:from-doc doc.pdf → social:compose "content" → social:cross-post
 ideate:research "topic" → ideate:draft "angle" → social:compose → social:post
 ```
 
-No code changes needed in social commands — they already accept free-text content input.
+The user passes the **Content section** of the ideate output (the raw body text) as the `topic` argument to `social:compose` — not the full structured brief with metadata headers. `social:compose` treats its positional `topic` argument as a content seed and applies template techniques to it. The hook candidates and framework metadata from ideate output inform the user's choice but are not passed programmatically.
 
 ### With Template Engine ([15])
 
