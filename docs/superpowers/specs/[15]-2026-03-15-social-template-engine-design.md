@@ -594,6 +594,10 @@ All 11 existing social commands, 3 existing social skills, agent team pipeline, 
 - Verify compose → post pipeline works
 - Initialize empty `_performance.yaml`
 
+## Related Specs
+
+- **[16] LinkedIn Content Ideation Refactor** (stub): Refactors the `linkedin` namespace into a pure content ideation layer, removing publishing overlap with `social`. The target pipeline is: `linkedin` (ideation) → `social:compose` (template composition) → `social:post` (publishing). Spec [16] depends on [15] being implemented first.
+
 ## Open Questions
 
 None — all design decisions resolved during brainstorming.
