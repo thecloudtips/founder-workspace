@@ -3,10 +3,11 @@
   "checkpoint_id": "f641f3c50284",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 3,
+  "checkpoints_count": 5,
   "files_touched": [
     "docs/superpowers/plans/[17]-2026-03-17-init-plugin-install.md",
     "docs/superpowers/specs/[17]-2026-03-17-init-plugin-install-design.md",
+    "docs/superpowers/specs/[18]-2026-03-17-init-runtime-wiring-design.md",
     "founder-os-dist/bin/founder-os.js",
     "founder-os-dist/lib/manifest.js",
     "founder-os-dist/lib/plugins.js",
@@ -20,13 +21,20 @@
       "context": "/f6/41f3c50284/0/context.md",
       "content_hash": "/f6/41f3c50284/0/content_hash.txt",
       "prompt": "/f6/41f3c50284/0/prompt.txt"
+    },
+    {
+      "metadata": "/f6/41f3c50284/1/metadata.json",
+      "transcript": "/f6/41f3c50284/1/full.jsonl",
+      "context": "/f6/41f3c50284/1/context.md",
+      "content_hash": "/f6/41f3c50284/1/content_hash.txt",
+      "prompt": "/f6/41f3c50284/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 852,
-    "cache_creation_tokens": 164415,
-    "cache_read_tokens": 6712495,
-    "output_tokens": 25560,
-    "api_call_count": 50
+    "input_tokens": 4349,
+    "cache_creation_tokens": 391230,
+    "cache_read_tokens": 10099453,
+    "output_tokens": 46504,
+    "api_call_count": 84
   }
 }

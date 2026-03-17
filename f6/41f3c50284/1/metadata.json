@@ -1,0 +1,30 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "f641f3c50284",
+  "session_id": "7147b04b-3390-46c3-b766-eea0508aa11b",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-17T21:04:04.553262Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "docs/superpowers/specs/[18]-2026-03-17-init-runtime-wiring-design.md"
+  ],
+  "agent": "Claude Code",
+  "transcript_identifier_at_start": "dd49d71e-5f73-4f3f-9862-16c8d4d632f1",
+  "token_usage": {
+    "input_tokens": 3497,
+    "cache_creation_tokens": 226815,
+    "cache_read_tokens": 3386958,
+    "output_tokens": 20944,
+    "api_call_count": 34
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-03-17T21:04:04.458215Z",
+    "agent_lines": 479,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 479,
+    "agent_percentage": 100
+  }
+}
