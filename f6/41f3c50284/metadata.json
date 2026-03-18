@@ -635,7 +635,6 @@
     "development/skills/workflow/workflow-scheduling/references/cron-syntax.md",
     "development/skills/workflow/workflow-scheduling/references/os-cron-generation.md",
     "development/social/inbox-zero/blog/i-just-built-an-ai-email-assistant-that-actually-gets-inbox-zero.md",
-    "dist/.claude-flow/data/pending-insights.jsonl",
     "dist/CHANGELOG.md",
     "dist/LICENSE",
     "dist/README.md",
@@ -1114,7 +1113,6 @@
     "dist/template/.founderOS/infrastructure/gws-skills/gmail-write/SKILL.md",
     "dist/template/.founderOS/infrastructure/gws-skills/gws-common/SKILL.md",
     "dist/template/.founderOS/infrastructure/gws-skills/gws-migration-notes/SKILL.md",
-    "dist/template/.founderOS/infrastructure/hooks/hook-registry.json",
     "dist/template/.founderOS/infrastructure/humanize-content/SKILL.md",
     "dist/template/.founderOS/infrastructure/humanize-content/references/banned-vocabulary.md",
     "dist/template/.founderOS/infrastructure/humanize-content/references/linkedin-humanization.md",
@@ -1229,9 +1227,6 @@
     "dist/template/.founderOS/scripts/package.json",
     "dist/tests/helpers.sh",
     "dist/tests/test-claude-md-merge.sh",
-    "dist/tests/test-hook-registry.sh",
-    "dist/tests/test-hooks-merge.sh",
-    "dist/tests/test-init-e2e-hooks.sh",
     "dist/tests/test-init-fresh.sh",
     "dist/tests/test-init-update.sh",
     "dist/tests/test-settings-merge.sh",
@@ -1279,10 +1274,10 @@
     }
   ],
   "token_usage": {
-    "input_tokens": 923,
-    "cache_creation_tokens": 321008,
-    "cache_read_tokens": 15142404,
-    "output_tokens": 57601,
-    "api_call_count": 109
+    "input_tokens": 910,
+    "cache_creation_tokens": 308841,
+    "cache_read_tokens": 13085908,
+    "output_tokens": 53259,
+    "api_call_count": 99
   }
 }

@@ -123,3 +123,22 @@ after running and update on first claude start i ma getting this
      │ └ 0
      │   └ hooks: Expected array,...
 
+### Prompt 13
+
+still the same afterupgrade to 1.1.1
+
+file:/Users/lhalicki/coding_projects/founder-workspace/dist/founder-os-1.1.1.tgz
+Ok to proceed? (y) y
+
+  Founder OS v1.1.0 → v1.1.1
+
+  ✓ Refreshed .founderOS/ infrastructure
+  ✓ Updated runtime hooks
+  ✓ Updated 440 files
+
+  Done! See CHANGELOG for what's new.
+
+ lhalicki@Lukaszs-MacBook-Pro  ~/coding_projects/fos-ws  claude
+
+────────────────────────────────────────�...
+

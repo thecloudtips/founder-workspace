@@ -715,3 +715,48 @@ after running and update on first claude start i ma getting this
 
 
   Files with errors are skipped entirely, not just the invalid settings.
+
+---
+
+still the same afterupgrade to 1.1.1
+
+file:/Users/lhalicki/coding_projects/founder-workspace/dist/founder-os-1.1.1.tgz
+Ok to proceed? (y) y
+
+  Founder OS v1.1.0 → v1.1.1
+
+  ✓ Refreshed .founderOS/ infrastructure
+  ✓ Updated runtime hooks
+  ✓ Updated 440 files
+
+  Done! See CHANGELOG for what's new.
+
+ lhalicki@Lukaszs-MacBook-Pro  ~/coding_projects/fos-ws  claude
+
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  Settings Error
+
+  /Users/lhalicki/coding_projects/fos-ws/.claude/settings.json
+   └ hooks
+     ├ PostToolUse
+     │ └ 0
+     │   └ hooks: Expected array, but received undefined
+     ├ PreToolUse
+     │ └ 0
+     │   └ hooks: Expected array, but received undefined
+     ├ SessionStart
+     │ └ 0
+     │   └ hooks: Expected array, but received undefined
+     ├ Stop
+     │ └ 0
+     │   └ hooks: Expected array, but received undefined
+     └ UserPromptSubmit
+       └ 0
+         └ hooks: Expected array, but received undefined
+
+  Hooks use a matcher + hooks array. The matcher is a string: a tool name ("Bash"), pipe-separated list ("Edit|Write"), or empty to match all. Example: {"PostToolUse": [{"matcher": "Edit|Write", "hooks": [{"type": "command", "command":
+   "echo Done"}]}]}
+  Learn more: https://code.claude.com/docs/en/hooks
+
+
+  Files with errors are skipped entirely, not just the invalid settings.
