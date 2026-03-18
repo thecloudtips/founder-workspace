@@ -138,6 +138,13 @@ function update(targetDir, templateDir, packageVersion, force) {
   const settingsPath = path.join(claudeDir, 'settings.json');
   settingsJson.mergeSettingsJson(settingsPath);
 
+  // Merge hooks from registry
+  const registryPath = path.join(founderOsDir, 'infrastructure', 'hooks', 'hook-registry.json');
+  if (fs.existsSync(registryPath)) {
+    settingsJson.mergeHooksIntoSettingsJson(settingsPath, registryPath);
+    output.success('Updated runtime hooks');
+  }
+
   // 4. Write updated version and manifest
   mf.writeVersion(targetDir, packageVersion);
   mf.writeManifest(targetDir, newManifest);

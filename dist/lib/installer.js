@@ -105,6 +105,18 @@ function createEnvFiles(targetDir) {
   }
 }
 
+function setExecutableRecursive(dir) {
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      setExecutableRecursive(fullPath);
+    } else if (entry.name.endsWith('.mjs')) {
+      fs.chmodSync(fullPath, 0o755);
+    }
+  }
+}
+
 function install(targetDir, templateDir, packageVersion) {
   const founderOsDir = path.join(targetDir, '.founderOS');
   const claudeDir = path.join(targetDir, '.claude');
@@ -185,10 +197,50 @@ function install(targetDir, templateDir, packageVersion) {
   settingsJson.mergeSettingsJson(settingsPath);
   output.success('Generated .claude/settings.json');
 
-  // 6. Create .env, .env.example, .gitignore (skip if they already exist)
+  // 6. Hook Registration (Phase 2a)
+  const registryPath = path.join(founderOsDir, 'infrastructure', 'hooks', 'hook-registry.json');
+  if (fs.existsSync(registryPath)) {
+    const { existingHooksDetected } = settingsJson.mergeHooksIntoSettingsJson(settingsPath, registryPath);
+    if (existingHooksDetected) {
+      output.warn('Existing hooks detected in settings.json. founderOS hooks appended after them.');
+    }
+    // Set executable permissions on hook scripts
+    const hooksDir = path.join(founderOsDir, 'scripts', 'hooks');
+    if (fs.existsSync(hooksDir)) {
+      setExecutableRecursive(hooksDir);
+    }
+    output.success('Registered runtime hooks (5 events)');
+  }
+
+  // 7. DB Verification (Phase 2b)
+  const memoryDbPath = path.join(targetDir, '.memory', 'memory.db');
+  const memorySchemaPath = path.join(founderOsDir, 'infrastructure', 'memory', 'schema', 'memory-store.sql');
+  if (fs.existsSync(memorySchemaPath)) {
+    fs.mkdirSync(path.dirname(memoryDbPath), { recursive: true });
+    try {
+      require('child_process').execSync(`sqlite3 "${memoryDbPath}" < "${memorySchemaPath}"`, { stdio: 'pipe' });
+      output.success('Memory engine: ready');
+    } catch (err) {
+      output.warn('Memory DB init failed: ' + err.message);
+    }
+  }
+
+  const intelDbPath = path.join(founderOsDir, 'infrastructure', 'intelligence', '.data', 'intelligence.db');
+  const intelSchemaPath = path.join(founderOsDir, 'infrastructure', 'intelligence', 'hooks', 'schema', 'intelligence.sql');
+  if (fs.existsSync(intelSchemaPath)) {
+    fs.mkdirSync(path.dirname(intelDbPath), { recursive: true });
+    try {
+      require('child_process').execSync(`sqlite3 "${intelDbPath}" < "${intelSchemaPath}"`, { stdio: 'pipe' });
+      output.success('Intelligence engine: ready');
+    } catch (err) {
+      output.warn('Intelligence DB init failed: ' + err.message);
+    }
+  }
+
+  // 8. Create .env, .env.example, .gitignore (skip if they already exist)
   createEnvFiles(targetDir);
 
-  // 7. Write version and manifest
+  // 9. Write version and manifest
   manifest.writeVersion(targetDir, packageVersion);
   manifest.writeManifest(targetDir, mf);
 
