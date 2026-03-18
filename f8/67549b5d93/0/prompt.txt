@@ -1,0 +1,979 @@
+execute this ocs/superpowers/prompts/[24]-fos-documentation-site-plans.md
+
+---
+
+Base directory for this skill: /Users/lhalicki/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.2/skills/writing-plans
+
+# Writing Plans
+
+## Overview
+
+Write comprehensive implementation plans assuming the engineer has zero context for our codebase and questionable taste. Document everything they need to know: which files to touch for each task, code, testing, docs they might need to check, how to test it. Give them the whole plan as bite-sized tasks. DRY. YAGNI. TDD. Frequent commits.
+
+Assume they are a skilled developer, but know almost nothing about our toolset or problem domain. Assume they don't know good test design very well.
+
+**Announce at start:** "I'm using the writing-plans skill to create the implementation plan."
+
+**Context:** This should be run in a dedicated worktree (created by brainstorming skill).
+
+**Save plans to:** `docs/superpowers/plans/YYYY-MM-DD-<feature-name>.md`
+- (User preferences for plan location override this default)
+
+## Scope Check
+
+If the spec covers multiple independent subsystems, it should have been broken into sub-project specs during brainstorming. If it wasn't, suggest breaking this into separate plans — one per subsystem. Each plan should produce working, testable software on its own.
+
+## File Structure
+
+Before defining tasks, map out which files will be created or modified and what each one is responsible for. This is where decomposition decisions get locked in.
+
+- Design units with clear boundaries and well-defined interfaces. Each file should have one clear responsibility.
+- You reason best about code you can hold in context at once, and your edits are more reliable when files are focused. Prefer smaller, focused files over large ones that do too much.
+- Files that change together should live together. Split by responsibility, not by technical layer.
+- In existing codebases, follow established patterns. If the codebase uses large files, don't unilaterally restructure - but if a file you're modifying has grown unwieldy, including a split in the plan is reasonable.
+
+This structure informs the task decomposition. Each task should produce self-contained changes that make sense independently.
+
+## Bite-Sized Task Granularity
+
+**Each step is one action (2-5 minutes):**
+- "Write the failing test" - step
+- "Run it to make sure it fails" - step
+- "Implement the minimal code to make the test pass" - step
+- "Run the tests and make sure they pass" - step
+- "Commit" - step
+
+## Plan Document Header
+
+**Every plan MUST start with this header:**
+
+```markdown
+# [Feature Name] Implementation Plan
+
+> **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** [One sentence describing what this builds]
+
+**Architecture:** [2-3 sentences about approach]
+
+**Tech Stack:** [Key technologies/libraries]
+
+---
+```
+
+## Task Structure
+
+````markdown
+### Task N: [Component Name]
+
+**Files:**
+- Create: `exact/path/to/file.py`
+- Modify: `exact/path/to/existing.py:123-145`
+- Test: `tests/exact/path/to/test.py`
+
+- [ ] **Step 1: Write the failing test**
+
+```python
+def test_specific_behavior():
+    result = function(input)
+    assert result == expected
+```
+
+- [ ] **Step 2: Run test to verify it fails**
+
+Run: `pytest tests/path/test.py::test_name -v`
+Expected: FAIL with "function not defined"
+
+- [ ] **Step 3: Write minimal implementation**
+
+```python
+def function(input):
+    return expected
+```
+
+- [ ] **Step 4: Run test to verify it passes**
+
+Run: `pytest tests/path/test.py::test_name -v`
+Expected: PASS
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add tests/path/test.py src/path/file.py
+git commit -m "feat: add specific feature"
+```
+````
+
+## Remember
+- Exact file paths always
+- Complete code in plan (not "add validation")
+- Exact commands with expected output
+- Reference relevant skills with @ syntax
+- DRY, YAGNI, TDD, frequent commits
+
+## Plan Review Loop
+
+After completing each chunk of the plan:
+
+1. Dispatch plan-document-reviewer subagent (see plan-document-reviewer-prompt.md) with precisely crafted review context — never your session history. This keeps the reviewer focused on the plan, not your thought process.
+   - Provide: chunk content, path to spec document
+2. If ❌ Issues Found:
+   - Fix the issues in the chunk
+   - Re-dispatch reviewer for that chunk
+   - Repeat until ✅ Approved
+3. If ✅ Approved: proceed to next chunk (or execution handoff if last chunk)
+
+**Chunk boundaries:** Use `## Chunk N: <name>` headings to delimit chunks. Each chunk should be ≤1000 lines and logically self-contained.
+
+**Review loop guidance:**
+- Same agent that wrote the plan fixes it (preserves context)
+- If loop exceeds 5 iterations, surface to human for guidance
+- Reviewers are advisory - explain disagreements if you believe feedback is incorrect
+
+## Execution Handoff
+
+After saving the plan:
+
+**"Plan complete and saved to `docs/superpowers/plans/<filename>.md`. Ready to execute?"**
+
+**Execution path depends on harness capabilities:**
+
+**If harness has subagents (Claude Code, etc.):**
+- **REQUIRED:** Use superpowers:subagent-driven-development
+- Do NOT offer a choice - subagent-driven is the standard approach
+- Fresh subagent per task + two-stage review
+
+**If harness does NOT have subagents:**
+- Execute plan in current session using superpowers:executing-plans
+- Batch execution with checkpoints for review
+
+---
+
+Base directory for this skill: /Users/lhalicki/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.2/skills/subagent-driven-development
+
+# Subagent-Driven Development
+
+Execute plan by dispatching fresh subagent per task, with two-stage review after each: spec compliance review first, then code quality review.
+
+**Why subagents:** You delegate tasks to specialized agents with isolated context. By precisely crafting their instructions and context, you ensure they stay focused and succeed at their task. They should never inherit your session's context or history — you construct exactly what they need. This also preserves your own context for coordination work.
+
+**Core principle:** Fresh subagent per task + two-stage review (spec then quality) = high quality, fast iteration
+
+## When to Use
+
+```dot
+digraph when_to_use {
+    "Have implementation plan?" [shape=diamond];
+    "Tasks mostly independent?" [shape=diamond];
+    "Stay in this session?" [shape=diamond];
+    "subagent-driven-development" [shape=box];
+    "executing-plans" [shape=box];
+    "Manual execution or brainstorm first" [shape=box];
+
+    "Have implementation plan?" -> "Tasks mostly independent?" [label="yes"];
+    "Have implementation plan?" -> "Manual execution or brainstorm first" [label="no"];
+    "Tasks mostly independent?" -> "Stay in this session?" [label="yes"];
+    "Tasks mostly independent?" -> "Manual execution or brainstorm first" [label="no - tightly coupled"];
+    "Stay in this session?" -> "subagent-driven-development" [label="yes"];
+    "Stay in this session?" -> "executing-plans" [label="no - parallel session"];
+}
+```
+
+**vs. Executing Plans (parallel session):**
+- Same session (no context switch)
+- Fresh subagent per task (no context pollution)
+- Two-stage review after each task: spec compliance first, then code quality
+- Faster iteration (no human-in-loop between tasks)
+
+## The Process
+
+```dot
+digraph process {
+    rankdir=TB;
+
+    subgraph cluster_per_task {
+        label="Per Task";
+        "Dispatch implementer subagent (./implementer-prompt.md)" [shape=box];
+        "Implementer subagent asks questions?" [shape=diamond];
+        "Answer questions, provide context" [shape=box];
+        "Implementer subagent implements, tests, commits, self-reviews" [shape=box];
+        "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)" [shape=box];
+        "Spec reviewer subagent confirms code matches spec?" [shape=diamond];
+        "Implementer subagent fixes spec gaps" [shape=box];
+        "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" [shape=box];
+        "Code quality reviewer subagent approves?" [shape=diamond];
+        "Implementer subagent fixes quality issues" [shape=box];
+        "Mark task complete in TodoWrite" [shape=box];
+    }
+
+    "Read plan, extract all tasks with full text, note context, create TodoWrite" [shape=box];
+    "More tasks remain?" [shape=diamond];
+    "Dispatch final code reviewer subagent for entire implementation" [shape=box];
+    "Use superpowers:finishing-a-development-branch" [shape=box style=filled fillcolor=lightgreen];
+
+    "Read plan, extract all tasks with full text, note context, create TodoWrite" -> "Dispatch implementer subagent (./implementer-prompt.md)";
+    "Dispatch implementer subagent (./implementer-prompt.md)" -> "Implementer subagent asks questions?";
+    "Implementer subagent asks questions?" -> "Answer questions, provide context" [label="yes"];
+    "Answer questions, provide context" -> "Dispatch implementer subagent (./implementer-prompt.md)";
+    "Implementer subagent asks questions?" -> "Implementer subagent implements, tests, commits, self-reviews" [label="no"];
+    "Implementer subagent implements, tests, commits, self-reviews" -> "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)";
+    "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)" -> "Spec reviewer subagent confirms code matches spec?";
+    "Spec reviewer subagent confirms code matches spec?" -> "Implementer subagent fixes spec gaps" [label="no"];
+    "Implementer subagent fixes spec gaps" -> "Dispatch spec reviewer subagent (./spec-reviewer-prompt.md)" [label="re-review"];
+    "Spec reviewer subagent confirms code matches spec?" -> "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" [label="yes"];
+    "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" -> "Code quality reviewer subagent approves?";
+    "Code quality reviewer subagent approves?" -> "Implementer subagent fixes quality issues" [label="no"];
+    "Implementer subagent fixes quality issues" -> "Dispatch code quality reviewer subagent (./code-quality-reviewer-prompt.md)" [label="re-review"];
+    "Code quality reviewer subagent approves?" -> "Mark task complete in TodoWrite" [label="yes"];
+    "Mark task complete in TodoWrite" -> "More tasks remain?";
+    "More tasks remain?" -> "Dispatch implementer subagent (./implementer-prompt.md)" [label="yes"];
+    "More tasks remain?" -> "Dispatch final code reviewer subagent for entire implementation" [label="no"];
+    "Dispatch final code reviewer subagent for entire implementation" -> "Use superpowers:finishing-a-development-branch";
+}
+```
+
+## Model Selection
+
+Use the least powerful model that can handle each role to conserve cost and increase speed.
+
+**Mechanical implementation tasks** (isolated functions, clear specs, 1-2 files): use a fast, cheap model. Most implementation tasks are mechanical when the plan is well-specified.
+
+**Integration and judgment tasks** (multi-file coordination, pattern matching, debugging): use a standard model.
+
+**Architecture, design, and review tasks**: use the most capable available model.
+
+**Task complexity signals:**
+- Touches 1-2 files with a complete spec → cheap model
+- Touches multiple files with integration concerns → standard model
+- Requires design judgment or broad codebase understanding → most capable model
+
+## Handling Implementer Status
+
+Implementer subagents report one of four statuses. Handle each appropriately:
+
+**DONE:** Proceed to spec compliance review.
+
+**DONE_WITH_CONCERNS:** The implementer completed the work but flagged doubts. Read the concerns before proceeding. If the concerns are about correctness or scope, address them before review. If they're observations (e.g., "this file is getting large"), note them and proceed to review.
+
+**NEEDS_CONTEXT:** The implementer needs information that wasn't provided. Provide the missing context and re-dispatch.
+
+**BLOCKED:** The implementer cannot complete the task. Assess the blocker:
+1. If it's a context problem, provide more context and re-dispatch with the same model
+2. If the task requires more reasoning, re-dispatch with a more capable model
+3. If the task is too large, break it into smaller pieces
+4. If the plan itself is wrong, escalate to the human
+
+**Never** ignore an escalation or force the same model to retry without changes. If the implementer said it's stuck, something needs to change.
+
+## Prompt Templates
+
+- `./implementer-prompt.md` - Dispatch implementer subagent
+- `./spec-reviewer-prompt.md` - Dispatch spec compliance reviewer subagent
+- `./code-quality-reviewer-prompt.md` - Dispatch code quality reviewer subagent
+
+## Example Workflow
+
+```
+You: I'm using Subagent-Driven Development to execute this plan.
+
+[Read plan file once: docs/superpowers/plans/feature-plan.md]
+[Extract all 5 tasks with full text and context]
+[Create TodoWrite with all tasks]
+
+Task 1: Hook installation script
+
+[Get Task 1 text and context (already extracted)]
+[Dispatch implementation subagent with full task text + context]
+
+Implementer: "Before I begin - should the hook be installed at user or system level?"
+
+You: "User level (~/.config/superpowers/hooks/)"
+
+Implementer: "Got it. Implementing now..."
+[Later] Implementer:
+  - Implemented install-hook command
+  - Added tests, 5/5 passing
+  - Self-review: Found I missed --force flag, added it
+  - Committed
+
+[Dispatch spec compliance reviewer]
+Spec reviewer: ✅ Spec compliant - all requirements met, nothing extra
+
+[Get git SHAs, dispatch code quality reviewer]
+Code reviewer: Strengths: Good test coverage, clean. Issues: None. Approved.
+
+[Mark Task 1 complete]
+
+Task 2: Recovery modes
+
+[Get Task 2 text and context (already extracted)]
+[Dispatch implementation subagent with full task text + context]
+
+Implementer: [No questions, proceeds]
+Implementer:
+  - Added verify/repair modes
+  - 8/8 tests passing
+  - Self-review: All good
+  - Committed
+
+[Dispatch spec compliance reviewer]
+Spec reviewer: ❌ Issues:
+  - Missing: Progress reporting (spec says "report every 100 items")
+  - Extra: Added --json flag (not requested)
+
+[Implementer fixes issues]
+Implementer: Removed --json flag, added progress reporting
+
+[Spec reviewer reviews again]
+Spec reviewer: ✅ Spec compliant now
+
+[Dispatch code quality reviewer]
+Code reviewer: Strengths: Solid. Issues (Important): Magic number (100)
+
+[Implementer fixes]
+Implementer: Extracted PROGRESS_INTERVAL constant
+
+[Code reviewer reviews again]
+Code reviewer: ✅ Approved
+
+[Mark Task 2 complete]
+
+...
+
+[After all tasks]
+[Dispatch final code-reviewer]
+Final reviewer: All requirements met, ready to merge
+
+Done!
+```
+
+## Advantages
+
+**vs. Manual execution:**
+- Subagents follow TDD naturally
+- Fresh context per task (no confusion)
+- Parallel-safe (subagents don't interfere)
+- Subagent can ask questions (before AND during work)
+
+**vs. Executing Plans:**
+- Same session (no handoff)
+- Continuous progress (no waiting)
+- Review checkpoints automatic
+
+**Efficiency gains:**
+- No file reading overhead (controller provides full text)
+- Controller curates exactly what context is needed
+- Subagent gets complete information upfront
+- Questions surfaced before work begins (not after)
+
+**Quality gates:**
+- Self-review catches issues before handoff
+- Two-stage review: spec compliance, then code quality
+- Review loops ensure fixes actually work
+- Spec compliance prevents over/under-building
+- Code quality ensures implementation is well-built
+
+**Cost:**
+- More subagent invocations (implementer + 2 reviewers per task)
+- Controller does more prep work (extracting all tasks upfront)
+- Review loops add iterations
+- But catches issues early (cheaper than debugging later)
+
+## Red Flags
+
+**Never:**
+- Start implementation on main/master branch without explicit user consent
+- Skip reviews (spec compliance OR code quality)
+- Proceed with unfixed issues
+- Dispatch multiple implementation subagents in parallel (conflicts)
+- Make subagent read plan file (provide full text instead)
+- Skip scene-setting context (subagent needs to understand where task fits)
+- Ignore subagent questions (answer before letting them proceed)
+- Accept "close enough" on spec compliance (spec reviewer found issues = not done)
+- Skip review loops (reviewer found issues = implementer fixes = review again)
+- Let implementer self-review replace actual review (both are needed)
+- **Start code quality review before spec compliance is ✅** (wrong order)
+- Move to next task while either review has open issues
+
+**If subagent asks questions:**
+- Answer clearly and completely
+- Provide additional context if needed
+- Don't rush them into implementation
+
+**If reviewer finds issues:**
+- Implementer (same subagent) fixes them
+- Reviewer reviews again
+- Repeat until approved
+- Don't skip the re-review
+
+**If subagent fails task:**
+- Dispatch fix subagent with specific instructions
+- Don't try to fix manually (context pollution)
+
+## Integration
+
+**Required workflow skills:**
+- **superpowers:using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
+- **superpowers:writing-plans** - Creates the plan this skill executes
+- **superpowers:requesting-code-review** - Code review template for reviewer subagents
+- **superpowers:finishing-a-development-branch** - Complete development after all tasks
+
+**Subagents should use:**
+- **superpowers:test-driven-development** - Subagents follow TDD for each task
+
+**Alternative workflow:**
+- **superpowers:executing-plans** - Use for parallel session instead of same-session execution
+
+---
+
+<task-notification>
+<task-id>a2e02872aa4bfd00e</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Write homepage landing page" completed</summary>
+<result>The homepage has been written to `/Users/lhalicki/coding_projects/founder-workspace/docs/site/landing/index.md`.
+
+**What was written:**
+
+All eight required sections are included:
+
+1. **Hero** -- Headline ("Your AI Chief of Staff"), subheadline, and `npx founder-os` install CTA
+2. **Problem statement** -- Four pain points: inbox overload, meeting context gaps, disconnected tools, no time for strategy (~140 words)
+3. **Four Pillars grid** -- Daily Work, Code Without Coding, Integrations, Meta & Growth, each with description and real command examples (e.g., `/founder-os:briefing:briefing`, `/founder-os:invoice:batch`, `/founder-os:crm:sync-email`, `/founder-os:savings:weekly`)
+4. **Numbers bar** -- 35 namespaces, 120+ commands, 10 agent teams, 6 integrations
+5. **How it works** -- Three-step flow: Install, Configure, Automate
+6. **Feature highlights** -- Six cards: Memory Engine, Intelligence Engine, Background Execution, Agent Teams, Scout Discovery, Workflow Automation
+7. **Use case teasers** -- Three before/after scenarios: Monday morning, client quarterly review, end-of-week wrap
+8. **CTA footer** -- Install command, setup commands, and link to Getting Started guide
+
+All command examples use real FOS command syntax sourced from the actual command files in `development/commands/`.</result>
+<usage><total_tokens>56061</total_tokens><tool_uses>13</tool_uses><duration_ms>97085</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a599093d28d6f4c1c</task-id>
+<tool-use-id>toolu_014FZuqMSPqoQWnHBrPXQE8j</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Write about page" completed</summary>
+<result>The about page has been written to `/Users/lhalicki/coding_projects/founder-workspace/docs/site/landing/about.md`.
+
+The page covers all five template sections:
+
+1. **NaluForge Mission** — Positions NaluForge as a builder of founder superpowers, explains the hat-wearing reality of founding, and introduces Founder OS as the 33-namespace plugin.
+
+2. **Open-Core Philosophy** — Free to use, data stays local (SQLite + Notion), extensible via Scout (`/founder-os:scout:find`, `/founder-os:scout:install`) and custom namespaces/workflows.
+
+3. **Technology Choices** — Claude Code (conversational AI-native interface), Notion (founders already use it, 22 interconnected HQ databases), SQLite (local-first, zero-config memory engine). All explained in terms of founder benefits, not implementation details.
+
+4. **The Builder Story** — Indie builder persona: a founder who automated their own painful workflows one namespace at a time, tested in a real business context, shipped 33 namespaces based on actual weekly needs.
+
+5. **What's Next** — All five roadmap items with 2-3 sentence descriptions pulled from the spec files: Obsidian integration (vault as storage backend, dual-sync), Remotion video (short-form content from Claude Code), Landing Page Builder (prompt-to-deployed static site via Railway), Meta Ads (campaign management with spend limits), Google Ads (Search/Display/YouTube/Performance Max with landing page sync).</result>
+<usage><total_tokens>51559</total_tokens><tool_uses>8</tool_uses><duration_ms>73299</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>ae858024764dcfffe</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Write how-it-works page" completed</summary>
+<result>The page has been written to `/Users/lhalicki/coding_projects/founder-workspace/docs/site/landing/how-it-works.md`.
+
+Here is a summary of what was created:
+
+**File:** `docs/site/landing/how-it-works.md`
+
+**Structure:** Five steps following the template exactly:
+
+1. **Install** -- Covers the `npx founder-os` command, what gets created (`.founderOS/`, `.claude/`, `.memory/`), and the 30-second setup experience
+2. **Configure** -- Three configuration tasks: `/founder-os:setup:notion-cli` for Notion API key setup, `/founder-os:setup:notion-hq` for creating the 22 HQ databases, and `gws auth login` for Google Workspace authentication
+3. **Use** -- Three real commands with scenarios: `/founder-os:inbox:triage` (with sample output and `--team` flag), `/founder-os:briefing:briefing`, and `/founder-os:prep:prep` (with the interactive meeting picker flow)
+4. **Learn** -- Explains the Memory Engine (SQLite + HNSW, confidence scoring, decay) and Intelligence Engine (hooks, pattern detection, approval workflow, self-healing) with concrete notification examples and user commands (`/founder-os:memory:show`, `/founder-os:intel:patterns`, etc.)
+5. **Extend** -- Scout discovery (`/founder-os:scout:find`, `/founder-os:scout:install`) and workflow automation (`/founder-os:workflow:create`, `/founder-os:workflow:run`, `/founder-os:workflow:schedule`) with a concrete morning-routine YAML example
+
+**Cross-references:** Links to `getting-started.md`, `use-cases.md`, and `../docs/commands/index.md` using relative markdown links.
+
+All command examples use real FOS command names sourced from the actual command files. The tone is professional but accessible, with concrete scenarios throughout.</result>
+<usage><total_tokens>79384</total_tokens><tool_uses>29</tool_uses><duration_ms>136565</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a7e4b2ec730d56f2d</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Write getting started page" completed</summary>
+<result>The getting started guide has been written to `/Users/lhalicki/coding_projects/founder-workspace/docs/site/landing/getting-started.md`.
+
+The page covers all five template sections:
+
+1. **Prerequisites** -- Claude Code, Node.js 18+, Notion, and Google Workspace with links and explanations of why each is needed.
+
+2. **Installation** -- Uses the real `npx founder-os@latest --init` command from `dist/package.json` and `dist/bin/founder-os.js`. Shows realistic terminal output based on what `lib/installer.js` actually creates (`.founderOS/` with subdirectories, `.claude/` with commands/skills/agents, `.env`, `.gitignore`).
+
+3. **First 5 Commands** -- `/inbox:triage`, `/morning:quick`, `/briefing:briefing`, `/setup:verify`, and `/report:generate --type=weekly`. Each includes the command, a one-sentence description, expected output detail, and a tip for power usage (like `--team` flags).
+
+4. **Configuration Deep Dive** -- Covers `.env` setup with Notion API key walkthrough, `gws auth login` for Google, MCP server JSON configuration, `/setup:notion-hq` for the 22-database workspace, and `/context:setup` for business personalization.
+
+5. **Troubleshooting** -- Addresses preflight blocked errors, Notion API key failures, Gmail auth issues, and hooks/commands not loading. Each includes symptoms and concrete fixes drawn from the actual preflight skill and install flow.</result>
+<usage><total_tokens>72097</total_tokens><tool_uses>25</tool_uses><duration_ms>123587</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>aada6c9f019e4c1de</task-id>
+<tool-use-id>toolu_01UnvkRTi9ptFJnnsN11NrEM</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Write use cases page" completed</summary>
+<result>The use cases page has been written to `/Users/lhalicki/coding_projects/founder-workspace/docs/site/landing/use-cases.md`.
+
+Here is a summary of what was created:
+
+**Four complete founder personas**, each with:
+
+1. **The Solopreneur** (Morning Routine on Autopilot) -- Uses `morning:quick`, `inbox:triage`, `briefing:review`, `review:review`, and `health:scan` to replace 45-60 minutes of daily tab-switching with a single command that prioritizes the day. Time saved: 4-5 hours/week.
+
+2. **The Agency Founder** (Client Lifecycle Management) -- Uses `client:load --team`, `sow:from-brief`, `invoice:batch --team`, `report:generate --team`, and `crm:sync-email` to automate CRM updates, SOW generation, invoice processing, and client reporting. Time saved: 6-8 hours/week.
+
+3. **The Consultant** (Engagement Workflow) -- Uses `prep:prep`, `proposal:create`, `contract:analyze`, `expense:report`, and `followup:check` to handle meeting preparation, proposal writing, contract risk assessment, expense reporting, and follow-up tracking. Time saved: 5-7 hours/week.
+
+4. **The SaaS Founder** (Growth and Strategy) -- Uses `compete:research`, `ideate:outline`, `newsletter:draft`, `learn:log`, and `goal:check` to manage competitive intelligence, content creation, goal tracking, and knowledge capture. Time saved: 4-6 hours/week.
+
+Every command example uses real FOS command syntax with realistic arguments. Each persona includes a description (50-75 words), a day-in-the-life scenario (150-200 words with 4-6 commands), a before/after comparison (75-100 words), and a table of key namespaces with links.</result>
+<usage><total_tokens>158998</total_tokens><tool_uses>37</tool_uses><duration_ms>167194</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a4f39b399d8b83920</task-id>
+<tool-use-id>toolu_01YGZ3gwjjptH6obKnxcSkKw</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Write memory engine deep dive" completed</summary>
+<result>The Memory Engine deep dive page has been written to `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/deep-dives/memory-engine.md`.
+
+The page covers all nine sections from the outline:
+
+1. **Overview** -- What the memory engine is and why it matters, framed around the value proposition for founders.
+2. **Architecture** -- SQLite + HNSW vector index at `.memory/memory.db`, WAL mode for concurrent access, local-first design.
+3. **The Memory Lifecycle** -- Four stages from observation through pattern detection, confirmation/promotion, and adaptation. Includes the five pattern detection rules with their trigger thresholds.
+4. **Confidence Scoring and Decay** -- Scoring mechanics (+15 per confirmation, 100 for taught memories), promotion thresholds (60 for confirmed, 80+3 confirmations for applied), decay at -5 per cycle after 30 days unused, auto-deletion below 10.
+5. **Cross-Namespace Injection** -- The three-query injection system (semantic, company-scoped, plugin-specific), capped at 5 memories, with how each category type guides plugin behavior.
+6. **User Commands** -- Full documentation of `/founder-os:memory:teach`, `/founder-os:memory:forget`, `/founder-os:memory:show`, and `/founder-os:memory:sync` with real syntax and examples.
+7. **Notion Sync** -- Bidirectional sync mechanics, three trigger modes (auto-push, auto-pull, manual), field-level conflict resolution table, and what users can do in Notion directly.
+8. **Schema Overview** -- Accessible descriptions of the three tables (memories, observations, adaptations) with column-level purpose explanations.
+9. **Tips and Patterns** -- Practical workflows for getting started, early teaching, periodic review, company scoping, trusting decay, and using Notion sync.
+
+All examples use real FOS command syntax. Content is self-contained and written for non-technical founders evaluating adoption.</result>
+<usage><total_tokens>88368</total_tokens><tool_uses>14</tool_uses><duration_ms>147235</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a4e7f04c9c6cbc078</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Write evals framework deep dive" completed</summary>
+<result>The page has been written to `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/deep-dives/evals-framework.md`.
+
+The content covers all six sections from the outline:
+
+1. **Overview** -- What evals are and why they matter, positioned around the automatic quality assurance angle.
+2. **Rubric-Based Scoring** -- Universal rubric with all six dimensions and weights, plus detailed walkthrough of three namespace overrides (prep, inbox, invoice) showing how the merge and re-normalization works.
+3. **The Eval Pipeline** -- Step-by-step through Tier 0 (telemetry), Tier 1 (format/schema checks), Tier 2 (sampled LLM critique), and EWMA score tracking with the regression threshold at 0.65.
+4. **How to Create Custom Rubrics** -- Three-step guide with the full JSON structure, a worked example for a `report` namespace, and guidelines for writing effective criteria.
+5. **Integration with Intelligence Engine** -- Maps eval tiers to the Observe/Judge/Distill/Consolidate/Apply learning cycle, health monitoring, and data retention policy.
+6. **Example** -- Full walkthrough of a `/founder-os:briefing:briefing` execution through all pipeline stages, including the EWMA calculation and a regression scenario showing how a custom rubric would catch the problem earlier.
+
+All examples use real FOS commands, real rubric configurations from the source files, and actual field names from the codebase. The cross-reference to the intelligence engine deep dive uses a relative markdown link.</result>
+<usage><total_tokens>65431</total_tokens><tool_uses>21</tool_uses><duration_ms>151253</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a47dfa7f874999298</task-id>
+<tool-use-id>toolu_01EJwCZruY5y4ipZouPUmPyZ</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Write hooks system deep dive" completed</summary>
+<result>The hooks system deep dive page has been written to `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/deep-dives/hooks-system.md`.
+
+**What the page covers:**
+
+1. **Overview** -- What hooks are and why they matter, written for founders not developers
+2. **The 4 Lifecycle Hooks** -- Summary table with event name, trigger, FOS behavior, and timeout for SessionStart, UserPromptSubmit, PostToolUse, and Stop
+3. **Kill Switch** -- `FOUNDER_OS_HOOKS=0` with usage examples for single-session and persistent disabling
+4. **How Hooks Are Registered** -- Full `.claude/settings.json` structure showing matcher-based groups, permissions, and the non-destructive merge behavior
+5. **The Hook Registry** -- Explains `hook-registry.json` as the source of truth, its versioned format, and why users should not edit it directly
+6. **Each Hook in Detail** -- Walks through all four hook scripts with concrete explanations of what they do:
+   - SessionStart: DB init (memory + intelligence), dispatcher rules injection, business context loading, intelligence pattern loading, daily memory decay
+   - UserPromptSubmit: Command detection, frontmatter parsing, MCP and file dependency validation, READY/DEGRADED/BLOCKED outcomes
+   - PostToolUse: Skill-only matcher scoping, event parsing, namespace extraction, intelligence event logging
+   - Stop: Temp file cleanup (session state, exec artifacts, decay marker), session-end event logging
+7. **Extending with Custom Hooks** -- Two concrete examples (SessionStart context injection, PostToolUse Bash logging) with tips for writing custom hooks
+8. **Troubleshooting** -- Seven specific issues with diagnostic steps and fixes
+9. **Related Pages** -- Cross-references to architecture, intelligence engine, memory engine, and getting started pages
+
+All examples use real FOS commands and file paths from the actual codebase. The content is derived directly from the source files in `dist/template/.founderOS/scripts/hooks/` and `dist/lib/settings-json.js`.</result>
+<usage><total_tokens>69306</total_tokens><tool_uses>20</tool_uses><duration_ms>152835</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a1443694c094c69c4</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Write dispatcher deep dive" completed</summary>
+<result>The dispatcher deep-dive page has been written to `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/deep-dives/dispatcher.md`.
+
+The page covers all eight sections from the outline:
+
+1. **Overview** -- Explains the dispatcher's purpose: separating the conversational interface from the execution engine to keep the main session fast.
+2. **Background vs Foreground Execution** -- Details both modes, the 92/3 split, and why interactive wizards require foreground.
+3. **SessionStart Hook** -- How dispatcher rules are injected automatically at session start.
+4. **Command Frontmatter** -- `execution-mode` and `result-format` fields with value tables and behavioral descriptions.
+5. **UserPromptSubmit Hook / Preflight** -- The three-outcome preflight system (ready/degraded/blocked) with concrete examples of blocked and degraded output.
+6. **The Dispatch Flow** -- Full 8-step walkthrough: parse, override check, preflight, branch, pre-fetch context, spawn subagent, confirm, receive result. Includes a parallel dispatch subsection.
+7. **User Override Flags** -- `--foreground` and `--background` flags with precedence rules.
+8. **Tips and Patterns** -- Parallel morning stack, when to use foreground, partial vs error results, token budget breakdown, agent teams, and scheduling interaction.
+
+All examples use real FOS commands (`/founder-os:inbox:triage`, `/founder-os:briefing:briefing`, etc.) and cross-reference related pages using relative markdown links.</result>
+<usage><total_tokens>67465</total_tokens><tool_uses>20</tool_uses><duration_ms>166195</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>abe5b338ee643b776</task-id>
+<tool-use-id>toolu_01NxF9f7SaeWQEurvaahfMQ3</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Write intelligence engine deep dive" completed</summary>
+<result>The Intelligence Engine deep dive page has been written to `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/deep-dives/intelligence-engine.md`.
+
+The page covers all nine sections from the outline:
+
+1. **Overview** — What the engine is, why it matters, and that it activates automatically
+2. **Architecture** — Four modules (hooks, learning, self-healing, routing), SQLite database location, relationship to Memory Engine
+3. **Pattern Detection** — The six-stage observe-retrieve-judge-distill-consolidate-apply cycle, plus the three learning tiers (taste, workflow, autonomy)
+4. **Approval Workflow** — Full pattern lifecycle (candidate, active, approved, rejected), confidence formula with double-weighted rejections, how confirmation and rejection work in practice
+5. **Auto-Adaptations** — What happens at each tier when patterns reach threshold: taste injection with notifications, workflow suggest vs. auto-trigger, autonomy escalation ladder with global cap
+6. **The Intelligence Database** — High-level schema for all four tables (events, patterns, healing_patterns, config) with column descriptions
+7. **PostToolUse Hook** — How observations are captured at pre-command, during execution, and post-command; event types and retention policy
+8. **User Commands** — All seven commands documented with real `/founder-os:intel:*` syntax, arguments, example invocations, and output descriptions (status, patterns, approve, config, reset, healing, health)
+9. **Tips and Patterns** — Practical guidance: start normally, check weekly, approve good patterns, reject bad ones, configure comfort level, reset when business changes, monitor healing
+
+Cross-references the [Memory Engine](./memory-engine.md) deep dive page. All examples use real FOS command syntax.</result>
+<usage><total_tokens>82391</total_tokens><tool_uses>36</tool_uses><duration_ms>198889</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a069a54f84ba6e350</task-id>
+<tool-use-id>toolu_01KEra61Nq4r1kmYKfLVFUvY</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Write C2 command refs (followup, meeting, newsletter)" completed</summary>
+<result>All three command reference pages have been written. Here is a summary of what was created:
+
+**Files created:**
+
+1. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/commands/followup.md` -- Covers all 3 commands: `check`, `nudge`, `remind`. Documents the full follow-up lifecycle from scanning sent mail through drafting nudges and setting calendar reminders. Includes priority scoring, escalation levels, promise detection, and the Gmail/Calendar/Notion integration points.
+
+2. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/commands/meeting.md` -- Covers both commands: `analyze` and `intel`. Documents the lightweight analysis path (paste or file) and the full pipeline (source gathering, normalization, email enrichment, analysis, transcript archival, Notion storage). Includes supported transcript formats (Fireflies, Otter, Gemini, SRT, VTT, generic), the four extraction pipelines, and cross-plugin compatibility with the Follow-Up Tracker.
+
+3. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/commands/newsletter.md` -- Covers all 4 commands: `research`, `outline`, `draft`, `newsletter`. Documents both the step-by-step workflow and the all-in-one pipeline. Includes multi-source research (web, GitHub, Reddit, Quora), relevance/recency scoring, founder voice characteristics, Substack-compatible formatting, and the tone presets.
+
+Each page follows the provided template with Overview, Required Tools table, individual command sections (with usage, example scenario, output description, and flags), Tips & Patterns, and Related Namespaces.</result>
+<usage><total_tokens>152376</total_tokens><tool_uses>32</tool_uses><duration_ms>184495</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a9b764955767707d5</task-id>
+<tool-use-id>toolu_015zyavqxMC1somE1WCiScMa</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Write C4 command refs (sow, compete, expense)" completed</summary>
+<result>All three command reference pages have been written. Here is a summary of what was created:
+
+**Files created:**
+
+- `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/commands/sow.md` — SOW Generator reference covering `generate` and `from-brief` commands, the 6-agent team pipeline (3 scope agents, risk agent, pricing agent, SOW lead), all flags, and cross-references to invoice/contract/proposal namespaces.
+
+- `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/commands/compete.md` — Competitive Intel reference covering `research` (single-competitor deep dive across 5 dimensions) and `matrix` (multi-competitor 7-dimension comparison), the `--your-product` self-comparison feature, and cross-references to intel namespace.
+
+- `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/commands/expense.md` — Expense Report reference covering `summary` (ephemeral chat-only quick check) and `report` (full 7-section Markdown report with trend analysis), the 14-category taxonomy table, tax deductibility rules, and cross-references to invoice/contract/sow namespaces.
+
+Each page follows the provided template structure: one-line description, overview (2-3 paragraphs), required tools table, individual command sections with usage/example scenario/output description/flags, tips and patterns, and related namespaces with cross-references. All command actions from the source material are represented. The tone matches the existing site pages -- professional, outcome-focused, with concrete examples.</result>
+<usage><total_tokens>159689</total_tokens><tool_uses>38</tool_uses><duration_ms>198987</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a59822049358828f1</task-id>
+<tool-use-id>toolu_014X54yfi1cq4qGqpkxVBAiM</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Write C1 command refs (inbox, briefing, prep, actions, review)" completed</summary>
+<result>All 5 command reference pages have been written. Here is a summary of what was created:
+
+**Files created:**
+
+1. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/commands/inbox.md` -- Covers 2 commands: `triage` (with `--team`, `--hours`, `--max` flags) and `drafts-approved`
+2. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/commands/briefing.md` -- Covers 2 commands: `briefing` (with `--team`, `--hours`, `--date`, `--schedule`, `--persistent` flags) and `review` (with `--date` flag)
+3. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/commands/prep.md` -- Covers 2 commands: `prep` (with `--team`, `--hours`, `--output` flags) and `today` (with `--team`, `--hours`, `--skip-internal`, `--yes` flags)
+4. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/commands/actions.md` -- Covers 2 commands: `extract` (text input) and `extract-file` (file path input)
+5. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/commands/review.md` -- Covers 1 command: `review` (with `--date`, `--output`, `--schedule`, `--persistent` flags)
+
+**Every command action found in the source directories is documented** (9 total across 5 namespaces). Each page follows the template structure with: overview, required tools table, command entries with usage/example scenario/output description/flags, tips and patterns section, and cross-references to the other Daily Work pillar namespaces. All examples use real FOS command syntax, reference the correct Notion HQ databases and Type values, and describe the agent team architectures (pipeline for inbox, parallel-gathering for briefing and prep).</result>
+<usage><total_tokens>95264</total_tokens><tool_uses>34</tool_uses><duration_ms>229948</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a8d7b5b225adb37d8</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Write C3 command refs (report, health, invoice, proposal, contract)" completed</summary>
+<result>All five command reference pages have been written. Here is a summary of what was created:
+
+**Files created:**
+
+1. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/commands/report.md` -- Covers `generate` and `from-template` commands, the 5-agent pipeline, supported data sources, and three report templates.
+
+2. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/commands/health.md` -- Covers `scan` and `report` commands, the five health metrics with weights and data sources, eight risk flags, RAG classification tiers, and scheduling support.
+
+3. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/commands/invoice.md` -- Covers `process` and `batch` commands, the 5-agent pipeline, the 14-category expense taxonomy with budget codes and tax deductibility, and batch concurrency.
+
+4. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/commands/proposal.md` -- Covers `create` and `from-brief` commands, the 7-section proposal structure, three-tier pricing philosophy, CRM context enrichment, and SOW brief handoff.
+
+5. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/commands/contract.md` -- Covers `analyze` and `compare` commands, seven key term categories, RAG risk classification with examples, contract type detection, and custom standards support.
+
+**Cross-references established:**
+- report <-> health (data analysis pipeline, health data in reports)
+- invoice <-> proposal <-> contract (financial lifecycle: proposal terms -> contract formalization -> invoice processing)
+- health <-> invoice (Payment Status metric reads from Finance DB)
+- health <-> report (health data feeds business reports)
+- All five pages reference each other where workflows connect.</result>
+<usage><total_tokens>173799</total_tokens><tool_uses>52</tool_uses><duration_ms>253987</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a831691485feda3d2</task-id>
+<tool-use-id>toolu_0171M2ZV2Cy91PHZkxj7R1MS</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Write C5 command refs (notion, drive, slack, client, crm)" completed</summary>
+<result>All five command reference pages have been created. Here is a summary of what was written:
+
+**Files created:**
+
+1. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/commands/notion.md` -- Covers 4 commands: `query`, `create`, `update`, `template`. Includes the 5 pre-built template catalog and cross-references to Drive, Slack, Client, and CRM.
+
+2. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/commands/drive.md` -- Covers 4 commands: `search`, `summarize`, `ask`, `organize`. Details the relevance scoring system (0-100), freshness tiers, and the recommend-only safety constraint on organize.
+
+3. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/commands/slack.md` -- Covers 2 commands: `catch-up`, `digest`. Explains the difference between the lightweight personal scan (80% fewer API calls) and the comprehensive team-level digest with noise filtering and priority tiers.
+
+4. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/commands/client.md` -- Covers 2 commands: `load`, `brief`. Includes the 6-agent team pipeline table (CRM Agent, Email Agent, Docs Agent, Calendar Agent, Notes Agent, Context Lead) and explains caching behavior.
+
+5. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/commands/crm.md` -- Covers 3 commands: `context`, `sync-meeting`, `sync-email`. Details the 5-step progressive matching algorithm, batch vs. single mode, dry-run support, and idempotent writes.
+
+**Cross-references established:**
+- Notion, Drive, and Slack all reference each other (integrations pillar)
+- Client and CRM reference each other (the CRM sync populates data that Client Context reads)
+- All five pages reference relevant related namespaces in the Related Namespaces section</result>
+<usage><total_tokens>124456</total_tokens><tool_uses>44</tool_uses><duration_ms>257205</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a23ec0d56fdb436ca</task-id>
+<tool-use-id>toolu_01Hu5RK2MLQg56MgxyunzRUZ</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Write C6 command refs (morning, kb, ideate, social)" completed</summary>
+<result>All four command reference pages have been created. Here is a summary of what was written:
+
+**Files created:**
+
+1. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/commands/morning.md` -- 2 commands (`sync`, `quick`), covers the 5-source gathering pipeline, priority scoring system, Notion briefing storage, and graceful degradation. Cross-references inbox and briefing namespaces.
+
+2. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/commands/kb.md` -- 3 commands (`ask`, `find`, `index`), covers multi-source search across Notion and Drive, 9-type content classification, confidence ratings with citation system, freshness tracking, and query logging. Cross-references ideate namespace.
+
+3. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/commands/ideate.md` -- 6 commands (`outline`, `draft`, `variations`, `from-doc`, `research`, `facts`), covers the full content ideation pipeline with 7 frameworks, 4 audience segments, founder voice calibration, hook creation formulas, and platform-aware content generation. Cross-references social and kb namespaces.
+
+4. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/commands/social.md` -- 14 commands (`post`, `compose`, `cross-post`, `draft`, `schedule`, `queue`, `status`, `reply`, `analytics`, `connect`, `profiles`, `webhooks`, `ab-test`, `templates`), covers the Late.dev-powered publishing engine, 80+ template library, 5-agent pipeline, A/B testing, and the full publish lifecycle. Cross-references ideate and newsletter namespaces.
+
+All pages follow the established template from `inbox.md` -- same structure (overview, required tools table, per-command sections with usage/example/flags, tips & patterns, related namespaces), same professional-but-warm tone, and concrete example scenarios throughout.</result>
+<usage><total_tokens>174800</total_tokens><tool_uses>54</tool_uses><duration_ms>305235</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>afe1b3c6a286af1d6</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Write C7 command refs (savings, prompt, workflow, workflow-doc, learn, goal, memory, intel, scout, setup)" completed</summary>
+<result>All 46 command actions across all 10 namespaces are documented. Here is a summary of what was created:
+
+**10 command reference pages written to `docs/site/docs/commands/`:**
+
+| Page | Path | Commands Documented |
+|------|------|-------------------|
+| Savings | `/docs/site/docs/commands/savings.md` | `quick`, `weekly`, `monthly-roi`, `configure` |
+| Prompt Library | `/docs/site/docs/commands/prompt.md` | `add`, `get`, `list`, `optimize`, `share` |
+| Workflow | `/docs/site/docs/commands/workflow.md` | `create`, `edit`, `list`, `run`, `schedule`, `status` |
+| Workflow Doc | `/docs/site/docs/commands/workflow-doc.md` | `document`, `diagram` |
+| Learn | `/docs/site/docs/commands/learn.md` | `log`, `search`, `weekly` |
+| Goal | `/docs/site/docs/commands/goal.md` | `create`, `update`, `check`, `close`, `report` |
+| Memory | `/docs/site/docs/commands/memory.md` | `teach`, `show`, `forget`, `sync` |
+| Intel | `/docs/site/docs/commands/intel.md` | `status`, `patterns`, `approve`, `healing`, `health`, `config`, `reset` |
+| Scout | `/docs/site/docs/commands/scout.md` | `find`, `install`, `catalog`, `review`, `promote`, `remove`, `sources` |
+| Setup | `/docs/site/docs/commands/setup.md` | `notion-cli`, `notion-hq`, `verify` |
+
+**Coverage:** All 46 command actions from the source material are present. Each page follows the template structure (Overview, Required Tools, Commands with usage/example/flags, Tips & Patterns, Related Namespaces). Cross-references are included: workflow<->workflow-doc, memory<->intel, scout<->setup, learn<->goal.</result>
+<usage><total_tokens>213453</total_tokens><tool_uses>66</tool_uses><duration_ms>488311</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a369097689c2ae8a8</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Write D2 agent team pages (invoice, sow, intel, scout, social)" completed</summary>
+<result>All 5 agent team pages have been written. Here is a summary of what was created:
+
+**Files created:**
+
+1. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/agents/invoice-team.md` -- Pipeline-batch pattern. 5 agents (Extraction, Validation, Categorization, Approval, Integration) processing invoices through OCR, math checks, expense taxonomy, anomaly detection, and Notion recording. Up to 5 invoices processed concurrently.
+
+2. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/agents/sow-team.md` -- Competing-hypotheses pattern. 6 agents (Scope A/B/C, Risk, Pricing, SOW Lead) producing three-option client-ready SOW documents. Phase 1 runs scope agents in parallel, Phase 2 runs risk+pricing in parallel, Phase 3 synthesizes into a scored, named-package document.
+
+3. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/agents/intel-team.md` -- Background evaluator pattern. 1 agent (Eval Judge) running asynchronously on command outputs. This team is unique -- no `--team` flag, no multi-agent pipeline. The Eval Judge is spawned by post-task hooks to score outputs against 6-dimension Boolean rubrics (completeness, accuracy, tone, actionability, format, hallucination).
+
+4. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/agents/scout-team.md` -- Parallel-gathering pattern. 4 agents (Skills Researcher, MCP Researcher, GitHub Researcher, Synthesizer) searching across source tiers simultaneously. Activated via `--deep` flag. Uses a 5-factor scoring rubric for ranking results.
+
+5. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/agents/social-team.md` -- Pipeline pattern. 5 agents (Content Adapter, Preview, Media Handler, Publisher, Monitor) for multi-platform publishing with a preview approval gate. Built on Late.dev API with partial failure recovery and Notion tracking.
+
+**Notes:**
+- The intel team has no `config.json` and only one agent (eval-judge), so I adapted the template to reflect its unique background-evaluator pattern instead of forcing the `--team` flag structure.
+- Every agent from the source material appears in the team tables with accurate role descriptions drawn from the agent definition files.
+- All pages link to their corresponding command reference pages.</result>
+<usage><total_tokens>107199</total_tokens><tool_uses>39</tool_uses><duration_ms>200723</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a03bd53bb533f2794</task-id>
+<tool-use-id>toolu_01PhBxMDiqTdBaxmajBunBqB</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Write D1 agent team pages (inbox, briefing, prep, client, report)" completed</summary>
+<result>All 5 agent team pages have been written. Here is a summary of what was created:
+
+**Files created:**
+
+1. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/agents/inbox-team.md` -- Pipeline pattern, 4 agents (triage-agent, action-agent, response-agent, archive-agent), sequential email processing from categorization through archive recommendations.
+
+2. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/agents/briefing-team.md` -- Parallel gathering pattern, 5 agents (calendar-agent, gmail-agent, notion-agent, slack-agent, briefing-lead), simultaneous data collection from 4 sources merged into a daily briefing.
+
+3. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/agents/prep-team.md` -- Parallel gathering pattern, 5 agents (calendar-agent, gmail-agent, notion-agent, drive-agent, prep-lead), meeting preparation dossier with framework-based talking points.
+
+4. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/agents/client-team.md` -- Parallel gathering pattern, 6 agents (crm-agent, email-agent, calendar-agent, docs-agent, notes-agent, context-lead), comprehensive client dossier with health scoring and CRM enrichment writeback.
+
+5. `/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/agents/report-team.md` -- Pipeline pattern, 5 agents (research-agent, analysis-agent, writing-agent, formatting-agent, qa-agent), sequential data-to-report pipeline with statistical analysis, Mermaid charts, and QA validation.
+
+Every agent defined in the source `config.json` and `.md` files is represented in the corresponding team table. The data flow diagrams reflect the actual coordination patterns (pipeline for inbox and report; parallel-gathering with lead synthesis for briefing, prep, and client). Each page follows the requested template structure with Overview, Team table, Data Flow, When to Use --team guidance, step-by-step Example, and Related links.</result>
+<usage><total_tokens>138977</total_tokens><tool_uses>38</tool_uses><duration_ms>230754</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>a581e4d828f2669ef</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Write D3 extending pages (custom-namespaces, workflows, scout)" completed</summary>
+<result>All three extending guide pages have been created:
+
+**`docs/site/docs/extending/custom-namespaces.md`** -- Covers the full anatomy of a namespace: directory structure for commands/skills/agents, command file format with real YAML frontmatter from `inbox/triage.md`, SKILL.md format with real frontmatter from `email-triage`, agent team setup with the real `config.json` from inbox and all four team patterns, conventions (Type column, HQ DB discovery sequence, `${CLAUDE_PLUGIN_ROOT}` portability, graceful degradation), and a seven-point testing checklist.
+
+**`docs/site/docs/extending/workflows.md`** -- Covers the complete YAML schema (workflow, schedule, defaults, steps blocks with all fields), creating workflows with `/founder-os:workflow:create` (interactive and template modes), running with `/founder-os:workflow:run` (dry-run, resume from failure, output control), scheduling with `/founder-os:workflow:schedule` (cron, natural language, session vs. persistent, listing and disabling), documenting with `/founder-os:workflow-doc:document` (four-phase SOP generation with Mermaid diagrams), and a complete morning automation example with annotated YAML showing DAG resolution and parallel batches.
+
+**`docs/site/docs/extending/scout.md`** -- Covers the four-stage discovery pipeline (find, install, review, promote), source management with the `sources` command, catalog browsing, tool removal, and a full end-to-end example walking through finding a PDF parser, installing it, testing it, reviewing security, promoting it to the `report` namespace, and using it as a native command. Includes the six-point security checklist, verdict system (GREEN/YELLOW/RED), and command reference table.</result>
+<usage><total_tokens>107811</total_tokens><tool_uses>32</tool_uses><duration_ms>265110</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output
+
+---
+
+<task-notification>
+<task-id>abc9a437fcab4ac9a</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>REDACTED.output</output-file>
+<status>completed</status>
+<summary>Agent "Write D4 index pages (docs home, commands index, agents index, installation)" completed</summary>
+<result>All 4 index/overview pages have been created:
+
+1. **`/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/index.md`** -- Documentation home with navigation sections for Getting Started, Commands, Agents, Deep Dives, Extending, and Installation. Includes "where to start" guidance based on reader intent.
+
+2. **`/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/commands/index.md`** -- Command reference overview with the four-pillar framework explained, a table listing all 35 namespaces with linked names, one-line descriptions, and pillar categories. Includes guidance on how to read command pages and a common flags reference.
+
+3. **`/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/agents/index.md`** -- Agent teams overview covering the 4 orchestration patterns (Pipeline, Parallel Gathering, Competing Hypotheses, Background Evaluator), a table of all 10 teams with linked names, pattern type, agent count, and descriptions. Includes practical guidance on when to use `--team` vs. default mode.
+
+4. **`/Users/lhalicki/coding_projects/founder-workspace/docs/site/docs/installation.md`** -- Detailed installation guide covering prerequisites, step-by-step installation with `npx founder-os@latest --init`, directory structure explanation, configuration (Notion API key, Notion HQ databases, Google Workspace auth, business context), verification steps, upgrading, and uninstalling.
+
+All cross-references use relative links pointing to the actual files that exist in the `docs/site/` directory. Every command namespace and agent team in the tables links to its corresponding page.</result>
+<usage><total_tokens>94732</total_tokens><tool_uses>28</tool_uses><duration_ms>177093</duration_ms></usage>
+</task-notification>
+Full transcript available at: REDACTED.output

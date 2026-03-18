@@ -1,0 +1,47 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "f867549b5d93",
+  "session_id": "11703954-a893-4b3a-af5e-68c62d4eac18",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-18T23:58:21.780269Z",
+  "branch": "main",
+  "checkpoints_count": 11,
+  "files_touched": [
+    "docs/site/docs/commands/client.md",
+    "docs/site/docs/commands/compete.md",
+    "docs/site/docs/commands/crm.md",
+    "docs/site/docs/commands/drive.md",
+    "docs/site/docs/commands/goal.md",
+    "docs/site/docs/commands/health.md",
+    "docs/site/docs/commands/ideate.md",
+    "docs/site/docs/commands/invoice.md",
+    "docs/site/docs/commands/learn.md",
+    "docs/site/docs/commands/prep.md",
+    "docs/site/docs/commands/review.md",
+    "docs/site/docs/commands/savings.md",
+    "docs/site/docs/commands/sow.md",
+    "docs/site/docs/deep-dives/evals-framework.md",
+    "docs/site/docs/deep-dives/hooks-system.md",
+    "docs/site/docs/deep-dives/intelligence-engine.md",
+    "docs/superpowers/plans/[24a]-2026-03-19-fos-landing-pages.md",
+    "docs/superpowers/plans/[24b]-2026-03-19-fos-documentation.md"
+  ],
+  "agent": "Claude Code",
+  "transcript_identifier_at_start": "6230b3bc-a833-406f-adc6-221a024a1ae7",
+  "token_usage": {
+    "input_tokens": 113,
+    "cache_creation_tokens": 267772,
+    "cache_read_tokens": 8366710,
+    "output_tokens": 32506,
+    "api_call_count": 65
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-03-18T23:58:21.739779Z",
+    "agent_lines": 3651,
+    "human_added": 31212,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 34863,
+    "agent_percentage": 10.472420617847002
+  }
+}
