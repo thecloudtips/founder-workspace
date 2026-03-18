@@ -3,8 +3,27 @@
   "checkpoint_id": "f641f3c50284",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 5,
+  "checkpoints_count": 7,
   "files_touched": [
+    ".claude/worktrees/feat-18-runtime-hooks/development/_infrastructure/dispatcher/SKILL.md",
+    ".claude/worktrees/feat-18-runtime-hooks/dist/lib/installer.js",
+    ".claude/worktrees/feat-18-runtime-hooks/dist/lib/settings-json.js",
+    ".claude/worktrees/feat-18-runtime-hooks/dist/lib/uninstaller.js",
+    ".claude/worktrees/feat-18-runtime-hooks/dist/lib/updater.js",
+    ".claude/worktrees/feat-18-runtime-hooks/dist/template/.founderOS/infrastructure/dispatcher/SKILL.md",
+    ".claude/worktrees/feat-18-runtime-hooks/dist/template/.founderOS/scripts/hooks/post-tool.mjs",
+    ".claude/worktrees/feat-18-runtime-hooks/dist/template/.founderOS/scripts/hooks/pre-tool.mjs",
+    ".claude/worktrees/feat-18-runtime-hooks/dist/template/.founderOS/scripts/hooks/prompt-submit.mjs",
+    ".claude/worktrees/feat-18-runtime-hooks/dist/template/.founderOS/scripts/hooks/session-start.mjs",
+    ".claude/worktrees/feat-18-runtime-hooks/dist/template/.founderOS/scripts/hooks/stop.mjs",
+    ".claude/worktrees/feat-18-runtime-hooks/dist/tests/test-evals-exist.sh",
+    ".claude/worktrees/feat-18-runtime-hooks/dist/tests/test-hooks-merge.sh",
+    ".claude/worktrees/feat-18-runtime-hooks/dist/tests/test-init-e2e-hooks.sh",
+    ".claude/worktrees/feat-18-runtime-hooks/dist/tests/test-post-tool-hook.sh",
+    ".claude/worktrees/feat-18-runtime-hooks/dist/tests/test-pre-tool-hook.sh",
+    ".claude/worktrees/feat-18-runtime-hooks/dist/tests/test-prompt-submit-hook.sh",
+    ".claude/worktrees/feat-18-runtime-hooks/dist/tests/test-session-start-hook.sh",
+    ".claude/worktrees/feat-18-runtime-hooks/dist/tests/test-stop-hook.sh",
     ".gitignore",
     "CLAUDE.md",
     "development/AGENTS.md",
@@ -1264,13 +1283,20 @@
       "context": "/f6/41f3c50284/2/context.md",
       "content_hash": "/f6/41f3c50284/2/content_hash.txt",
       "prompt": "/f6/41f3c50284/2/prompt.txt"
+    },
+    {
+      "metadata": "/f6/41f3c50284/3/metadata.json",
+      "transcript": "/f6/41f3c50284/3/full.jsonl",
+      "context": "/f6/41f3c50284/3/context.md",
+      "content_hash": "/f6/41f3c50284/3/content_hash.txt",
+      "prompt": "/f6/41f3c50284/3/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 898,
-    "cache_creation_tokens": 301828,
-    "cache_read_tokens": 10793594,
-    "output_tokens": 50456,
-    "api_call_count": 89
+    "input_tokens": 1028,
+    "cache_creation_tokens": 660632,
+    "cache_read_tokens": 29291999,
+    "output_tokens": 89079,
+    "api_call_count": 206
   }
 }
