@@ -1,9 +1,11 @@
 {
   "cli_version": "0.4.2",
   "checkpoint_id": "f641f3c50284",
+  "session_id": "409ef9fd-6065-4c45-a1f9-69d0a1d6e6c5",
   "strategy": "manual-commit",
+  "created_at": "2026-03-18T19:45:43.612908Z",
   "branch": "main",
-  "checkpoints_count": 5,
+  "checkpoints_count": 1,
   "files_touched": [
     ".gitignore",
     "CLAUDE.md",
@@ -1232,45 +1234,24 @@
     "dist/tests/test-settings-merge.sh",
     "dist/tests/test-uninstall.sh",
     "dist/tests/test-version-status.sh",
-    "dist/tests/test-with-plugins.sh",
-    "docs/superpowers/plans/[17]-2026-03-17-init-plugin-install.md",
-    "docs/superpowers/plans/[18]-2026-03-17-init-runtime-wiring.md",
-    "docs/superpowers/specs/[17]-2026-03-17-init-plugin-install-design.md",
-    "docs/superpowers/specs/[18]-2026-03-17-init-runtime-wiring-design.md",
-    "founder-os-dist/bin/founder-os.js",
-    "founder-os-dist/lib/manifest.js",
-    "founder-os-dist/lib/plugins.js",
-    "founder-os-dist/lib/uninstaller.js",
-    "founder-os-dist/tests/test-with-plugins.sh"
+    "dist/tests/test-with-plugins.sh"
   ],
-  "sessions": [
-    {
-      "metadata": "/f6/41f3c50284/0/metadata.json",
-      "transcript": "/f6/41f3c50284/0/full.jsonl",
-      "context": "/f6/41f3c50284/0/context.md",
-      "content_hash": "/f6/41f3c50284/0/content_hash.txt",
-      "prompt": "/f6/41f3c50284/0/prompt.txt"
-    },
-    {
-      "metadata": "/f6/41f3c50284/1/metadata.json",
-      "transcript": "/f6/41f3c50284/1/full.jsonl",
-      "context": "/f6/41f3c50284/1/context.md",
-      "content_hash": "/f6/41f3c50284/1/content_hash.txt",
-      "prompt": "/f6/41f3c50284/1/prompt.txt"
-    },
-    {
-      "metadata": "/f6/41f3c50284/2/metadata.json",
-      "transcript": "/f6/41f3c50284/2/full.jsonl",
-      "context": "/f6/41f3c50284/2/context.md",
-      "content_hash": "/f6/41f3c50284/2/content_hash.txt",
-      "prompt": "/f6/41f3c50284/2/prompt.txt"
-    }
-  ],
+  "agent": "Claude Code",
+  "transcript_identifier_at_start": "0b6840d8-314a-491a-9db6-749deae5bbf5",
   "token_usage": {
-    "input_tokens": 898,
-    "cache_creation_tokens": 301828,
-    "cache_read_tokens": 10793594,
-    "output_tokens": 50456,
-    "api_call_count": 89
+    "input_tokens": 32,
+    "cache_creation_tokens": 95203,
+    "cache_read_tokens": 2224817,
+    "output_tokens": 5847,
+    "api_call_count": 26
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-03-18T19:45:43.599368Z",
+    "agent_lines": 174777,
+    "human_added": 1406,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 176183,
+    "agent_percentage": 99.20196613748205
   }
 }
