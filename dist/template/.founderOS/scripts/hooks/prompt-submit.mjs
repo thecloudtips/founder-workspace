@@ -67,4 +67,6 @@ process.stdin.on('end', () => {
   // If ready, output nothing (clean context)
 });
 
+// Fallback if stdin never closes (e.g., no data piped)
+process.stdin.on('error', () => process.exit(0));
 setTimeout(() => process.exit(0), 2500);

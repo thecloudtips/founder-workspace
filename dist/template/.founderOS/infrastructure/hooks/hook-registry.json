@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "hooks": {
     "SessionStart": [
       {
@@ -8,7 +8,7 @@
           {
             "type": "command",
             "command": "node .founderOS/scripts/hooks/session-start.mjs",
-            "timeout": 5000
+            "timeout": 10000
           }
         ]
       }
@@ -25,21 +25,9 @@
         ]
       }
     ],
-    "PreToolUse": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node .founderOS/scripts/hooks/pre-tool.mjs",
-            "timeout": 2000
-          }
-        ]
-      }
-    ],
     "PostToolUse": [
       {
-        "matcher": "",
+        "matcher": "Skill",
         "hooks": [
           {
             "type": "command",

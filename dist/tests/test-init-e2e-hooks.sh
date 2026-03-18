@@ -18,10 +18,10 @@ installer.install('$TMPDIR', '$TEMPLATE_DIR', '1.0.0-test');
 
 echo ""
 
-# Test 1: All 5 hooks registered in settings.json (matcher + hooks array format)
+# Test 1: All 4 hooks registered in settings.json (matcher + hooks array format)
 node -e "
 const settings = JSON.parse(require('fs').readFileSync('$TMPDIR/.claude/settings.json', 'utf8'));
-const expected = ['SessionStart', 'UserPromptSubmit', 'PreToolUse', 'PostToolUse', 'Stop'];
+const expected = ['SessionStart', 'UserPromptSubmit', 'PostToolUse', 'Stop'];
 for (const event of expected) {
   console.assert(settings.hooks && settings.hooks[event], 'Missing hook: ' + event);
   console.assert(settings.hooks[event].length === 1, event + ' should have 1 matcher group, got ' + (settings.hooks[event]?.length || 0));
@@ -29,19 +29,23 @@ for (const event of expected) {
   console.assert(Array.isArray(group.hooks), event + ' should have hooks array');
   console.assert(group.hooks[0].command.includes('.founderOS'), event + ' command should reference .founderOS');
 }
-console.log('PASS: all 5 hooks registered in settings.json');
+// PostToolUse should have Skill matcher
+console.assert(settings.hooks.PostToolUse[0].matcher === 'Skill', 'PostToolUse should match Skill only');
+// PreToolUse should NOT be registered (DB init moved to SessionStart)
+console.assert(!settings.hooks.PreToolUse, 'PreToolUse should not be registered');
+console.log('PASS: all 4 hooks registered in settings.json');
 "
 
 # Test 2: Hook scripts exist
-for hook in pre-tool session-start prompt-submit post-tool stop; do
+for hook in session-start prompt-submit post-tool stop; do
   test -f "$TMPDIR/.founderOS/scripts/hooks/$hook.mjs" || { echo "FAIL: $hook.mjs missing"; exit 1; }
 done
-echo "PASS: all 5 hook scripts exist"
+echo "PASS: all 4 active hook scripts exist"
 
 # Test 3: Hook registry exists and is valid
 node -e "
 const reg = JSON.parse(require('fs').readFileSync('$TMPDIR/.founderOS/infrastructure/hooks/hook-registry.json', 'utf8'));
-console.assert(Object.keys(reg.hooks).length === 5, 'Expected 5 hook events');
+console.assert(Object.keys(reg.hooks).length === 4, 'Expected 4 hook events');
 console.log('PASS: hook registry valid');
 "
 
@@ -72,9 +76,10 @@ updater.update('$TMPDIR', '$TEMPLATE_DIR', '1.0.1-test', false);
 "
 node -e "
 const settings = JSON.parse(require('fs').readFileSync('$TMPDIR/.claude/settings.json', 'utf8'));
-for (const event of ['SessionStart', 'UserPromptSubmit', 'PreToolUse', 'PostToolUse', 'Stop']) {
+for (const event of ['SessionStart', 'UserPromptSubmit', 'PostToolUse', 'Stop']) {
   console.assert(settings.hooks[event].length === 1, event + ' should still have 1 matcher group after update, got ' + settings.hooks[event].length);
 }
+console.assert(!settings.hooks.PreToolUse, 'PreToolUse should be cleaned up after update');
 console.log('PASS: update does not duplicate hooks');
 "
 
@@ -104,17 +109,12 @@ const output = require('./lib/output.js');
 installer.install('$TMPDIR', '$TEMPLATE_DIR', '1.0.0-test');
 " > /dev/null 2>&1
 
-for hook in pre-tool session-start prompt-submit post-tool stop; do
+for hook in session-start prompt-submit post-tool stop; do
   OUTPUT=$(echo '{}' | (cd "$TMPDIR" && FOUNDER_OS_HOOKS=0 node .founderOS/scripts/hooks/$hook.mjs) 2>/dev/null || true)
-  # pre-tool outputs allow even with kill switch; others should be silent
-  if [ "$hook" = "pre-tool" ]; then
-    echo "$OUTPUT" | grep -q "allow" && echo "PASS: $hook.mjs kill switch (outputs allow)" || echo "FAIL: $hook.mjs kill switch"
+  if [ -z "$OUTPUT" ]; then
+    echo "PASS: $hook.mjs kill switch (silent)"
   else
-    if [ -z "$OUTPUT" ]; then
-      echo "PASS: $hook.mjs kill switch (silent)"
-    else
-      echo "PASS: $hook.mjs kill switch (exited cleanly)"
-    fi
+    echo "PASS: $hook.mjs kill switch (exited cleanly)"
   fi
 done
 

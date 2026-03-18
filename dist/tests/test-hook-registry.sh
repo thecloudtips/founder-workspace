@@ -12,16 +12,17 @@ echo "PASS: registry file exists"
 # Test 2: Valid JSON
 node -e "JSON.parse(require('fs').readFileSync('template/.founderOS/infrastructure/hooks/hook-registry.json','utf8')); console.log('PASS: valid JSON')"
 
-# Test 3: Has all 5 hook events
+# Test 3: Has all 4 hook events (PreToolUse removed — DB init moved to SessionStart)
 node -e "
 const reg = JSON.parse(require('fs').readFileSync('template/.founderOS/infrastructure/hooks/hook-registry.json','utf8'));
 const events = Object.keys(reg.hooks);
-const expected = ['SessionStart', 'UserPromptSubmit', 'PreToolUse', 'PostToolUse', 'Stop'];
+const expected = ['SessionStart', 'UserPromptSubmit', 'PostToolUse', 'Stop'];
 for (const e of expected) {
   console.assert(events.includes(e), 'Missing event: ' + e);
 }
-console.assert(events.length === 5, 'Expected 5 events, got ' + events.length);
-console.log('PASS: all 5 hook events defined');
+console.assert(events.length === 4, 'Expected 4 events, got ' + events.length);
+console.assert(!events.includes('PreToolUse'), 'PreToolUse should not be in registry');
+console.log('PASS: all 4 hook events defined (PreToolUse removed)');
 "
 
 # Test 4: Each hook has correct structure (matcher + hooks array format)

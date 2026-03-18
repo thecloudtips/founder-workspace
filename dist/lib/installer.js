@@ -209,7 +209,8 @@ function install(targetDir, templateDir, packageVersion) {
     if (fs.existsSync(hooksDir)) {
       setExecutableRecursive(hooksDir);
     }
-    output.success('Registered runtime hooks (5 events)');
+    const hookCount = Object.keys(JSON.parse(fs.readFileSync(registryPath, 'utf8')).hooks).length;
+    output.success(`Registered runtime hooks (${hookCount} events)`);
   }
 
   // 7. DB Verification (Phase 2b)

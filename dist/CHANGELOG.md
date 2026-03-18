@@ -1,9 +1,18 @@
 # Changelog
 
-## 1.1.2 (2026-03-18)
+## 1.2.0 (2026-03-18)
+
+### Changed
+- **Removed PreToolUse hook** — DB init moved to SessionStart (runs once, not per tool call)
+- **PostToolUse matcher** set to `Skill` — only fires on Skill calls, not every tool
+- SessionStart now handles lazy DB initialization (memory + intelligence) at session start
+- SessionStart timeout increased to 10s (DB init + dispatcher rules + context)
+- Hook registry reduced from 5 to 4 events — eliminates per-tool-call overhead
+- Installer dynamically reads hook count from registry
 
 ### Fixed
 - Clean up stale flat-format hook entries from v1.1.0 during update (migration fix)
+- Clean up hooks for events removed from registry (e.g., PreToolUse) during update
 - Remove function now handles both old flat format and new nested format
 
 ## 1.1.1 (2026-03-18)

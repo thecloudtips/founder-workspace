@@ -1,14 +1,28 @@
-// session-start.mjs — SessionStart hook: dispatcher rules + context + patterns
+// session-start.mjs — SessionStart hook: DB init + dispatcher rules + context + patterns
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { openDb, querySql, runSql, closeDb } from './lib/db-helper.mjs';
+import { initMemoryDb } from './lib/memory-init.mjs';
+import { initIntelligenceDb } from './lib/intelligence-init.mjs';
 
 // Kill switch — exit with no output
 if (process.env.FOUNDER_OS_HOOKS === '0' || process.env.FOUNDER_OS_HOOKS === 'false') process.exit(0);
 
 const projectRoot = process.cwd();
+const projectHash = crypto.createHash('md5').update(projectRoot).digest('hex').slice(0, 8);
 const lines = [];
+
+// 0. Lazy DB init (moved from pre-tool.mjs — runs once at session start, not per tool call)
+const SESSION_FILE = `/tmp/fos-session-init-${projectHash}.json`;
+try {
+  const memResult = initMemoryDb(projectRoot);
+  const intelResult = initIntelligenceDb(projectRoot);
+  fs.writeFileSync(SESSION_FILE, JSON.stringify({
+    memoryReady: memResult.ready,
+    intelligenceReady: intelResult.ready,
+  }));
+} catch {}
 
 // 1. Dispatcher rules
 lines.push(`## Founder OS Dispatcher Rules
@@ -54,8 +68,7 @@ if (fs.existsSync(intelDb)) {
 }
 
 // 4. Memory decay (once per day)
-const hash = crypto.createHash('md5').update(projectRoot).digest('hex').slice(0, 8);
-const decayMarker = `/tmp/fos-decay-${hash}.txt`;
+const decayMarker = `/tmp/fos-decay-${projectHash}.txt`;
 const memDb = path.join(projectRoot, '.memory', 'memory.db');
 if (fs.existsSync(memDb)) {
   let shouldDecay = true;

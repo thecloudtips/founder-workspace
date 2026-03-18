@@ -41,6 +41,19 @@ function mergeHooksIntoSettingsJson(targetPath, registryPath) {
   existing.hooks = existing.hooks || {};
 
   let existingHooksDetected = false;
+
+  // Clean up founderOS hooks for events no longer in the registry (e.g., PreToolUse removed in v1.1.2)
+  for (const event of Object.keys(existing.hooks)) {
+    if (!registry.hooks[event]) {
+      existing.hooks[event] = existing.hooks[event].filter(entry => {
+        if (entry.command && !entry.hooks) return !entry.command.includes('.founderOS');
+        if (entry.hooks && Array.isArray(entry.hooks)) return !entry.hooks.some(h => h.command?.includes('.founderOS'));
+        return true;
+      });
+      if (existing.hooks[event].length === 0) delete existing.hooks[event];
+    }
+  }
+
   // Registry format: { hooks: { Event: [{ matcher, hooks: [{ type, command, timeout }] }] } }
   for (const [event, matcherGroups] of Object.entries(registry.hooks)) {
     existing.hooks[event] = existing.hooks[event] || [];
