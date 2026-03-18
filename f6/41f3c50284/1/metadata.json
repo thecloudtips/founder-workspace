@@ -3,28 +3,31 @@
   "checkpoint_id": "f641f3c50284",
   "session_id": "7147b04b-3390-46c3-b766-eea0508aa11b",
   "strategy": "manual-commit",
-  "created_at": "2026-03-17T21:04:04.553262Z",
+  "created_at": "2026-03-18T19:45:28.216381Z",
   "branch": "main",
-  "checkpoints_count": 2,
+  "checkpoints_count": 1,
   "files_touched": [
+    "docs/superpowers/plans/[18]-2026-03-17-init-runtime-wiring.md",
     "docs/superpowers/specs/[18]-2026-03-17-init-runtime-wiring-design.md"
   ],
   "agent": "Claude Code",
-  "transcript_identifier_at_start": "dd49d71e-5f73-4f3f-9862-16c8d4d632f1",
+  "transcript_identifier_at_start": "92b13c02-a48b-418d-a0af-759fc208f09b",
+  "checkpoint_transcript_start": 544,
+  "transcript_lines_at_start": 544,
   "token_usage": {
-    "input_tokens": 3497,
-    "cache_creation_tokens": 226815,
-    "cache_read_tokens": 3386958,
-    "output_tokens": 20944,
-    "api_call_count": 34
+    "input_tokens": 14,
+    "cache_creation_tokens": 42210,
+    "cache_read_tokens": 1856282,
+    "output_tokens": 19049,
+    "api_call_count": 13
   },
   "initial_attribution": {
-    "calculated_at": "2026-03-17T21:04:04.458215Z",
-    "agent_lines": 479,
-    "human_added": 0,
+    "calculated_at": "2026-03-18T19:45:28.084649Z",
+    "agent_lines": 1406,
+    "human_added": 174777,
     "human_modified": 0,
     "human_removed": 0,
-    "total_committed": 479,
-    "agent_percentage": 100
+    "total_committed": 176183,
+    "agent_percentage": 0.79803386251795
   }
 }

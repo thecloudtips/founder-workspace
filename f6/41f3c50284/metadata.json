@@ -3,9 +3,10 @@
   "checkpoint_id": "f641f3c50284",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 5,
+  "checkpoints_count": 4,
   "files_touched": [
     "docs/superpowers/plans/[17]-2026-03-17-init-plugin-install.md",
+    "docs/superpowers/plans/[18]-2026-03-17-init-runtime-wiring.md",
     "docs/superpowers/specs/[17]-2026-03-17-init-plugin-install-design.md",
     "docs/superpowers/specs/[18]-2026-03-17-init-runtime-wiring-design.md",
     "founder-os-dist/bin/founder-os.js",
@@ -31,10 +32,10 @@
     }
   ],
   "token_usage": {
-    "input_tokens": 4349,
-    "cache_creation_tokens": 391230,
-    "cache_read_tokens": 10099453,
-    "output_tokens": 46504,
-    "api_call_count": 84
+    "input_tokens": 866,
+    "cache_creation_tokens": 206625,
+    "cache_read_tokens": 8568777,
+    "output_tokens": 44609,
+    "api_call_count": 63
   }
 }
