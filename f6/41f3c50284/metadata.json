@@ -1237,6 +1237,11 @@
     "docs/superpowers/plans/[18]-2026-03-17-init-runtime-wiring.md",
     "docs/superpowers/specs/[17]-2026-03-17-init-plugin-install-design.md",
     "docs/superpowers/specs/[18]-2026-03-17-init-runtime-wiring-design.md",
+    "docs/superpowers/specs/[19]-2026-03-18-obsidian-integration-design.md",
+    "docs/superpowers/specs/[20]-2026-03-18-remotion-skill-design.md",
+    "docs/superpowers/specs/[21]-2026-03-18-landing-page-builder-design.md",
+    "docs/superpowers/specs/[22]-2026-03-18-meta-ads-campaign-design.md",
+    "docs/superpowers/specs/[23]-2026-03-18-google-ads-campaign-design.md",
     "founder-os-dist/bin/founder-os.js",
     "founder-os-dist/lib/manifest.js",
     "founder-os-dist/lib/plugins.js",
@@ -1274,10 +1279,10 @@
     }
   ],
   "token_usage": {
-    "input_tokens": 910,
-    "cache_creation_tokens": 308841,
-    "cache_read_tokens": 13085908,
-    "output_tokens": 53259,
-    "api_call_count": 99
+    "input_tokens": 912,
+    "cache_creation_tokens": 308726,
+    "cache_read_tokens": 12674407,
+    "output_tokens": 53412,
+    "api_call_count": 97
   }
 }

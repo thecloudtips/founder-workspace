@@ -142,3 +142,25 @@ Ok to proceed? (y) y
 
 ────────────────────────────────────────�...
 
+### Prompt 14
+
+Create spec stub files for the following features we are planning to implement. For each one, create a spec file with a describe block and placeholder it/test blocks covering the most obvious scenarios. Leave test bodies empty — stubs only.
+
+Features to cover:
+
+1. Obsidian integration — user config choice between Obsidian and Notion at onboarding
+2. Remotion skill — Claude Code skill for short video editing with Remotion
+3. Landing page builder skill — generates static landing page from ...
+
+### Prompt 15
+
+[Request interrupted by user]
+
+### Prompt 16
+
+i meant i want place hoders fo the topics formthe lists in the superpowers spec folders we will plna them soon
+
+### Prompt 17
+
+yes comit and push
+

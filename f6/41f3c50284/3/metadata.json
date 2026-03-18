@@ -3,32 +3,34 @@
   "checkpoint_id": "f641f3c50284",
   "session_id": "d052d0b5-33de-4187-a5bb-866bfa1a9955",
   "strategy": "manual-commit",
-  "created_at": "2026-03-18T21:03:57.034789Z",
+  "created_at": "2026-03-18T21:15:02.120387Z",
   "branch": "main",
   "checkpoints_count": 1,
   "files_touched": [
-    "dist/CHANGELOG.md",
-    "dist/lib/settings-json.js",
-    "dist/package.json"
+    "docs/superpowers/specs/[19]-2026-03-18-obsidian-integration-design.md",
+    "docs/superpowers/specs/[20]-2026-03-18-remotion-skill-design.md",
+    "docs/superpowers/specs/[21]-2026-03-18-landing-page-builder-design.md",
+    "docs/superpowers/specs/[22]-2026-03-18-meta-ads-campaign-design.md",
+    "docs/superpowers/specs/[23]-2026-03-18-google-ads-campaign-design.md"
   ],
   "agent": "Claude Code",
-  "transcript_identifier_at_start": "fcb790eb-0fb3-42eb-b9d2-c1facece328a",
-  "checkpoint_transcript_start": 1008,
-  "transcript_lines_at_start": 1008,
+  "transcript_identifier_at_start": "10b59aff-2e12-476c-be23-49db1ad192d8",
+  "checkpoint_transcript_start": 1073,
+  "transcript_lines_at_start": 1073,
   "token_usage": {
-    "input_tokens": 12,
-    "cache_creation_tokens": 7013,
-    "cache_read_tokens": 2292314,
-    "output_tokens": 2803,
-    "api_call_count": 10
+    "input_tokens": 14,
+    "cache_creation_tokens": 6898,
+    "cache_read_tokens": 1880813,
+    "output_tokens": 2956,
+    "api_call_count": 8
   },
   "initial_attribution": {
-    "calculated_at": "2026-03-18T21:03:56.960248Z",
-    "agent_lines": 0,
-    "human_added": 86,
-    "human_modified": 2,
+    "calculated_at": "2026-03-18T21:15:02.034735Z",
+    "agent_lines": 122,
+    "human_added": 62,
+    "human_modified": 0,
     "human_removed": 0,
-    "total_committed": 88,
-    "agent_percentage": 0
+    "total_committed": 184,
+    "agent_percentage": 66.30434782608695
   }
 }
