@@ -1,0 +1,19 @@
+{
+  "namespace": "prep",
+  "tier1": {
+    "required_sections": ["Agenda", "Attendees"],
+    "min_words": 100,
+    "max_words": 3000
+  },
+  "tier2": {
+    "sample_rate": 0.25,
+    "weights": {
+      "completeness": 0.25,
+      "actionability": 0.20
+    },
+    "criteria": {
+      "completeness": "Agenda items listed with time allocations, all attendees listed with roles, previous action items referenced",
+      "actionability": "Pre-meeting preparation items listed, discussion questions framed for decision-making"
+    }
+  }
+}

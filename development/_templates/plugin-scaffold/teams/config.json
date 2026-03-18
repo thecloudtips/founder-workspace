@@ -1,0 +1,10 @@
+{
+  "pattern": "{{pattern-type}}",
+  "description": "{{team-description}}",
+  "agents": [],
+  "coordination": {
+    "lead_agent": "{{lead-agent-name}}",
+    "handoff_strategy": "{{handoff-strategy}}",
+    "error_handling": "retry_once_then_escalate"
+  }
+}

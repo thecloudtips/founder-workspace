@@ -1,0 +1,49 @@
+{
+  "pattern": "competing-hypotheses",
+  "description": "Multiple agents propose independent solutions, analysis agents evaluate each, lead agent synthesizes the best approach",
+  "execution": "parallel_then_synthesis",
+  "agents": [
+    {
+      "name": "{{hypothesis-agent-1}}",
+      "role": "{{hypothesis-1-approach}}",
+      "file": "agents/{{hypothesis-agent-1}}.md",
+      "parallel_group": "hypotheses",
+      "tools": ["{{mcp-server}}"]
+    },
+    {
+      "name": "{{hypothesis-agent-2}}",
+      "role": "{{hypothesis-2-approach}}",
+      "file": "agents/{{hypothesis-agent-2}}.md",
+      "parallel_group": "hypotheses",
+      "tools": ["{{mcp-server}}"]
+    },
+    {
+      "name": "{{analysis-agent-1}}",
+      "role": "{{analysis-focus}}",
+      "file": "agents/{{analysis-agent-1}}.md",
+      "parallel_group": "analysis",
+      "tools": ["{{mcp-server}}"]
+    },
+    {
+      "name": "{{synthesis-lead}}",
+      "role": "Synthesize best approach from evaluated proposals",
+      "file": "agents/{{synthesis-lead}}.md",
+      "parallel_group": "lead",
+      "tools": ["{{mcp-server}}"]
+    }
+  ],
+  "coordination": {
+    "phase_1": "all_hypothesis_agents_propose_independently",
+    "phase_2": "analysis_agents_evaluate_each_proposal",
+    "phase_3": "lead_synthesizes_best_approach",
+    "scoring": "comparative_matrix",
+    "timeout_per_agent": "60s",
+    "failure_handling": "continue_with_remaining_hypotheses",
+    "minimum_hypotheses_required": 2
+  },
+  "observability": {
+    "log_agent_output": true,
+    "report_timing": true,
+    "report_scoring_matrix": true
+  }
+}

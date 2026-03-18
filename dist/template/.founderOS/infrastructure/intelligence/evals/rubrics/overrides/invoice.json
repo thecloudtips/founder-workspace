@@ -1,0 +1,22 @@
+{
+  "namespace": "invoice",
+  "tier1": {
+    "required_sections": [],
+    "min_words": 20,
+    "max_words": 2000,
+    "required_json_fields": ["line_items", "subtotal", "total", "due_date"]
+  },
+  "tier2": {
+    "sample_rate": 0.0,
+    "weights": {
+      "accuracy": 0.35,
+      "completeness": 0.30,
+      "format": 0.20,
+      "hallucination": 0.15
+    },
+    "criteria": {
+      "accuracy": "Line items × quantities = subtotal, tax = rate × subtotal, total = subtotal + tax",
+      "completeness": "All line items from source present, business ID included, due date specified"
+    }
+  }
+}

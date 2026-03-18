@@ -1,0 +1,152 @@
+{
+  "$schema": "dependency-registry",
+  "$version": "1.0",
+  "namespaces": {
+    "inbox": {
+      "required": ["gws:gmail"],
+      "optional": ["notion"]
+    },
+    "briefing": {
+      "required": ["notion"],
+      "optional": ["gws:gmail", "gws:calendar", "slack"]
+    },
+    "prep": {
+      "required": ["gws:calendar", "notion"],
+      "optional": ["gws:gmail", "gws:drive"]
+    },
+    "actions": {
+      "required": ["notion"],
+      "optional": []
+    },
+    "review": {
+      "required": ["notion"],
+      "optional": ["gws:gmail", "gws:calendar"]
+    },
+    "followup": {
+      "required": ["gws:gmail", "notion"],
+      "optional": ["gws:calendar"]
+    },
+    "meeting": {
+      "required": ["notion", "filesystem"],
+      "optional": []
+    },
+    "newsletter": {
+      "required": ["filesystem"],
+      "optional": ["websearch", "notion"]
+    },
+    "report": {
+      "required": ["filesystem"],
+      "optional": ["notion"]
+    },
+    "health": {
+      "required": ["notion"],
+      "optional": ["gws:gmail", "gws:calendar"]
+    },
+    "invoice": {
+      "required": ["filesystem"],
+      "optional": ["notion"]
+    },
+    "proposal": {
+      "required": ["filesystem"],
+      "optional": ["notion"]
+    },
+    "contract": {
+      "required": ["filesystem"],
+      "optional": ["notion"]
+    },
+    "sow": {
+      "required": ["filesystem"],
+      "optional": ["notion"]
+    },
+    "compete": {
+      "required": ["websearch"],
+      "optional": ["filesystem", "notion"]
+    },
+    "expense": {
+      "required": ["filesystem"],
+      "optional": ["notion"]
+    },
+    "notion": {
+      "required": ["notion"],
+      "optional": []
+    },
+    "drive": {
+      "required": ["gws:drive"],
+      "optional": ["notion"]
+    },
+    "slack": {
+      "required": ["slack"],
+      "optional": ["notion"]
+    },
+    "client": {
+      "required": ["notion"],
+      "optional": ["gws:gmail", "gws:calendar", "gws:drive"]
+    },
+    "crm": {
+      "required": ["notion"],
+      "optional": ["gws:gmail", "gws:calendar"]
+    },
+    "morning": {
+      "required": ["notion"],
+      "optional": ["gws:gmail", "gws:calendar"]
+    },
+    "kb": {
+      "required": ["notion"],
+      "optional": []
+    },
+    "ideate": {
+      "required": [],
+      "optional": ["websearch"]
+    },
+    "savings": {
+      "required": ["notion"],
+      "optional": ["filesystem"]
+    },
+    "prompt": {
+      "required": ["notion"],
+      "optional": []
+    },
+    "workflow": {
+      "required": ["filesystem"],
+      "optional": ["notion"]
+    },
+    "workflow-doc": {
+      "required": ["notion"],
+      "optional": ["filesystem"]
+    },
+    "learn": {
+      "required": ["notion"],
+      "optional": []
+    },
+    "goal": {
+      "required": ["notion"],
+      "optional": []
+    },
+    "memory": {
+      "required": ["notion"],
+      "optional": []
+    },
+    "intel": {
+      "required": [],
+      "optional": []
+    },
+    "setup": {
+      "required": [],
+      "optional": []
+    },
+    "social": {
+      "required": ["late"],
+      "optional": ["notion", "filesystem"]
+    },
+    "scout": {
+      "required": [],
+      "optional": ["websearch"]
+    }
+  },
+  "dependencies": {
+    "late": {
+      "check": "node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs --validate-only",
+      "description": "Late.dev social media publishing API"
+    }
+  }
+}

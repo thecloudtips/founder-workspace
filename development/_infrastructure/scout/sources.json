@@ -1,0 +1,48 @@
+{
+  "$schema": "scout-sources",
+  "$version": "1.0",
+  "sources": [
+    {
+      "id": "claude-skills",
+      "priority": 1,
+      "type": "skill",
+      "label": "Claude Code Skills",
+      "search_patterns": [
+        "site:skillsmp.com",
+        "site:github.com \"SKILL.md\""
+      ],
+      "enabled": true
+    },
+    {
+      "id": "mcp-servers",
+      "priority": 2,
+      "type": "mcp",
+      "label": "MCP Servers",
+      "search_patterns": [
+        "site:npmjs.com \"mcp-server\"",
+        "site:github.com \"mcp server\""
+      ],
+      "enabled": true
+    },
+    {
+      "id": "github-ai-repos",
+      "priority": 3,
+      "type": "repo",
+      "label": "GitHub Repos with AI Integration",
+      "search_patterns": [
+        "github.com docs/ai/skills",
+        "github.com agent config"
+      ],
+      "enabled": true
+    },
+    {
+      "id": "cli-packages",
+      "priority": 4,
+      "type": "package",
+      "label": "npm/PyPI CLI Tools",
+      "search_patterns": [],
+      "enabled": true
+    }
+  ],
+  "custom_sources": []
+}

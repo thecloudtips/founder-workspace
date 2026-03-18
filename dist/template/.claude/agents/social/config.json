@@ -1,0 +1,58 @@
+{
+  "pattern": "pipeline",
+  "description": "Multi-platform social media publishing pipeline with preview approval. Activated via --team flag on post or cross-post commands.",
+  "execution": "sequential",
+  "agents": [
+    {
+      "name": "content-adapter-agent",
+      "role": "Adapt source content for each target platform's constraints and culture",
+      "file": "content-adapter-agent.md",
+      "order": 1,
+      "tools": ["Read"],
+      "skills": ["platform-adaptation", "cross-posting"]
+    },
+    {
+      "name": "preview-agent",
+      "role": "Show adapted content side-by-side for user approval before publishing",
+      "file": "preview-agent.md",
+      "order": 2,
+      "tools": ["Read"],
+      "skills": []
+    },
+    {
+      "name": "media-handler-agent",
+      "role": "Upload, resize, and validate media per platform limits",
+      "file": "media-handler-agent.md",
+      "order": 3,
+      "tools": ["Read", "Bash"],
+      "skills": ["late-media"]
+    },
+    {
+      "name": "publisher-agent",
+      "role": "Execute late-tool.mjs posts create for each platform",
+      "file": "publisher-agent.md",
+      "order": 4,
+      "tools": ["Bash"],
+      "skills": ["late-publish"]
+    },
+    {
+      "name": "monitor-agent",
+      "role": "Track publish status, retry failures, update Notion DB",
+      "file": "monitor-agent.md",
+      "order": 5,
+      "tools": ["Read", "Bash"],
+      "skills": ["late-status"]
+    }
+  ],
+  "coordination": {
+    "timeout_per_agent": "45s",
+    "error_handling": "continue_on_partial_failure",
+    "handoff": "output_of_previous_is_input_of_next",
+    "data_format": "structured_json"
+  },
+  "observability": {
+    "log_level": "info",
+    "report_on_complete": true,
+    "track_per_platform_status": true
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "gmail": {
+    "command": "npx",
+    "args": ["-y", "@anthropic/mcp-server-gmail"],
+    "env": {
+      "GMAIL_CREDENTIALS_PATH": "${GMAIL_CREDENTIALS_PATH}",
+      "GMAIL_TOKEN_PATH": "${GMAIL_TOKEN_PATH}"
+    },
+    "capabilities": {
+      "read": "Read emails and threads",
+      "send": "Send and reply to emails",
+      "labels": "Manage labels",
+      "search": "Search emails",
+      "drafts": "Create and manage drafts"
+    },
+    "required_by": [
+      "#01", "#02", "#03", "#06",
+      "#07", "#10", "#20", "#21", "#22"
+    ],
+    "setup": {
+      "steps": [
+        "Create Google Cloud project at https://console.cloud.google.com",
+        "Enable Gmail API in APIs & Services > Library",
+        "Create OAuth 2.0 credentials (Desktop application type)",
+        "Download credentials.json to a secure location",
+        "Set GMAIL_CREDENTIALS_PATH to the credentials.json path",
+        "Set GMAIL_TOKEN_PATH to desired token storage path",
+        "Run the server once to complete OAuth flow in browser"
+      ]
+    }
+  }
+}

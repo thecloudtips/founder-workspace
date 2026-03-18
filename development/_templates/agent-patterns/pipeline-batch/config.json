@@ -1,0 +1,49 @@
+{
+  "pattern": "pipeline-batch",
+  "description": "Pipeline applied per item, with batch orchestration across items",
+  "execution": "batch_parallel_pipelines",
+  "batch": {
+    "max_concurrent": 5,
+    "item_source": "{{input-folder-or-list}}",
+    "item_type": "{{file, record, etc.}}"
+  },
+  "pipeline": {
+    "agents": [
+      {
+        "name": "{{agent-1-name}}",
+        "role": "{{agent-1-role}}",
+        "file": "agents/{{agent-1-name}}.md",
+        "order": 1,
+        "tools": ["{{mcp-server}}"]
+      },
+      {
+        "name": "{{agent-2-name}}",
+        "role": "{{agent-2-role}}",
+        "file": "agents/{{agent-2-name}}.md",
+        "order": 2,
+        "tools": ["{{mcp-server}}"]
+      }
+    ]
+  },
+  "coordination": {
+    "handoff": "output_of_previous_is_input_of_next",
+    "data_format": "structured_json",
+    "error_handling_per_item": "skip_failed_continue_batch",
+    "error_handling_pipeline": "stop_pipeline_on_failure",
+    "timeout_per_agent": "60s",
+    "batch_progress": "report_every_n_items",
+    "progress_interval": 5,
+    "retry_failed_items": false
+  },
+  "aggregation": {
+    "collect_results": true,
+    "summary_after_batch": true,
+    "failed_items_report": true
+  },
+  "observability": {
+    "log_handoffs": true,
+    "log_agent_output": true,
+    "report_timing": true,
+    "report_batch_progress": true
+  }
+}

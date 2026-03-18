@@ -1,0 +1,55 @@
+{
+  "mcpServers": {
+    "_comment": "Enable the MCP servers required by this plugin. Remove the underscore prefix and configure each server as needed.",
+
+    "_notion": {
+      "command": "npx",
+      "args": ["-y", "@notionhq/notion-mcp-server"],
+      "env": {
+        "NOTION_API_KEY": "{{notion-api-key}}"
+      }
+    },
+
+    "_gmail": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/gmail-mcp-server"],
+      "env": {
+        "GMAIL_CREDENTIALS_PATH": "{{gmail-credentials-path}}"
+      }
+    },
+
+    "_google-calendar": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/google-calendar-mcp-server"],
+      "env": {
+        "GOOGLE_CREDENTIALS_PATH": "{{google-credentials-path}}"
+      }
+    },
+
+    "_filesystem": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/filesystem-mcp-server", "{{allowed-directory}}"]
+    },
+
+    "_google-drive": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/google-drive-mcp-server"],
+      "env": {
+        "GOOGLE_CREDENTIALS_PATH": "{{google-credentials-path}}"
+      }
+    },
+
+    "_slack": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/slack-mcp-server"],
+      "env": {
+        "SLACK_BOT_TOKEN": "{{slack-bot-token}}"
+      }
+    },
+
+    "_web-search": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/web-search-mcp-server"]
+    }
+  }
+}

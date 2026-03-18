@@ -1,0 +1,31 @@
+{
+  "namespace": null,
+  "tier1": {
+    "required_sections": [],
+    "min_words": 10,
+    "max_words": 5000,
+    "forbidden_patterns": ["[PLACEHOLDER]", "INSERT_NAME", "{name}", "TODO:", "FIXME:"],
+    "required_json_fields": null
+  },
+  "tier2": {
+    "sample_rate": 0.20,
+    "dimensions": ["completeness", "accuracy", "tone", "actionability", "format", "hallucination"],
+    "weights": {
+      "completeness": 0.20,
+      "accuracy": 0.25,
+      "tone": 0.10,
+      "actionability": 0.20,
+      "format": 0.10,
+      "hallucination": 0.15
+    },
+    "criteria": {
+      "completeness": "All requested sections and elements are present with no placeholder text remaining",
+      "accuracy": "All stated facts, numbers, and references are correct and verifiable against source data",
+      "tone": "Register matches the context (formal/casual) with no inappropriately aggressive or passive language",
+      "actionability": "Contains a clear next step or call-to-action that the user can act on immediately",
+      "format": "Follows the expected output structure and is appropriate length for context",
+      "hallucination": "No fabricated entities, events, or data points — all claims supported by provided context"
+    },
+    "threshold": 0.70
+  }
+}

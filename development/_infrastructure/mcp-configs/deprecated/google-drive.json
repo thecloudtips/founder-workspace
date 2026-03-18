@@ -1,0 +1,29 @@
+{
+  "google-drive": {
+    "command": "npx",
+    "args": ["-y", "@anthropic/mcp-server-google-drive"],
+    "env": {
+      "GOOGLE_CREDENTIALS_PATH": "${GOOGLE_CREDENTIALS_PATH}",
+      "GOOGLE_TOKEN_PATH": "${GOOGLE_TOKEN_PATH}"
+    },
+    "capabilities": {
+      "search": "Search files and folders",
+      "read": "Read file contents",
+      "list": "List directory contents",
+      "create": "Create files and folders",
+      "update": "Update file contents",
+      "share": "Manage sharing permissions"
+    },
+    "required_by": [
+      "#03", "#09", "#14", "#18", "#20", "#22", "#23"
+    ],
+    "setup": {
+      "steps": [
+        "Use same Google Cloud project as Gmail/Calendar",
+        "Enable Google Drive API",
+        "OAuth credentials shared with Gmail/Calendar",
+        "Set GOOGLE_CREDENTIALS_PATH and GOOGLE_TOKEN_PATH environment variables"
+      ]
+    }
+  }
+}

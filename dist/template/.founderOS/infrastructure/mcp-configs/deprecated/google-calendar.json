@@ -1,0 +1,31 @@
+{
+  "google-calendar": {
+    "command": "npx",
+    "args": ["-y", "@anthropic/mcp-server-google-calendar"],
+    "env": {
+      "GOOGLE_CREDENTIALS_PATH": "${GOOGLE_CREDENTIALS_PATH}",
+      "GOOGLE_TOKEN_PATH": "${GOOGLE_TOKEN_PATH}"
+    },
+    "capabilities": {
+      "list-events": "List calendar events",
+      "create-event": "Create new events",
+      "update-event": "Update existing events",
+      "delete-event": "Delete events",
+      "availability": "Check free/busy status"
+    },
+    "required_by": [
+      "#02", "#03", "#05", "#07",
+      "#10", "#20", "#21", "#22"
+    ],
+    "setup": {
+      "steps": [
+        "Use same Google Cloud project as Gmail (or create new one)",
+        "Enable Google Calendar API in APIs & Services > Library",
+        "OAuth credentials can be shared with Gmail server",
+        "Set GOOGLE_CREDENTIALS_PATH to the credentials.json path",
+        "Set GOOGLE_TOKEN_PATH to desired token storage path",
+        "Run the server once to complete OAuth flow in browser"
+      ]
+    }
+  }
+}

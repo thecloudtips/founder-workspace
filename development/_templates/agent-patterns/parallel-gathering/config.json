@@ -1,0 +1,40 @@
+{
+  "pattern": "parallel-gathering",
+  "description": "All agents fetch data simultaneously, lead agent merges results into unified output",
+  "execution": "parallel",
+  "agents": [
+    {
+      "name": "{{gatherer-1}}",
+      "role": "{{gatherer-1-role}}",
+      "file": "agents/{{gatherer-1}}.md",
+      "parallel_group": "gatherers",
+      "tools": ["{{mcp-server}}"]
+    },
+    {
+      "name": "{{gatherer-2}}",
+      "role": "{{gatherer-2-role}}",
+      "file": "agents/{{gatherer-2}}.md",
+      "parallel_group": "gatherers",
+      "tools": ["{{mcp-server}}"]
+    },
+    {
+      "name": "{{lead-agent}}",
+      "role": "Merge and synthesize all gathered data",
+      "file": "agents/{{lead-agent}}.md",
+      "parallel_group": "lead",
+      "tools": []
+    }
+  ],
+  "coordination": {
+    "parallel_group_execution": "all_gatherers_then_lead",
+    "merge_strategy": "lead_agent_synthesizes",
+    "timeout_per_agent": "30s",
+    "failure_handling": "continue_with_partial_results",
+    "minimum_gatherers_required": 1
+  },
+  "observability": {
+    "log_agent_output": true,
+    "report_timing": true,
+    "report_partial_failures": true
+  }
+}

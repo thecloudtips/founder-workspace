@@ -1,0 +1,29 @@
+{
+  "name": "founder-os",
+  "version": "1.0.0",
+  "description": "AI-powered business automation for founders — installs into any Claude Code project",
+  "license": "MIT",
+  "author": {
+    "name": "Founder OS",
+    "email": "contact@founderos.dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thecloudtips/founder-os-dist.git"
+  },
+  "keywords": ["claude-code", "ai", "automation", "founder", "business"],
+  "bin": {
+    "founder-os": "bin/founder-os.js"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "template/",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

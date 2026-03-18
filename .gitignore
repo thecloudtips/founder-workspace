@@ -17,6 +17,9 @@
 # Claude Code local settings (machine-specific)
 .claude/settings.local.json
 
+# Release artifacts (built, not tracked)
+dist/*.tgz
+
 # OS files
 .DS_Store
 .worktrees/

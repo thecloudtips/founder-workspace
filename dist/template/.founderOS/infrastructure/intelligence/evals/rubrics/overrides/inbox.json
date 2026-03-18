@@ -1,0 +1,20 @@
+{
+  "namespace": "inbox",
+  "tier1": {
+    "required_sections": ["Subject:", "Body:"],
+    "min_words": 50,
+    "max_words": 500,
+    "forbidden_patterns": ["[PLACEHOLDER]", "INSERT_NAME", "{name}", "Dear Sir/Madam"]
+  },
+  "tier2": {
+    "sample_rate": 0.20,
+    "weights": {
+      "tone": 0.15,
+      "actionability": 0.20
+    },
+    "criteria": {
+      "tone": "Professional register, matches founder voice profile, correct recipient salutation",
+      "actionability": "Includes specific next step in closing paragraph (meeting time, deliverable, response)"
+    }
+  }
+}

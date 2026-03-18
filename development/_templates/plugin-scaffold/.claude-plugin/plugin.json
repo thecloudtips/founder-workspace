@@ -1,0 +1,15 @@
+{
+  "name": "founder-os-{{plugin-name}}",
+  "description": "{{plugin-description}}",
+  "version": "1.0.0",
+  "author": "Founder OS",
+  "platform": "claude-code",
+  "pillar": "{{pillar}}",
+  "plugin_number": "{{plugin-number}}",
+  "capabilities": {
+    "commands": true,
+    "skills": true,
+    "agent_teams": false
+  },
+  "dependencies": []
+}

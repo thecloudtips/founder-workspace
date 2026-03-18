@@ -1,0 +1,33 @@
+{
+  "pattern": "pipeline",
+  "description": "Sequential processing: each agent transforms data and passes to the next",
+  "execution": "sequential",
+  "agents": [
+    {
+      "name": "{{agent-1-name}}",
+      "role": "{{agent-1-role}}",
+      "file": "agents/{{agent-1-name}}.md",
+      "order": 1,
+      "tools": ["{{mcp-server}}"]
+    },
+    {
+      "name": "{{agent-2-name}}",
+      "role": "{{agent-2-role}}",
+      "file": "agents/{{agent-2-name}}.md",
+      "order": 2,
+      "tools": ["{{mcp-server}}"]
+    }
+  ],
+  "coordination": {
+    "handoff": "output_of_previous_is_input_of_next",
+    "data_format": "structured_json",
+    "error_handling": "stop_pipeline_on_failure",
+    "timeout_per_agent": "60s",
+    "retry_on_failure": false
+  },
+  "observability": {
+    "log_handoffs": true,
+    "log_agent_output": true,
+    "report_timing": true
+  }
+}

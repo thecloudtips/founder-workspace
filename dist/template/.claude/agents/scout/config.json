@@ -1,0 +1,51 @@
+{
+  "pattern": "parallel-gathering",
+  "description": "Deep scout research: parallel agents search skills, MCP, and GitHub simultaneously. Synthesizer merges, deduplicates, and ranks. Activated via scout:find --deep.",
+  "execution": "parallel",
+  "agents": [
+    {
+      "name": "researcher-skills",
+      "role": "Search Claude Code skills directories and repositories",
+      "file": "researcher-skills.md",
+      "parallel_group": "gatherers",
+      "tools": ["WebSearch", "WebFetch", "Read"],
+      "skills": ["scout-research"]
+    },
+    {
+      "name": "researcher-mcp",
+      "role": "Search MCP server registries and npm packages",
+      "file": "researcher-mcp.md",
+      "parallel_group": "gatherers",
+      "tools": ["WebSearch", "WebFetch", "Read"],
+      "skills": ["scout-research"]
+    },
+    {
+      "name": "researcher-github",
+      "role": "Search GitHub repos with AI integration and CLI tools",
+      "file": "researcher-github.md",
+      "parallel_group": "gatherers",
+      "tools": ["WebSearch", "WebFetch", "Read"],
+      "skills": ["scout-research"]
+    },
+    {
+      "name": "synthesizer",
+      "role": "Merge, deduplicate, and rank results from all researchers",
+      "file": "synthesizer.md",
+      "parallel_group": "lead",
+      "tools": ["Read", "Write"],
+      "skills": ["scout-research"]
+    }
+  ],
+  "coordination": {
+    "parallel_group_execution": "all_gatherers_then_lead",
+    "merge_strategy": "lead_agent_synthesizes",
+    "timeout_per_agent": "60s",
+    "failure_handling": "continue_with_partial_results",
+    "minimum_gatherers_required": 1
+  },
+  "observability": {
+    "log_agent_output": true,
+    "report_timing": true,
+    "report_partial_failures": true
+  }
+}

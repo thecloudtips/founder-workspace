@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx founder-os*)",
+      "Bash(node .founderOS/scripts/*)"
+    ]
+  }
+}
