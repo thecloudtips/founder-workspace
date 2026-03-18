@@ -44,6 +44,16 @@ function mergeHooksIntoSettingsJson(targetPath, registryPath) {
   // Registry format: { hooks: { Event: [{ matcher, hooks: [{ type, command, timeout }] }] } }
   for (const [event, matcherGroups] of Object.entries(registry.hooks)) {
     existing.hooks[event] = existing.hooks[event] || [];
+
+    // Clean up any old flat-format entries (from v1.1.0) that reference .founderOS
+    existing.hooks[event] = existing.hooks[event].filter(entry => {
+      // Old flat format: { type, command, timeout } — no .hooks array
+      if (entry.command && !entry.hooks) {
+        return !entry.command.includes('.founderOS');
+      }
+      return true;
+    });
+
     if (existing.hooks[event].length > 0) existingHooksDetected = true;
     for (const group of matcherGroups) {
       // Check if a group with matching founderOS hooks already exists
@@ -70,8 +80,13 @@ function removeHooksFromSettingsJson(targetPath) {
   if (!existing.hooks) return;
 
   // Format: { hooks: { Event: [{ matcher, hooks: [{ type, command }] }] } }
+  // Also handles old flat format: { type, command } (from v1.1.0)
   for (const event of Object.keys(existing.hooks)) {
     existing.hooks[event] = existing.hooks[event].filter(group => {
+      // Old flat format: { type, command, timeout } — no .hooks array
+      if (group.command && !group.hooks) {
+        return !group.command.includes('.founderOS');
+      }
       if (!group.hooks || !Array.isArray(group.hooks)) return true;
       // Remove groups where any hook references .founderOS
       return !group.hooks.some(h => h.command?.includes('.founderOS'));

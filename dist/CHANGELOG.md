@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.2 (2026-03-18)
+
+### Fixed
+- Clean up stale flat-format hook entries from v1.1.0 during update (migration fix)
+- Remove function now handles both old flat format and new nested format
+
 ## 1.1.1 (2026-03-18)
 
 ### Fixed
