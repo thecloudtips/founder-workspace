@@ -96,3 +96,30 @@ Guide completion of development work by presenting clear options and handling ch
 
 prepre new release
 
+### Prompt 10
+
+ok how do run the npx command give me the full cotent now
+
+### Prompt 11
+
+sh: /Users/lhalicki/coding_projects/founder-workspace/dist/founder-os-1.1.0.tgz: Permission denied ive got his even with sudo enabled
+
+### Prompt 12
+
+after running and update on first claude start i ma getting this 
+
+  /Users/lhalicki/coding_projects/fos-ws/.claude/settings.json
+   └ hooks
+     ├ PostToolUse
+     │ └ 0
+     │   └ hooks: Expected array, but received undefined
+     ├ PreToolUse
+     │ └ 0
+     │   └ hooks: Expected array, but received undefined
+     ├ SessionStart
+     │ └ 0
+     │   └ hooks: Expected array, but received undefined
+     ├ Stop
+     │ └ 0
+     │   └ hooks: Expected array,...
+
