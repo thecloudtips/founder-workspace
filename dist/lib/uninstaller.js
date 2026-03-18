@@ -64,6 +64,9 @@ function uninstall(targetDir, force) {
   const settingsPath = path.join(targetDir, '.claude', 'settings.json');
   settingsJson.removeFromSettingsJson(settingsPath);
 
+  // Remove founderOS hook entries
+  settingsJson.removeHooksFromSettingsJson(settingsPath);
+
   // Note: plugins installed via --with-plugins are NOT removed here.
   // They are managed by the `claude` CLI. The plugins manifest state is
   // deleted with .founderOS/ below.

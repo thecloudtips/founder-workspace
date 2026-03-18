@@ -118,9 +118,10 @@ Do NOT include raw API responses, intermediate reasoning, or full file contents 
 - No intelligence engine tokens pollute the main session
 
 ### Preflight Checks [7]
-- Preflight runs INSIDE the subagent, not in the dispatcher
-- If preflight returns `blocked`, the subagent returns an error result with fix instructions
-- The dispatcher surfaces the error as a structured message in the main session
+- Preflight runs in the UserPromptSubmit hook (main session), NOT in the subagent
+- The hook checks command frontmatter for dependency declarations and validates availability
+- If preflight returns `blocked`, the hook outputs fix instructions before the command runs
+- The subagent receives a clean context with preflight already passed
 
 ### Agent Teams (--team flag)
 - When `--team` is used, the subagent itself becomes the coordinator that spawns the agent pipeline

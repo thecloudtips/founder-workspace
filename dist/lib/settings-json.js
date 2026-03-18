@@ -30,6 +30,54 @@ function mergeSettingsJson(targetPath) {
   return existing;
 }
 
+function mergeHooksIntoSettingsJson(targetPath, registryPath) {
+  let existing = {};
+  if (fs.existsSync(targetPath)) {
+    existing = JSON.parse(fs.readFileSync(targetPath, 'utf8'));
+  }
+
+  const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+
+  existing.hooks = existing.hooks || {};
+
+  let existingHooksDetected = false;
+  for (const [event, handlers] of Object.entries(registry.hooks)) {
+    existing.hooks[event] = existing.hooks[event] || [];
+    if (existing.hooks[event].length > 0) existingHooksDetected = true;
+    for (const handler of handlers) {
+      const isDuplicate = existing.hooks[event].some(h => h.command === handler.command);
+      if (!isDuplicate) {
+        existing.hooks[event].push(handler);
+      }
+    }
+  }
+
+  fs.writeFileSync(targetPath, JSON.stringify(existing, null, 2) + '\n');
+  return { existingHooksDetected };
+}
+
+function removeHooksFromSettingsJson(targetPath) {
+  if (!fs.existsSync(targetPath)) return;
+
+  const existing = JSON.parse(fs.readFileSync(targetPath, 'utf8'));
+  if (!existing.hooks) return;
+
+  for (const event of Object.keys(existing.hooks)) {
+    existing.hooks[event] = existing.hooks[event].filter(
+      h => !h.command?.includes('.founderOS')
+    );
+    if (existing.hooks[event].length === 0) delete existing.hooks[event];
+  }
+  if (Object.keys(existing.hooks).length === 0) delete existing.hooks;
+
+  if (Object.keys(existing).length === 0) {
+    fs.unlinkSync(targetPath);
+    return;
+  }
+
+  fs.writeFileSync(targetPath, JSON.stringify(existing, null, 2) + '\n');
+}
+
 function removeFromSettingsJson(targetPath) {
   if (!fs.existsSync(targetPath)) return;
 
@@ -51,4 +99,4 @@ function removeFromSettingsJson(targetPath) {
   fs.writeFileSync(targetPath, JSON.stringify(existing, null, 2) + '\n');
 }
 
-module.exports = { mergeSettingsJson, removeFromSettingsJson, FOUNDER_OS_PERMISSIONS };
+module.exports = { mergeSettingsJson, removeFromSettingsJson, mergeHooksIntoSettingsJson, removeHooksFromSettingsJson, FOUNDER_OS_PERMISSIONS };
