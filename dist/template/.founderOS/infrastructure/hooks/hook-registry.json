@@ -3,37 +3,62 @@
   "hooks": {
     "SessionStart": [
       {
-        "type": "command",
-        "command": "node .founderOS/scripts/hooks/session-start.mjs",
-        "timeout": 5000
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .founderOS/scripts/hooks/session-start.mjs",
+            "timeout": 5000
+          }
+        ]
       }
     ],
     "UserPromptSubmit": [
       {
-        "type": "command",
-        "command": "node .founderOS/scripts/hooks/prompt-submit.mjs",
-        "timeout": 3000
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .founderOS/scripts/hooks/prompt-submit.mjs",
+            "timeout": 3000
+          }
+        ]
       }
     ],
     "PreToolUse": [
       {
-        "type": "command",
-        "command": "node .founderOS/scripts/hooks/pre-tool.mjs",
-        "timeout": 2000
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .founderOS/scripts/hooks/pre-tool.mjs",
+            "timeout": 2000
+          }
+        ]
       }
     ],
     "PostToolUse": [
       {
-        "type": "command",
-        "command": "node .founderOS/scripts/hooks/post-tool.mjs",
-        "timeout": 5000
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .founderOS/scripts/hooks/post-tool.mjs",
+            "timeout": 5000
+          }
+        ]
       }
     ],
     "Stop": [
       {
-        "type": "command",
-        "command": "node .founderOS/scripts/hooks/stop.mjs",
-        "timeout": 5000
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .founderOS/scripts/hooks/stop.mjs",
+            "timeout": 5000
+          }
+        ]
       }
     ]
   }

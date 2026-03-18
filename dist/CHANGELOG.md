@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.1 (2026-03-18)
+
+### Fixed
+- Hook registry format: use Claude Code's `matcher` + `hooks` array structure instead of flat format
+- Hook merge/remove functions updated to handle nested hook group structure
+- Tests updated to validate correct hooks API format
+
 ## 1.1.0 (2026-03-18)
 
 ### Added

@@ -41,13 +41,20 @@ function mergeHooksIntoSettingsJson(targetPath, registryPath) {
   existing.hooks = existing.hooks || {};
 
   let existingHooksDetected = false;
-  for (const [event, handlers] of Object.entries(registry.hooks)) {
+  // Registry format: { hooks: { Event: [{ matcher, hooks: [{ type, command, timeout }] }] } }
+  for (const [event, matcherGroups] of Object.entries(registry.hooks)) {
     existing.hooks[event] = existing.hooks[event] || [];
     if (existing.hooks[event].length > 0) existingHooksDetected = true;
-    for (const handler of handlers) {
-      const isDuplicate = existing.hooks[event].some(h => h.command === handler.command);
+    for (const group of matcherGroups) {
+      // Check if a group with matching founderOS hooks already exists
+      const isDuplicate = existing.hooks[event].some(existingGroup => {
+        if (!existingGroup.hooks || !Array.isArray(existingGroup.hooks)) return false;
+        return existingGroup.hooks.some(h =>
+          group.hooks.some(newH => h.command === newH.command)
+        );
+      });
       if (!isDuplicate) {
-        existing.hooks[event].push(handler);
+        existing.hooks[event].push(group);
       }
     }
   }
@@ -62,10 +69,13 @@ function removeHooksFromSettingsJson(targetPath) {
   const existing = JSON.parse(fs.readFileSync(targetPath, 'utf8'));
   if (!existing.hooks) return;
 
+  // Format: { hooks: { Event: [{ matcher, hooks: [{ type, command }] }] } }
   for (const event of Object.keys(existing.hooks)) {
-    existing.hooks[event] = existing.hooks[event].filter(
-      h => !h.command?.includes('.founderOS')
-    );
+    existing.hooks[event] = existing.hooks[event].filter(group => {
+      if (!group.hooks || !Array.isArray(group.hooks)) return true;
+      // Remove groups where any hook references .founderOS
+      return !group.hooks.some(h => h.command?.includes('.founderOS'));
+    });
     if (existing.hooks[event].length === 0) delete existing.hooks[event];
   }
   if (Object.keys(existing.hooks).length === 0) delete existing.hooks;

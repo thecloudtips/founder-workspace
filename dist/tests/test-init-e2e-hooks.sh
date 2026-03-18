@@ -18,14 +18,16 @@ installer.install('$TMPDIR', '$TEMPLATE_DIR', '1.0.0-test');
 
 echo ""
 
-# Test 1: All 5 hooks registered in settings.json
+# Test 1: All 5 hooks registered in settings.json (matcher + hooks array format)
 node -e "
 const settings = JSON.parse(require('fs').readFileSync('$TMPDIR/.claude/settings.json', 'utf8'));
 const expected = ['SessionStart', 'UserPromptSubmit', 'PreToolUse', 'PostToolUse', 'Stop'];
 for (const event of expected) {
   console.assert(settings.hooks && settings.hooks[event], 'Missing hook: ' + event);
-  console.assert(settings.hooks[event].length === 1, event + ' should have 1 handler, got ' + (settings.hooks[event]?.length || 0));
-  console.assert(settings.hooks[event][0].command.includes('.founderOS'), event + ' command should reference .founderOS');
+  console.assert(settings.hooks[event].length === 1, event + ' should have 1 matcher group, got ' + (settings.hooks[event]?.length || 0));
+  const group = settings.hooks[event][0];
+  console.assert(Array.isArray(group.hooks), event + ' should have hooks array');
+  console.assert(group.hooks[0].command.includes('.founderOS'), event + ' command should reference .founderOS');
 }
 console.log('PASS: all 5 hooks registered in settings.json');
 "
@@ -71,7 +73,7 @@ updater.update('$TMPDIR', '$TEMPLATE_DIR', '1.0.1-test', false);
 node -e "
 const settings = JSON.parse(require('fs').readFileSync('$TMPDIR/.claude/settings.json', 'utf8'));
 for (const event of ['SessionStart', 'UserPromptSubmit', 'PreToolUse', 'PostToolUse', 'Stop']) {
-  console.assert(settings.hooks[event].length === 1, event + ' should still have 1 handler after update, got ' + settings.hooks[event].length);
+  console.assert(settings.hooks[event].length === 1, event + ' should still have 1 matcher group after update, got ' + settings.hooks[event].length);
 }
 console.log('PASS: update does not duplicate hooks');
 "
