@@ -164,3 +164,14 @@ i meant i want place hoders fo the topics formthe lists in the superpowers spec 
 
 yes comit and push
 
+### Prompt 18
+
+ok i have such report for using teh hooks now
+
+ Hook Error Summary
+
+  You have 5 hooks firing on every interaction, across two config files:
+
+  ┌──────────────────┬──────────────────────────────────┬───────────────────┬─────────┬────────────────────────────┐
+  │    Hook...
+

@@ -1113,6 +1113,7 @@
     "dist/template/.founderOS/infrastructure/gws-skills/gmail-write/SKILL.md",
     "dist/template/.founderOS/infrastructure/gws-skills/gws-common/SKILL.md",
     "dist/template/.founderOS/infrastructure/gws-skills/gws-migration-notes/SKILL.md",
+    "dist/template/.founderOS/infrastructure/hooks/hook-registry.json",
     "dist/template/.founderOS/infrastructure/humanize-content/SKILL.md",
     "dist/template/.founderOS/infrastructure/humanize-content/references/banned-vocabulary.md",
     "dist/template/.founderOS/infrastructure/humanize-content/references/linkedin-humanization.md",
@@ -1222,11 +1223,15 @@
     "dist/template/.founderOS/infrastructure/scout/catalog.json",
     "dist/template/.founderOS/infrastructure/scout/sandbox/.gitkeep",
     "dist/template/.founderOS/infrastructure/scout/sources.json",
+    "dist/template/.founderOS/scripts/hooks/prompt-submit.mjs",
+    "dist/template/.founderOS/scripts/hooks/session-start.mjs",
     "dist/template/.founderOS/scripts/late-tool.mjs",
     "dist/template/.founderOS/scripts/notion-tool.mjs",
     "dist/template/.founderOS/scripts/package.json",
     "dist/tests/helpers.sh",
     "dist/tests/test-claude-md-merge.sh",
+    "dist/tests/test-hook-registry.sh",
+    "dist/tests/test-init-e2e-hooks.sh",
     "dist/tests/test-init-fresh.sh",
     "dist/tests/test-init-update.sh",
     "dist/tests/test-settings-merge.sh",
@@ -1237,11 +1242,6 @@
     "docs/superpowers/plans/[18]-2026-03-17-init-runtime-wiring.md",
     "docs/superpowers/specs/[17]-2026-03-17-init-plugin-install-design.md",
     "docs/superpowers/specs/[18]-2026-03-17-init-runtime-wiring-design.md",
-    "docs/superpowers/specs/[19]-2026-03-18-obsidian-integration-design.md",
-    "docs/superpowers/specs/[20]-2026-03-18-remotion-skill-design.md",
-    "docs/superpowers/specs/[21]-2026-03-18-landing-page-builder-design.md",
-    "docs/superpowers/specs/[22]-2026-03-18-meta-ads-campaign-design.md",
-    "docs/superpowers/specs/[23]-2026-03-18-google-ads-campaign-design.md",
     "founder-os-dist/bin/founder-os.js",
     "founder-os-dist/lib/manifest.js",
     "founder-os-dist/lib/plugins.js",
@@ -1279,10 +1279,10 @@
     }
   ],
   "token_usage": {
-    "input_tokens": 912,
-    "cache_creation_tokens": 308726,
-    "cache_read_tokens": 12674407,
-    "output_tokens": 53412,
-    "api_call_count": 97
+    "input_tokens": 927,
+    "cache_creation_tokens": 321081,
+    "cache_read_tokens": 17570904,
+    "output_tokens": 59300,
+    "api_call_count": 116
   }
 }

@@ -786,3 +786,56 @@ i meant i want place hoders fo the topics formthe lists in the superpowers spec 
 ---
 
 yes comit and push
+
+---
+
+ok i have such report for using teh hooks now
+
+ Hook Error Summary
+
+  You have 5 hooks firing on every interaction, across two config files:
+
+  ┌──────────────────┬──────────────────────────────────┬───────────────────┬─────────┬────────────────────────────┐
+  │    Hook Event    │              Source              │      Script       │ Timeout │          Fires On          │
+  ├──────────────────┼──────────────────────────────────┼───────────────────┼─────────┼────────────────────────────┤
+  │ PreToolUse       │ Global (~/.claude/settings.json) │ rtk-rewrite.sh    │ default │ Bash only                  │
+  ├──────────────────┼──────────────────────────────────┼───────────────────┼─────────┼────────────────────────────┤
+  │ PreToolUse       │ Project (.claude/settings.json)  │ pre-tool.mjs      │ 2000ms  │ Every tool (empty matcher) │
+  ├──────────────────┼──────────────────────────────────┼───────────────────┼─────────┼────────────────────────────┤
+  │ PostToolUse      │ Project                          │ post-tool.mjs     │ 5000ms  │ Every tool                 │
+  ├──────────────────┼──────────────────────────────────┼───────────────────┼─────────┼────────────────────────────┤
+  │ UserPromptSubmit │ Project                          │ prompt-submit.mjs │ 3000ms  │ Every prompt               │
+  ├──────────────────┼──────────────────────────────────┼───────────────────┼─────────┼────────────────────────────┤
+  │ SessionStart     │ Project                          │ session-start.mjs │ 5000ms  │ Session start              │
+  ├──────────────────┼──────────────────────────────────┼───────────────────┼─────────┼────────────────────────────┤
+  │ Stop             │ Project                          │ stop.mjs          │ 5000ms  │ Session end                │
+  └──────────────────┴──────────────────────────────────┴───────────────────┴─────────┴────────────────────────────┘
+
+  Most likely error causes
+
+  1. PreToolUse timeout (2000ms) on pre-tool.mjs
+  This hook calls sqlite3 via execSync up to twice (memory DB init + intelligence DB init) on every tool call until the session file gets written. The first call in a session can take >2s if SQLite is slow to open/init. After that, it
+  reads the session file and skips DB work — but the 2000ms timeout is tight.
+
+  2. Duplicate hook definitions
+  The hooks are defined in both .claude/settings.json AND .founderOS/infrastructure/hooks/hook-registry.json. The registry file isn't loaded by Claude Code directly (Claude Code only reads .claude/settings.json), so it's not causing
+  duplicates — but if you ever added it to settings, they'd fire twice.
+
+  3. The rtk-rewrite.sh hook runs on all Bash calls
+  It shells out to rtk rewrite which can add latency. If rtk is slow to respond, the hook may timeout.
+
+  What to do
+
+  Quick fix — widen the PreToolUse timeout:
+  "timeout": 5000
+  in .claude/settings.json for the PreToolUse hook (currently 2000ms).
+
+  Better fix — add a matcher to scope the FOS hook:
+  The project PreToolUse hook only needs to run once per session (to init DBs). After that it's a no-op. You could either:
+  - Add "matcher": "Bash" so it only fires on Bash calls (not every Read/Write/Grep)
+  - Or check if the session file exists at the top and exit 0 immediately (it already does this, but the stdin read + JSON parse still takes time)
+
+  Want me to apply either of these fixes?
+
+
+pleae asses and came up with the fix
