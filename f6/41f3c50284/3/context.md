@@ -175,3 +175,54 @@ ok i have such report for using teh hooks now
   ┌──────────────────┬──────────────────────────────────┬───────────────────┬─────────┬────────────────────────────┐
   │    Hook...
 
+### Prompt 19
+
+i need to plan something best with superpowers brainstorping 
+
+i would like to crete a founderos dedicated page fos.naluforge.com
+
+i should contains cmprehensive doc 
+explanaaiot of each command agnet and skill 
+some example suage scenario 
+explaning how memory is working 
+explaning how intelligne is working 
+explaning how evals ware working 
+how to expand it on its own with scout and workflows 
+
+also some landing page copy etc 
+
+the end goud would be having all the md files for cotennt for such...
+
+### Prompt 20
+
+Base directory for this skill: /Users/lhalicki/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.2/skills/brainstorming
+
+# Brainstorming Ideas Into Designs
+
+Help turn ideas into fully formed designs and specs through natural collaborative dialogue.
+
+Start by understanding the current project context, then ask questions one at a time to refine the idea. Once you understand what you're building, present the design and get user approval.
+
+<HARD-GATE>
+Do NOT invoke any implementation ski...
+
+### Prompt 21
+
+we do not need the ui desing at this moment i have the rpoject forit self now i need the content
+
+### Prompt 22
+
+looks good
+
+### Prompt 23
+
+yes
+
+### Prompt 24
+
+yes
+
+### Prompt 25
+
+yes looks good
+
