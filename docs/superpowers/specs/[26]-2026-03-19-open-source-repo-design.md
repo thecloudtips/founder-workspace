@@ -276,7 +276,7 @@ Sponsorship configuration linking to NaluForge:
 **Current root CLAUDE.md** references beads, swarm, claude-flow, hive-mind — all internal tooling. It needs rewriting for public contributors.
 
 **Action:**
-1. Copy current `CLAUDE.md` to `internal_docs/CLAUDE-internal.md` (gitignored, stays on disk)
+1. Copy current `CLAUDE.md` to `.claude/CLAUDE-internal.md` (already gitignored via `.claude/` rule, stays on disk)
 2. Rewrite root `CLAUDE.md` for public contributors:
 
 **New CLAUDE.md structure:**
@@ -297,7 +297,7 @@ Sponsorship configuration linking to NaluForge:
 4. Create new `docs/` directory
 5. Flatten `internal_docs/site/docs/*` → `docs/` and `internal_docs/site/landing/` → `docs/landing/`
 6. Fix internal links in new `docs/` files (grep for `../landing/`, `../docs/`)
-7. Copy current CLAUDE.md → `internal_docs/CLAUDE-internal.md`
+7. Copy current CLAUDE.md → `.claude/CLAUDE-internal.md`
 8. Create root files: README.md, LICENSE, CONTRIBUTING.md, CODE_OF_CONDUCT.md, SECURITY.md, CHANGELOG.md
 9. Create .github/ templates (bug_report.yml, feature_request.yml, config.yml, PULL_REQUEST_TEMPLATE.md, FUNDING.yml)
 10. Rewrite root CLAUDE.md for public contributors
