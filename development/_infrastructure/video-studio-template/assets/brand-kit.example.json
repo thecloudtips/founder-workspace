@@ -1,0 +1,21 @@
+{
+  "company": "Your Company",
+  "colors": {
+    "primary": "#2563EB",
+    "secondary": "#1E40AF",
+    "accent": "#F59E0B",
+    "background": "#0F172A",
+    "text": "#F8FAFC"
+  },
+  "fonts": {
+    "heading": "fonts/Inter-Bold.woff2",
+    "body": "fonts/Inter-Regular.woff2"
+  },
+  "logo": {
+    "primary": "logos/logo.svg"
+  },
+  "music": {
+    "default": "../public/stock/music/upbeat-corporate.mp3",
+    "calm": "../public/stock/music/ambient-soft.mp3"
+  }
+}
