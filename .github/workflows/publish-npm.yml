@@ -1,0 +1,52 @@
+name: Publish to npm
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Extract version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF_TAG#v}" >> "$GITHUB_OUTPUT"
+        env:
+          GITHUB_REF_TAG: ${{ github.ref_name }}
+
+      - name: Build distribution
+        run: |
+          cd development/scripts
+          # Use GNU sed on Linux (no -i '' needed)
+          sed -i "s/sed -i '' /sed -i /g" build-dist.sh
+          bash build-dist.sh --tag ${{ steps.version.outputs.VERSION }}
+
+      - name: Run distribution tests
+        run: |
+          cd dist
+          npm test
+
+      - name: Publish to npm
+        run: |
+          cd dist
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
