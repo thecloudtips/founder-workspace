@@ -79,3 +79,13 @@ perfect
 
 yes finalize spec
 
+### Prompt 18
+
+ok lets call it a day i will revivew it tomorrow
+
+### Prompt 19
+
+one more thing befre we wrap up can you add one more futurefetur to spec out 
+
+just ne wfile and one liner insdie fos dashboard taht will run on local host and will seve as visuaalization
+

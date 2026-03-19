@@ -23,7 +23,7 @@
     "docs/site/docs/deep-dives/intelligence-engine.md",
     "docs/superpowers/plans/[24a]-2026-03-19-fos-landing-pages.md",
     "docs/superpowers/plans/[24b]-2026-03-19-fos-documentation.md",
-    "docs/superpowers/specs/[19]-2026-03-18-obsidian-integration-design.md"
+    "docs/superpowers/specs/[25]-2026-03-19-fos-dashboard-design.md"
   ],
   "sessions": [
     {
@@ -42,10 +42,10 @@
     }
   ],
   "token_usage": {
-    "input_tokens": 1672,
-    "cache_creation_tokens": 345833,
-    "cache_read_tokens": 12378053,
-    "output_tokens": 53857,
-    "api_call_count": 103
+    "input_tokens": 124,
+    "cache_creation_tokens": 271250,
+    "cache_read_tokens": 9308337,
+    "output_tokens": 33555,
+    "api_call_count": 72
   }
 }
