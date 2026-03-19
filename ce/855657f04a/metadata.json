@@ -1,0 +1,26 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "ce855657f04a",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "docs/superpowers/specs/[20]-2026-03-18-remotion-skill-design.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/ce/855657f04a/0/metadata.json",
+      "transcript": "/ce/855657f04a/0/full.jsonl",
+      "context": "/ce/855657f04a/0/context.md",
+      "content_hash": "/ce/855657f04a/0/content_hash.txt",
+      "prompt": "/ce/855657f04a/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 548,
+    "cache_creation_tokens": 110658,
+    "cache_read_tokens": 3537535,
+    "output_tokens": 22920,
+    "api_call_count": 36
+  }
+}

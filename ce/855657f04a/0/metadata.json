@@ -1,0 +1,30 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "ce855657f04a",
+  "session_id": "00828fea-7389-4800-8899-aa9009bfd46d",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-19T09:38:23.546721Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "docs/superpowers/specs/[20]-2026-03-18-remotion-skill-design.md"
+  ],
+  "agent": "Claude Code",
+  "transcript_identifier_at_start": "9d6bd3d0-8d25-4754-9e33-e7990c520b39",
+  "token_usage": {
+    "input_tokens": 548,
+    "cache_creation_tokens": 110658,
+    "cache_read_tokens": 3537535,
+    "output_tokens": 22920,
+    "api_call_count": 36
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-03-19T09:38:23.496156Z",
+    "agent_lines": 794,
+    "human_added": 2,
+    "human_modified": 6,
+    "human_removed": 0,
+    "total_committed": 802,
+    "agent_percentage": 99.00249376558602
+  }
+}
