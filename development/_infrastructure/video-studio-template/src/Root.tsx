@@ -42,91 +42,96 @@ import {
   defaultProps as defaultPitchHighlight,
 } from "./templates/PitchHighlight";
 
+// Type assertions needed because Remotion's Composition generics require Zod
+// schemas for full type safety. Without schemas, we use `as any` — a standard
+// pattern in Remotion projects that don't use zod prop validation.
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 export const Root: React.FC = () => {
   return (
     <>
       <Folder name="social">
         <Composition
           id="social-reel"
-          component={SocialReel}
+          component={SocialReel as any}
           width={1080}
           height={1920}
           fps={30}
           durationInFrames={450}
-          defaultProps={defaultSocialReel}
-          calculateMetadata={calcSocialReel}
+          defaultProps={defaultSocialReel as any}
+          calculateMetadata={calcSocialReel as any}
         />
         <Composition
           id="social-quote"
-          component={SocialQuote}
+          component={SocialQuote as any}
           width={1080}
           height={1080}
           fps={30}
           durationInFrames={240}
-          defaultProps={defaultSocialQuote}
-          calculateMetadata={calcSocialQuote}
+          defaultProps={defaultSocialQuote as any}
+          calculateMetadata={calcSocialQuote as any}
         />
         <Composition
           id="social-listicle"
-          component={SocialListicle}
+          component={SocialListicle as any}
           width={1080}
           height={1920}
           fps={30}
           durationInFrames={600}
-          defaultProps={defaultSocialListicle}
-          calculateMetadata={calcSocialListicle}
+          defaultProps={defaultSocialListicle as any}
+          calculateMetadata={calcSocialListicle as any}
         />
         <Composition
           id="social-before-after"
-          component={SocialBeforeAfter}
+          component={SocialBeforeAfter as any}
           width={1080}
           height={1920}
           fps={30}
           durationInFrames={300}
-          defaultProps={defaultSocialBeforeAfter}
-          calculateMetadata={calcSocialBeforeAfter}
+          defaultProps={defaultSocialBeforeAfter as any}
+          calculateMetadata={calcSocialBeforeAfter as any}
         />
       </Folder>
       <Folder name="marketing">
         <Composition
           id="product-demo"
-          component={ProductDemo}
+          component={ProductDemo as any}
           width={1920}
           height={1080}
           fps={30}
           durationInFrames={900}
-          defaultProps={defaultProductDemo}
-          calculateMetadata={calcProductDemo}
+          defaultProps={defaultProductDemo as any}
+          calculateMetadata={calcProductDemo as any}
         />
         <Composition
           id="testimonial"
-          component={Testimonial}
+          component={Testimonial as any}
           width={1920}
           height={1080}
           fps={30}
           durationInFrames={450}
-          defaultProps={defaultTestimonial}
-          calculateMetadata={calcTestimonial}
+          defaultProps={defaultTestimonial as any}
+          calculateMetadata={calcTestimonial as any}
         />
         <Composition
           id="explainer"
-          component={Explainer}
+          component={Explainer as any}
           width={1920}
           height={1080}
           fps={30}
           durationInFrames={1350}
-          defaultProps={defaultExplainer}
-          calculateMetadata={calcExplainer}
+          defaultProps={defaultExplainer as any}
+          calculateMetadata={calcExplainer as any}
         />
         <Composition
           id="pitch-highlight"
-          component={PitchHighlight}
+          component={PitchHighlight as any}
           width={1920}
           height={1080}
           fps={30}
           durationInFrames={600}
-          defaultProps={defaultPitchHighlight}
-          calculateMetadata={calcPitchHighlight}
+          defaultProps={defaultPitchHighlight as any}
+          calculateMetadata={calcPitchHighlight as any}
         />
       </Folder>
     </>

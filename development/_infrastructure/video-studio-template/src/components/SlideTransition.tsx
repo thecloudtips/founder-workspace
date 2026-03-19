@@ -14,7 +14,8 @@ export interface SlideTransitionProps {
   slideDurations: number[];
 }
 
-function getPresentation(type: TransitionType) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function getPresentation(type: TransitionType): any {
   switch (type) {
     case "fade":
       return fade();
