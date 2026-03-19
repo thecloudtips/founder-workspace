@@ -141,12 +141,32 @@
     "scout": {
       "required": [],
       "optional": ["websearch"]
+    },
+    "video": {
+      "required": ["node", "remotion-project", "ffmpeg", "disk-space"],
+      "optional": ["late"]
     }
   },
   "dependencies": {
     "late": {
       "check": "node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs --validate-only",
       "description": "Late.dev social media publishing API"
+    },
+    "node": {
+      "check": "node -e \"process.exit(parseInt(process.version.slice(1)) >= 18 ? 0 : 1)\"",
+      "description": "Node.js >= 18 for Remotion rendering"
+    },
+    "remotion-project": {
+      "check": "test -d ~/.founder-os/video-studio/node_modules/remotion",
+      "description": "Managed Remotion project (run /founder-os:video:init to set up)"
+    },
+    "ffmpeg": {
+      "check": "ffmpeg -version 2>/dev/null",
+      "description": "ffmpeg for video encoding"
+    },
+    "disk-space": {
+      "check": "df -k ~/.founder-os/video-studio/output 2>/dev/null | awk 'NR==2 {if ($4 < 512000) exit 1}'",
+      "description": ">= 500MB free in video output directory"
     }
   }
 }
