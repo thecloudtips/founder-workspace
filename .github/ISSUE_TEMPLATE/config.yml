@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://fos.naluforge.com
+    about: Check the documentation before opening an issue
+  - name: Questions & Discussions
+    url: https://github.com/thecloudtips/founder-workspace/discussions
+    about: Ask questions and discuss ideas
