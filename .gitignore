@@ -1,26 +1,25 @@
-# Workflow state (transient)
-.claude-flow/daemon-state.json
-.claude-flow/daemon.pid
-.claude-flow/daemon.log
-.claude-flow/sessions/
-.beads/dolt-server.pid
-.beads/dolt-server.port
-.beads/dolt-server.lock
-.beads/dolt-server.activity
-.beads/dolt-server.log
-.beads/daemon.log
-.beads/beads.db-shm
-.beads/beads.db-wal
-.beads/ephemeral.sqlite3
-.swarm/memory.db
+# Internal development tooling
+.beads/
+.claude/
+.claude-flow/
+.swarm/
+.entire/
+.worktrees/
+
+# Internal docs (development specs, plans, reports)
+internal_docs/
+
+# Dependencies
+node_modules/
+
+# OS files
+.DS_Store
+
+# Release artifacts (built tarballs, not the dist/ directory itself)
+dist/*.tgz
 
 # Claude Code local settings (machine-specific)
 .claude/settings.local.json
 
-# Release artifacts (built, not tracked)
-dist/*.tgz
-
-# OS files
-.DS_Store
-.worktrees/
-.entire/
+# Process files (NOT package lockfiles — those should be committed)
+*.pid
