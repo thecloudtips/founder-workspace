@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "9ed6ec5cefd1",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "docs/superpowers/plans/[25]-2026-03-19-open-source-repo-preparation.md",
+    "docs/superpowers/specs/[26]-2026-03-19-open-source-repo-design.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/9e/d6ec5cefd1/0/metadata.json",
+      "transcript": "/9e/d6ec5cefd1/0/full.jsonl",
+      "context": "/9e/d6ec5cefd1/0/context.md",
+      "content_hash": "/9e/d6ec5cefd1/0/content_hash.txt",
+      "prompt": "/9e/d6ec5cefd1/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 32,
+    "cache_creation_tokens": 38400,
+    "cache_read_tokens": 3352476,
+    "output_tokens": 11909,
+    "api_call_count": 26
+  }
+}
