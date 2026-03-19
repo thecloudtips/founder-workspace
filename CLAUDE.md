@@ -1,48 +1,53 @@
-# Founder OS Workspace
+# Founder OS
 
-Monorepo for Founder OS — a Claude Code plugin for founder workflows.
+AI-powered business automation plugin for Claude Code. Turns Claude Code into a command center for email triage, meeting prep, report generation, CRM sync, and 30+ other founder workflows.
 
-## Structure
+## Repository Structure
 
 ```
 founder-workspace/
-  ├── development/         # Source code (commands, skills, agents, scripts)
-  ├── dist/                # Distribution package (npm, release artifacts)
-  ├── docs/                # Specs, plans, reference, reports
-  ├── .beads/              # Issue tracking
-  ├── .claude/             # Claude Code project settings
-  ├── .claude-flow/        # Swarm orchestration state
-  ├── .entire/             # Entire checkpoint data
-  └── .swarm/              # Swarm memory and indexes
+  ├── development/         # Source code
+  │   ├── commands/        # Slash commands (/founder-os:<namespace>:<action>)
+  │   ├── skills/          # Domain knowledge per namespace
+  │   ├── agents/          # Agent team definitions
+  │   ├── scripts/         # Build and utility scripts
+  │   ├── _infrastructure/ # Infrastructure helpers (preflight, hooks, etc.)
+  │   └── install.sh       # Plugin installer
+  ├── dist/                # Distribution package (npm)
+  └── docs/                # Public documentation
+      ├── commands/        # Command reference (35 namespaces)
+      ├── agents/          # Agent team documentation
+      ├── deep-dives/      # Architecture internals
+      ├── extending/       # Customization guides
+      └── landing/         # Product landing page content
 ```
 
-## Development
+## Adding a New Command
 
-Source code lives in `development/`. This includes:
-- `commands/` — Slash commands
-- `skills/` — Claude Code skills
-- `agents/` — Agent definitions
-- `scripts/` — Build and utility scripts
-- `install.sh` — Installer
-- `_infrastructure/` — Infrastructure helpers
-- `_templates/` — Template files
+Commands live in `development/commands/<namespace>/<action>.md`. Each command is a markdown file that Claude Code loads as a slash command.
 
-## Distribution
+1. Create the command file: `development/commands/<namespace>/<action>.md`
+2. Add the corresponding skill (if needed): `development/skills/<namespace>/<skill-name>/SKILL.md`
+3. Register any new dependencies in `development/_infrastructure/preflight/dependency-registry.json`
 
-The `dist/` folder contains the packaged plugin ready for release:
-- `package.json` — npm manifest
-- `bin/` — CLI entry points
-- `lib/` — Compiled/bundled library code
-- `template/` — Template files included in the package
-- `tests/` — Distribution tests
-- `founder-os-*.tgz` — Built release artifacts
+## Adding a New Skill
 
-Release scripts should output artifacts to `dist/`.
+Skills live in `development/skills/<namespace>/<skill-name>/SKILL.md`. Skills provide domain knowledge that commands reference.
 
-## Beads Issue Tracking
+## Adding a New Agent Team
 
-Beads lives at the workspace root (`.beads/`) and tracks issues across the project. Use `bd` commands from the workspace root.
+Agent teams live in `development/agents/<namespace>/`. Each team has a `config.json` and one or more agent markdown files.
 
-## Project Instructions
+## Build & Test
 
-For detailed project conventions, architecture, and development workflow, see `development/CLAUDE.md`.
+```bash
+# Run distribution tests
+cd dist && npm test
+
+# Package for release
+cd dist && npm pack
+```
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, PR process, and coding standards.
