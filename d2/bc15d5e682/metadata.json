@@ -1,0 +1,43 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "d2bc15d5e682",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".github/FUNDING.yml",
+    ".github/ISSUE_TEMPLATE/bug_report.yml",
+    ".github/ISSUE_TEMPLATE/config.yml",
+    ".github/ISSUE_TEMPLATE/feature_request.yml",
+    ".github/PULL_REQUEST_TEMPLATE.md",
+    ".gitignore",
+    "CLAUDE.md",
+    "CONTRIBUTING.md",
+    "LICENSE",
+    "README.md",
+    "SECURITY.md",
+    "docs/deep-dives/dispatcher.md",
+    "docs/deep-dives/hooks-system.md",
+    "docs/index.md",
+    "docs/installation.md",
+    "docs/landing/how-it-works.md",
+    "docs/landing/index.md",
+    "docs/landing/use-cases.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/d2/bc15d5e682/0/metadata.json",
+      "transcript": "/d2/bc15d5e682/0/full.jsonl",
+      "context": "/d2/bc15d5e682/0/context.md",
+      "content_hash": "/d2/bc15d5e682/0/content_hash.txt",
+      "prompt": "/d2/bc15d5e682/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 60,
+    "cache_creation_tokens": 32549,
+    "cache_read_tokens": 9458057,
+    "output_tokens": 11400,
+    "api_call_count": 56
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "d2bc15d5e682",
+  "session_id": "0b195271-ac5e-4f64-bd45-9f499d958839",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-19T14:56:56.06142Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".github/FUNDING.yml",
+    ".github/ISSUE_TEMPLATE/bug_report.yml",
+    ".github/ISSUE_TEMPLATE/config.yml",
+    ".github/ISSUE_TEMPLATE/feature_request.yml",
+    ".github/PULL_REQUEST_TEMPLATE.md",
+    ".gitignore",
+    "CLAUDE.md",
+    "CONTRIBUTING.md",
+    "LICENSE",
+    "README.md",
+    "SECURITY.md",
+    "docs/deep-dives/dispatcher.md",
+    "docs/deep-dives/hooks-system.md",
+    "docs/index.md",
+    "docs/installation.md",
+    "docs/landing/how-it-works.md",
+    "docs/landing/index.md",
+    "docs/landing/use-cases.md"
+  ],
+  "agent": "Claude Code",
+  "transcript_identifier_at_start": "1a192658-fab2-491d-a7d5-a1e1fd89341c",
+  "checkpoint_transcript_start": 412,
+  "transcript_lines_at_start": 412,
+  "token_usage": {
+    "input_tokens": 60,
+    "cache_creation_tokens": 32549,
+    "cache_read_tokens": 9458057,
+    "output_tokens": 11400,
+    "api_call_count": 56
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-03-19T14:56:55.988594Z",
+    "agent_lines": 0,
+    "human_added": 78153,
+    "human_modified": 54,
+    "human_removed": 0,
+    "total_committed": 78153,
+    "agent_percentage": 0
+  }
+}
