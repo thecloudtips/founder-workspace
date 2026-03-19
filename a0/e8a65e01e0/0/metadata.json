@@ -1,0 +1,30 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "a0e8a65e01e0",
+  "session_id": "0b195271-ac5e-4f64-bd45-9f499d958839",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-19T14:28:39.053483Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "docs/superpowers/specs/[26]-2026-03-19-open-source-repo-design.md"
+  ],
+  "agent": "Claude Code",
+  "transcript_identifier_at_start": "4a80ec2d-5e1d-4d0d-9935-9d62e701de15",
+  "token_usage": {
+    "input_tokens": 52,
+    "cache_creation_tokens": 113192,
+    "cache_read_tokens": 3927444,
+    "output_tokens": 13264,
+    "api_call_count": 44
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-03-19T14:28:39.032945Z",
+    "agent_lines": 218,
+    "human_added": 58,
+    "human_modified": 45,
+    "human_removed": 0,
+    "total_committed": 321,
+    "agent_percentage": 67.91277258566979
+  }
+}
