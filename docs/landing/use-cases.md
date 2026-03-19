@@ -62,11 +62,11 @@ FOS computes a health score across five metrics --- last contact, response time,
 
 | Namespace | What it does | Learn more |
 |-----------|-------------|------------|
-| `morning` | Quick check-ins and full morning syncs across Gmail, Calendar, Notion, Slack, and Drive | [Commands overview](../docs/commands.md) |
-| `inbox` | AI-powered email triage with Eisenhower matrix categorization and draft generation | [Commands overview](../docs/commands.md) |
-| `briefing` | Structured daily briefings with meeting prep, email highlights, and task priorities | [Commands overview](../docs/commands.md) |
-| `health` | Client health scoring with five-metric dashboard and risk flag detection | [Commands overview](../docs/commands.md) |
-| `review` | Automated weekly reviews with wins, blockers, and next-week priority ranking | [Commands overview](../docs/commands.md) |
+| `morning` | Quick check-ins and full morning syncs across Gmail, Calendar, Notion, Slack, and Drive | [Commands overview](../commands/index.md) |
+| `inbox` | AI-powered email triage with Eisenhower matrix categorization and draft generation | [Commands overview](../commands/index.md) |
+| `briefing` | Structured daily briefings with meeting prep, email highlights, and task priorities | [Commands overview](../commands/index.md) |
+| `health` | Client health scoring with five-metric dashboard and risk flag detection | [Commands overview](../commands/index.md) |
+| `review` | Automated weekly reviews with wins, blockers, and next-week priority ranking | [Commands overview](../commands/index.md) |
 
 ---
 
@@ -128,11 +128,11 @@ FOS scans your Gmail sent folder, matches email threads to CRM clients using a f
 
 | Namespace | What it does | Learn more |
 |-----------|-------------|------------|
-| `client` | Full client dossiers with six-agent parallel gathering from CRM, email, calendar, and drive | [Commands overview](../docs/commands.md) |
-| `sow` | Statement of Work generation with three scope options and competing-hypotheses pipeline | [Commands overview](../docs/commands.md) |
-| `invoice` | Single and batch invoice processing with extraction, validation, and Notion recording | [Commands overview](../docs/commands.md) |
-| `crm` | CRM sync for email and meetings with AI summaries, sentiment, and client matching | [Commands overview](../docs/commands.md) |
-| `report` | Polished report generation from data files with charts and executive summaries | [Commands overview](../docs/commands.md) |
+| `client` | Full client dossiers with six-agent parallel gathering from CRM, email, calendar, and drive | [Commands overview](../commands/index.md) |
+| `sow` | Statement of Work generation with three scope options and competing-hypotheses pipeline | [Commands overview](../commands/index.md) |
+| `invoice` | Single and batch invoice processing with extraction, validation, and Notion recording | [Commands overview](../commands/index.md) |
+| `crm` | CRM sync for email and meetings with AI summaries, sentiment, and client matching | [Commands overview](../commands/index.md) |
+| `report` | Polished report generation from data files with charts and executive summaries | [Commands overview](../commands/index.md) |
 
 ---
 
@@ -194,11 +194,11 @@ FOS scans your Gmail sent folder for threads where you sent the last message and
 
 | Namespace | What it does | Learn more |
 |-----------|-------------|------------|
-| `prep` | Deep meeting preparation with attendee profiles, open items, and discussion guides | [Commands overview](../docs/commands.md) |
-| `proposal` | Seven-section client proposals with three pricing packages and SOW-compatible brief output | [Commands overview](../docs/commands.md) |
-| `contract` | Contract analysis with key term extraction, risk detection, and negotiation recommendations | [Commands overview](../docs/commands.md) |
-| `expense` | Seven-section expense reports with tax deductibility, trend analysis, and vendor summaries | [Commands overview](../docs/commands.md) |
-| `followup` | Sent-email scanning for unanswered threads with promise detection and priority scoring | [Commands overview](../docs/commands.md) |
+| `prep` | Deep meeting preparation with attendee profiles, open items, and discussion guides | [Commands overview](../commands/index.md) |
+| `proposal` | Seven-section client proposals with three pricing packages and SOW-compatible brief output | [Commands overview](../commands/index.md) |
+| `contract` | Contract analysis with key term extraction, risk detection, and negotiation recommendations | [Commands overview](../commands/index.md) |
+| `expense` | Seven-section expense reports with tax deductibility, trend analysis, and vendor summaries | [Commands overview](../commands/index.md) |
+| `followup` | Sent-email scanning for unanswered threads with promise detection and priority scoring | [Commands overview](../commands/index.md) |
 
 ---
 
@@ -260,11 +260,11 @@ FOS pulls all active goals from your Notion Goals database, computes a progress 
 
 | Namespace | What it does | Learn more |
 |-----------|-------------|------------|
-| `compete` | Competitive intelligence with web research, SWOT analysis, and head-to-head comparison | [Commands overview](../docs/commands.md) |
-| `newsletter` | Newsletter pipeline from research to outline to full draft in founder voice | [Commands overview](../docs/commands.md) |
-| `goal` | Goal tracking with RAG status, velocity analysis, milestone tracking, and blocker detection | [Commands overview](../docs/commands.md) |
-| `learn` | Learning capture with auto-tagging, topic detection, and related insight linking | [Commands overview](../docs/commands.md) |
-| `ideate` | Content ideation with framework selection, platform-adapted outlines, and draft generation | [Commands overview](../docs/commands.md) |
+| `compete` | Competitive intelligence with web research, SWOT analysis, and head-to-head comparison | [Commands overview](../commands/index.md) |
+| `newsletter` | Newsletter pipeline from research to outline to full draft in founder voice | [Commands overview](../commands/index.md) |
+| `goal` | Goal tracking with RAG status, velocity analysis, milestone tracking, and blocker detection | [Commands overview](../commands/index.md) |
+| `learn` | Learning capture with auto-tagging, topic detection, and related insight linking | [Commands overview](../commands/index.md) |
+| `ideate` | Content ideation with framework selection, platform-adapted outlines, and draft generation | [Commands overview](../commands/index.md) |
 
 ---
 
@@ -272,4 +272,4 @@ FOS pulls all active goals from your Notion Goals database, computes a progress 
 
 Most founders see themselves in more than one of these scenarios. That is by design --- Founder OS has 33 command namespaces that work together across every part of your business. Start with the workflow that costs you the most time today, and expand from there.
 
-Ready to get started? See the [Installation Guide](./getting-started.md) to set up Founder OS in under 10 minutes. Or explore the [full command reference](../docs/commands.md) to see everything FOS can do.
+Ready to get started? See the [Installation Guide](./getting-started.md) to set up Founder OS in under 10 minutes. Or explore the [full command reference](../commands/index.md) to see everything FOS can do.

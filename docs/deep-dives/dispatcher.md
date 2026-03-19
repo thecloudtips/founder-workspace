@@ -346,4 +346,4 @@ Ten namespaces support the `--schedule` flag for recurring execution (for exampl
 - [Command Reference](../commands/index.md) — Full list of all 33 namespaces and 120+ commands
 - [Agent Teams](./agent-teams.md) — How multi-agent pipelines work with the `--team` flag
 - [Memory Engine](./memory.md) — How memories and intelligence patterns are injected into dispatched commands
-- [Getting Started](../../landing/getting-started.md) — Installation and initial setup
+- [Getting Started](../landing/getting-started.md) — Installation and initial setup

@@ -248,4 +248,4 @@ npx founder-os
 
 For a deeper look at what Founder OS can do for your specific situation, explore the [Use Cases](./use-cases.md) page to find the persona that matches your role.
 
-Want to understand the full command library? Browse the [Command Reference](../docs/commands/index.md) for all 33 namespaces and 120+ commands.
+Want to understand the full command library? Browse the [Command Reference](../commands/index.md) for all 33 namespaces and 120+ commands.

@@ -207,4 +207,4 @@ Then set up your workspace:
 /founder-os:setup:verify
 ```
 
-For the full setup walkthrough, configuration options, and troubleshooting, see the [Getting Started Guide](../docs/getting-started.md).
+For the full setup walkthrough, configuration options, and troubleshooting, see the [Getting Started Guide](./getting-started.md).

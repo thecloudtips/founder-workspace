@@ -1,6 +1,6 @@
 # Installation & Configuration
 
-This guide covers everything you need to install, configure, and verify a complete Founder OS environment. For a quicker walkthrough, see the [Getting Started guide](../landing/getting-started.md).
+This guide covers everything you need to install, configure, and verify a complete Founder OS environment. For a quicker walkthrough, see the [Getting Started guide](./landing/getting-started.md).
 
 ---
 

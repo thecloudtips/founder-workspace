@@ -14,7 +14,7 @@ Founder OS is an AI-powered business automation plugin for Claude Code. It gives
 
 New to Founder OS? Start here.
 
-- [**Getting Started Guide**](../landing/getting-started.md) -- Install in under 5 minutes, run your first commands, and connect your integrations.
+- [**Getting Started Guide**](./landing/getting-started.md) -- Install in under 5 minutes, run your first commands, and connect your integrations.
 - [**Installation & Configuration**](./installation.md) -- Full prerequisites, step-by-step setup, environment variables, and integration wiring.
 
 ### Command Reference
@@ -55,7 +55,7 @@ Add new capabilities, build custom workflows, and discover external tools.
 
 ## Where to Start
 
-**If you want to try it right now:** Go to the [Getting Started Guide](../landing/getting-started.md). You will be running commands in under 5 minutes.
+**If you want to try it right now:** Go to the [Getting Started Guide](./landing/getting-started.md). You will be running commands in under 5 minutes.
 
 **If you want to see what it can do first:** Browse the [Command Reference](./commands/index.md) to see all 35 namespaces and 95+ slash commands organized by the four pillars.
 

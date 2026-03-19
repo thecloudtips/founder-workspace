@@ -430,4 +430,4 @@ The merge logic detects old-format entries (such as flat-format hooks from v1.1.
 - [Architecture Overview](../architecture.md) — How hooks fit into the broader Founder OS system
 - [Intelligence Engine](./intelligence-engine.md) — The pattern detection system that hooks feed data into
 - [Memory Engine](./memory-engine.md) — How learned preferences persist across sessions
-- [Getting Started](../../landing/getting-started.md) — Installation and initial setup
+- [Getting Started](../landing/getting-started.md) — Installation and initial setup
