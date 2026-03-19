@@ -1,0 +1,30 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "f867549b5d93",
+  "session_id": "9ead4b44-3a18-4355-a4bd-a9f20dc1e9bf",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-19T01:09:23.719175Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "docs/superpowers/specs/[19]-2026-03-18-obsidian-integration-design.md"
+  ],
+  "agent": "Claude Code",
+  "transcript_identifier_at_start": "b2ec1dbf-2183-4b21-bfe0-9db3945352a9",
+  "token_usage": {
+    "input_tokens": 1559,
+    "cache_creation_tokens": 78061,
+    "cache_read_tokens": 4011343,
+    "output_tokens": 21351,
+    "api_call_count": 38
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-03-19T01:09:23.663516Z",
+    "agent_lines": 402,
+    "human_added": 1,
+    "human_modified": 4,
+    "human_removed": 0,
+    "total_committed": 407,
+    "agent_percentage": 98.77149877149877
+  }
+}
