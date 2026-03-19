@@ -1,0 +1,32 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "a99fa05c1fbc",
+  "session_id": "0b195271-ac5e-4f64-bd45-9f499d958839",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-19T15:46:12.395838Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".github/workflows/publish-npm.yml"
+  ],
+  "agent": "Claude Code",
+  "transcript_identifier_at_start": "afb6b640-a447-452c-be66-dc4a8594377d",
+  "checkpoint_transcript_start": 1132,
+  "transcript_lines_at_start": 1132,
+  "token_usage": {
+    "input_tokens": 26,
+    "cache_creation_tokens": 9281,
+    "cache_read_tokens": 3147590,
+    "output_tokens": 2595,
+    "api_call_count": 14
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-03-19T15:46:12.303278Z",
+    "agent_lines": 0,
+    "human_added": 54,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 54,
+    "agent_percentage": 0
+  }
+}
