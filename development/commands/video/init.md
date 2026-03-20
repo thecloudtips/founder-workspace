@@ -50,8 +50,18 @@ Check `${CLAUDE_PLUGIN_ROOT}/_infrastructure/context/active/` for `.md` files. I
    test -f <target-path>/node_modules/remotion/package.json && echo "Remotion: OK" || echo "Remotion: MISSING"
    test -f <target-path>/src/Root.tsx && echo "Root.tsx: OK" || echo "Root.tsx: MISSING"
    ```
-9. Report: project path, installed packages, template count (8), stock asset count
-10. Suggest next step: `video:brand --set` to configure brand kit, or `video:generate` to create your first video
+9. Write state file at `~/.founder-os/video-studio.json`:
+   ```json
+   {
+     "path": "<target-path>",
+     "remotionVersion": "<version from target-path/node_modules/remotion/package.json>",
+     "initializedAt": "<ISO 8601 timestamp>"
+   }
+   ```
+   Read the Remotion version from `<target-path>/node_modules/remotion/package.json` `version` field.
+   If a state file already exists pointing to a **different** path, warn the user: "An existing video studio exists at [old-path]. Overwriting state file to point to [new-path]."
+10. Report: project path, installed packages, template count (8), stock asset count
+11. Suggest next step: `video:brand --set` to configure brand kit, or `video:generate` to create your first video
 
 ## Final Step: Observation Logging
 
