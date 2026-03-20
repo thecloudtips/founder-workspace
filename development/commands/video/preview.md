@@ -24,6 +24,12 @@ Read these skill files before proceeding:
 | `--frames` | No | Comma-separated frame numbers (default: 0, midpoint, 90% of duration) |
 | `--props` | No | Props JSON string or file path |
 
+## Workspace Resolution
+
+1. Read `~/.founder-os/video-studio.json`. If missing or invalid JSON: error with "Video studio not initialized or state file corrupted. Run /founder-os:video:init first."
+2. Set `VIDEO_PATH` from the state file's `path` field.
+3. Validate: check `${VIDEO_PATH}/node_modules/.bin/remotion` exists. If missing: error with "Video studio workspace at [path] appears incomplete or missing. Run /founder-os:video:init to reinitialize."
+
 ## Preflight Check
 
 Run `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md` for namespace `video`.
@@ -39,8 +45,7 @@ Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/memory/context-injection/SKILL.md`. 
 3. Determine frame numbers (default: 0, midpoint, near-end based on composition duration)
 4. For each frame:
    ```bash
-   cd ~/.founder-os/video-studio
-   npx remotion still <composition-id> --frame=<N> --output=output/previews/<comp>-frame-<N>.png --props='<json>'
+   cd ${VIDEO_PATH} && ./node_modules/.bin/remotion still <composition-id> --frame=<N> --output=output/previews/<comp>-frame-<N>.png --props='<json>'
    ```
 5. Display generated preview file paths
 
