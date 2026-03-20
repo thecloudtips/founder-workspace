@@ -30,10 +30,16 @@ At least one flag is required.
 
 Check `${CLAUDE_PLUGIN_ROOT}/_infrastructure/context/active/` for `.md` files. Used by `--import` to populate brand kit.
 
+## Workspace Resolution
+
+1. Read `~/.founder-os/video-studio.json`. If missing or invalid JSON: error with "Video studio not initialized or state file corrupted. Run /founder-os:video:init first."
+2. Set `VIDEO_PATH` from the state file's `path` field.
+3. Validate: check `${VIDEO_PATH}/assets/brand-kit.json` exists. If missing: error with "Brand kit not found. Run /founder-os:video:init to set up the video studio."
+
 ## Execution
 
 ### --show
-1. Read `~/.founder-os/video-studio/assets/brand-kit.json`
+1. Read `${VIDEO_PATH}/assets/brand-kit.json`
 2. Display formatted brand kit: company name, color swatches (hex values), font paths, logo paths, music tracks
 3. Validate: check all referenced files exist, flag any missing assets
 
@@ -56,7 +62,7 @@ Interactive wizard:
 2. Extract brand information (company, colors, fonts, logos)
 3. Build brand-kit.json from extracted data
 4. Copy any referenced asset files to the managed project's assets/ directory
-5. Write `~/.founder-os/video-studio/assets/brand-kit.json`
+5. Write `${VIDEO_PATH}/assets/brand-kit.json`
 6. Show what was imported and any fields that still need manual configuration
 
 ### --reset
