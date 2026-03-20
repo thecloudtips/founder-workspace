@@ -22,6 +22,11 @@ Read these skill files before proceeding:
 | `--category` | No | Filter by category: social, marketing |
 | `--detail` | No | Show detailed prop interfaces for each template |
 
+## Workspace Resolution
+
+1. Read `~/.founder-os/video-studio.json`. If missing or invalid JSON: error with "Video studio not initialized or state file corrupted. Run /founder-os:video:init first."
+2. Set `VIDEO_PATH` from the state file's `path` field.
+
 ## Execution
 
 1. Read template catalog from video-templates skill
@@ -39,4 +44,4 @@ Read these skill files before proceeding:
 | explainer | marketing | 16:9 | 6s/section | Section-based explainer |
 | pitch-highlight | marketing | 16:9 | 20s | Key metrics with counters |
 
-4. If `--detail` flag: for each template, read the TypeScript source file at `~/.founder-os/video-studio/src/templates/<Name>.tsx` and display the props interface.
+4. If `--detail` flag: for each template, read the TypeScript source file at `${VIDEO_PATH}/src/templates/<Name>.tsx` and display the props interface.
