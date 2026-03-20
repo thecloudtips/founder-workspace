@@ -3,9 +3,19 @@
   "checkpoint_id": "a99fa05c1fbc",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 3,
+  "checkpoints_count": 4,
   "files_touched": [
     ".github/workflows/publish-npm.yml",
+    "development/_infrastructure/memory/context-injection/SKILL.md",
+    "development/_infrastructure/memory/pattern-detection/SKILL.md",
+    "development/_infrastructure/preflight/dependency-registry.json",
+    "development/commands/video/brand.md",
+    "development/commands/video/generate.md",
+    "development/commands/video/init.md",
+    "development/commands/video/preview.md",
+    "development/commands/video/render.md",
+    "development/commands/video/templates.md",
+    "development/skills/video/video-rendering/SKILL.md",
     "docs/superpowers/plans/2026-03-20-video-studio-remediation.md",
     "docs/superpowers/specs/2026-03-20-video-studio-deferred-issues.md",
     "docs/superpowers/specs/2026-03-20-video-studio-remediation-design.md",
@@ -32,13 +42,20 @@
       "context": "/a9/9fa05c1fbc/2/context.md",
       "content_hash": "/a9/9fa05c1fbc/2/content_hash.txt",
       "prompt": "/a9/9fa05c1fbc/2/prompt.txt"
+    },
+    {
+      "metadata": "/a9/9fa05c1fbc/3/metadata.json",
+      "transcript": "/a9/9fa05c1fbc/3/full.jsonl",
+      "context": "/a9/9fa05c1fbc/3/context.md",
+      "content_hash": "/a9/9fa05c1fbc/3/content_hash.txt",
+      "prompt": "/a9/9fa05c1fbc/3/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 106,
-    "cache_creation_tokens": 227344,
-    "cache_read_tokens": 5915174,
-    "output_tokens": 30144,
-    "api_call_count": 56
+    "input_tokens": 129,
+    "cache_creation_tokens": 465372,
+    "cache_read_tokens": 6994328,
+    "output_tokens": 45072,
+    "api_call_count": 72
   }
 }

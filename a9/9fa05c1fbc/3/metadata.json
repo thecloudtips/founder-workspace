@@ -1,0 +1,39 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "a99fa05c1fbc",
+  "session_id": "1ae959c9-fca9-4506-97c1-b508a77ae243",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-20T08:54:18.46791Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "development/_infrastructure/memory/context-injection/SKILL.md",
+    "development/_infrastructure/memory/pattern-detection/SKILL.md",
+    "development/_infrastructure/preflight/dependency-registry.json",
+    "development/commands/video/brand.md",
+    "development/commands/video/generate.md",
+    "development/commands/video/init.md",
+    "development/commands/video/preview.md",
+    "development/commands/video/render.md",
+    "development/commands/video/templates.md",
+    "development/skills/video/video-rendering/SKILL.md"
+  ],
+  "agent": "Claude Code",
+  "transcript_identifier_at_start": "63d3bdca-1f44-4fbc-9fe0-ba0a251afb9a",
+  "token_usage": {
+    "input_tokens": 23,
+    "cache_creation_tokens": 238028,
+    "cache_read_tokens": 1079154,
+    "output_tokens": 14928,
+    "api_call_count": 16
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-03-20T08:54:18.430132Z",
+    "agent_lines": 0,
+    "human_added": 37,
+    "human_modified": 50,
+    "human_removed": 0,
+    "total_committed": 37,
+    "agent_percentage": 0
+  }
+}
