@@ -35,10 +35,16 @@ Read these skill files before proceeding:
 
 Check `${CLAUDE_PLUGIN_ROOT}/_infrastructure/context/active/` for `.md` files. If present, read them for brand voice, company info, and client context. This feeds into brand kit resolution (step 2 of resolution chain).
 
+## Workspace Resolution
+
+1. Read `~/.founder-os/video-studio.json`. If missing or invalid JSON: error with "Video studio not initialized or state file corrupted. Run /founder-os:video:init first."
+2. Set `VIDEO_PATH` from the state file's `path` field.
+3. Validate: check `${VIDEO_PATH}/node_modules/.bin/remotion` exists. If missing: error with "Video studio workspace at [path] appears incomplete or missing. Run /founder-os:video:init to reinitialize."
+
 ## Preflight Check
 
 Run `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md` for namespace `video`.
-- Required: `node` (>= 18), `remotion-project` (managed project installed), `ffmpeg`, `disk-space` (>= 500MB in output dir)
+- Required: `node` (>= 18), `remotion-project` (managed project installed), `disk-space` (>= 500MB in output dir)
 - Optional: `late` (only for `--post` flag)
 
 ## Step 0: Memory Context
@@ -67,13 +73,12 @@ Display: `Phase 1/3: Preparing content...`
 
 Display: `Phase 2/3: Generating preview...`
 
-1. Write props JSON to temporary file: `~/.founder-os/video-studio/output/.props-tmp.json`
+1. Write props JSON to temporary file: `${VIDEO_PATH}/output/.props-tmp.json`
 2. Render 3 still frames:
    ```bash
-   cd ~/.founder-os/video-studio
-   npx remotion still <composition-id> --frame=0 --output=output/previews/preview-start.png --props=output/.props-tmp.json
-   npx remotion still <composition-id> --frame=<mid> --output=output/previews/preview-mid.png --props=output/.props-tmp.json
-   npx remotion still <composition-id> --frame=<near-end> --output=output/previews/preview-end.png --props=output/.props-tmp.json
+   cd ${VIDEO_PATH} && ./node_modules/.bin/remotion still <composition-id> --frame=0 --output=output/previews/preview-start.png --props=output/.props-tmp.json
+   cd ${VIDEO_PATH} && ./node_modules/.bin/remotion still <composition-id> --frame=<mid> --output=output/previews/preview-mid.png --props=output/.props-tmp.json
+   cd ${VIDEO_PATH} && ./node_modules/.bin/remotion still <composition-id> --frame=<near-end> --output=output/previews/preview-end.png --props=output/.props-tmp.json
    ```
 3. Display preview paths and template info to user
 4. Ask user: "Proceed with full render? (yes/no)"
@@ -85,8 +90,7 @@ Display: `Phase 3/3: Rendering video...`
 
 1. Execute full render:
    ```bash
-   cd ~/.founder-os/video-studio
-   npx remotion render <composition-id> \
+   cd ${VIDEO_PATH} && ./node_modules/.bin/remotion render <composition-id> \
      --output=output/<template>-<timestamp>.mp4 \
      --props=output/.props-tmp.json \
      --codec=h264 \
@@ -105,7 +109,7 @@ Display video generation summary:
 | Duration | 15s |
 | Resolution | 1080x1920 |
 | File Size | 2.3 MB |
-| Output | ~/.founder-os/video-studio/output/social-reel-20260319-143022.mp4 |
+| Output | ${VIDEO_PATH}/output/social-reel-20260319-143022.mp4 |
 
 ## Final Step: Observation Logging
 
