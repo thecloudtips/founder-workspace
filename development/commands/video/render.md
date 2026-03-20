@@ -24,6 +24,12 @@ Read these skill files before proceeding:
 | `--format` | No | Output preset: reel, story, square, landscape, gif |
 | `--output` | No | Custom output file path |
 
+## Workspace Resolution
+
+1. Read `~/.founder-os/video-studio.json`. If missing or invalid JSON: error with "Video studio not initialized or state file corrupted. Run /founder-os:video:init first."
+2. Set `VIDEO_PATH` from the state file's `path` field.
+3. Validate: check `${VIDEO_PATH}/node_modules/.bin/remotion` exists. If missing: error with "Video studio workspace at [path] appears incomplete or missing. Run /founder-os:video:init to reinitialize."
+
 ## Preflight Check
 
 Run `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md` for namespace `video`.
@@ -40,8 +46,7 @@ Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/memory/context-injection/SKILL.md`. 
 4. Build output file path: `--output` or `output/<composition>-<timestamp>.mp4`
 5. Execute render:
    ```bash
-   cd ~/.founder-os/video-studio
-   npx remotion render <composition-id> \
+   cd ${VIDEO_PATH} && ./node_modules/.bin/remotion render <composition-id> \
      --output=<output-path> \
      --props=<props-path> \
      --codec=h264 \
@@ -58,7 +63,7 @@ Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/memory/context-injection/SKILL.md`. 
 | Format | reel (1080x1920) |
 | Duration | 15s |
 | File Size | 2.3 MB |
-| Output | ~/.founder-os/video-studio/output/social-reel-20260319-143022.mp4 |
+| Output | ${VIDEO_PATH}/output/social-reel-20260319-143022.mp4 |
 
 ## Final Step: Observation Logging
 
