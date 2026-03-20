@@ -22,3 +22,52 @@ Execute plan by dispatching fresh subagent per task, with two-stage review after
 
 **Why subagents:** You delegate tasks to specialized agents with isolated context. By precisely crafting their instructions and context, you ensure they stay focused and succeed ...
 
+### Prompt 3
+
+one questio  we had multiple specs in super powers folder where are they now ?
+
+### Prompt 4
+
+ok can we movew it to interal_docs folder
+
+### Prompt 5
+
+ok so lets spec properly this one now internal_docs/superpowers/specs/2026-03-20-video-studio-deferred-issues.md
+
+### Prompt 6
+
+Base directory for this skill: /Users/lhalicki/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.2/skills/brainstorming
+
+# Brainstorming Ideas Into Designs
+
+Help turn ideas into fully formed designs and specs through natural collaborative dialogue.
+
+Start by understanding the current project context, then ask questions one at a time to refine the idea. Once you understand what you're building, present the design and get user approval.
+
+<HARD-GATE>
+Do NOT invoke any implementation ski...
+
+### Prompt 7
+
+remember taht we are now working in deveopmend project taht is relusitng with relseaing an npm packed and npx --init command
+
+### Prompt 8
+
+a
+
+### Prompt 9
+
+no this sounds right
+
+### Prompt 10
+
+i think yes
+
+### Prompt 11
+
+a
+
+### Prompt 12
+
+ok
+

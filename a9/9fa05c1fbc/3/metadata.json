@@ -3,9 +3,9 @@
   "checkpoint_id": "a99fa05c1fbc",
   "session_id": "1ae959c9-fca9-4506-97c1-b508a77ae243",
   "strategy": "manual-commit",
-  "created_at": "2026-03-20T08:54:18.46791Z",
+  "created_at": "2026-03-20T11:04:31.703966Z",
   "branch": "main",
-  "checkpoints_count": 1,
+  "checkpoints_count": 8,
   "files_touched": [
     "development/_infrastructure/memory/context-injection/SKILL.md",
     "development/_infrastructure/memory/pattern-detection/SKILL.md",
@@ -16,24 +16,30 @@
     "development/commands/video/preview.md",
     "development/commands/video/render.md",
     "development/commands/video/templates.md",
-    "development/skills/video/video-rendering/SKILL.md"
+    "development/skills/video/video-rendering/SKILL.md",
+    "docs/superpowers/plans/2026-03-20-video-studio-remediation.md",
+    "docs/superpowers/specs/2026-03-20-video-studio-deferred-issues.md",
+    "docs/superpowers/specs/2026-03-20-video-studio-remediation-design.md",
+    "internal_docs/superpowers/specs/2026-03-20-video-studio-deferred-issues.md"
   ],
   "agent": "Claude Code",
-  "transcript_identifier_at_start": "63d3bdca-1f44-4fbc-9fe0-ba0a251afb9a",
+  "transcript_identifier_at_start": "32076ca4-8625-419f-859b-13ad21faa6a3",
+  "checkpoint_transcript_start": 441,
+  "transcript_lines_at_start": 441,
   "token_usage": {
-    "input_tokens": 23,
-    "cache_creation_tokens": 238028,
-    "cache_read_tokens": 1079154,
-    "output_tokens": 14928,
-    "api_call_count": 16
+    "input_tokens": 57,
+    "cache_creation_tokens": 185217,
+    "cache_read_tokens": 4525356,
+    "output_tokens": 10135,
+    "api_call_count": 36
   },
   "initial_attribution": {
-    "calculated_at": "2026-03-20T08:54:18.430132Z",
+    "calculated_at": "2026-03-20T11:04:31.646385Z",
     "agent_lines": 0,
-    "human_added": 37,
-    "human_modified": 50,
-    "human_removed": 0,
-    "total_committed": 37,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 157,
+    "total_committed": 157,
     "agent_percentage": 0
   }
 }
