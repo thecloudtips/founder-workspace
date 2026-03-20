@@ -1,0 +1,30 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "a99fa05c1fbc",
+  "session_id": "994dc8fd-0805-4d89-9100-18a4816a8a64",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-20T08:43:24.811365Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "docs/troubleshooting/video-studio-remediation-plan.md"
+  ],
+  "agent": "Claude Code",
+  "transcript_identifier_at_start": "fcef0936-54ae-4f46-bad9-e0d9a1d6f863",
+  "token_usage": {
+    "input_tokens": 15,
+    "cache_creation_tokens": 92931,
+    "cache_read_tokens": 782855,
+    "output_tokens": 3838,
+    "api_call_count": 9
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-03-20T08:43:24.793794Z",
+    "agent_lines": 0,
+    "human_added": 728,
+    "human_modified": 86,
+    "human_removed": 0,
+    "total_committed": 814,
+    "agent_percentage": 0
+  }
+}

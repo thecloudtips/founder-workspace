@@ -3,9 +3,10 @@
   "checkpoint_id": "a99fa05c1fbc",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 1,
+  "checkpoints_count": 2,
   "files_touched": [
-    ".github/workflows/publish-npm.yml"
+    ".github/workflows/publish-npm.yml",
+    "docs/troubleshooting/video-studio-remediation-plan.md"
   ],
   "sessions": [
     {
@@ -14,13 +15,20 @@
       "context": "/a9/9fa05c1fbc/0/context.md",
       "content_hash": "/a9/9fa05c1fbc/0/content_hash.txt",
       "prompt": "/a9/9fa05c1fbc/0/prompt.txt"
+    },
+    {
+      "metadata": "/a9/9fa05c1fbc/1/metadata.json",
+      "transcript": "/a9/9fa05c1fbc/1/full.jsonl",
+      "context": "/a9/9fa05c1fbc/1/context.md",
+      "content_hash": "/a9/9fa05c1fbc/1/content_hash.txt",
+      "prompt": "/a9/9fa05c1fbc/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 26,
-    "cache_creation_tokens": 9281,
-    "cache_read_tokens": 3147590,
-    "output_tokens": 2595,
-    "api_call_count": 14
+    "input_tokens": 41,
+    "cache_creation_tokens": 102212,
+    "cache_read_tokens": 3930445,
+    "output_tokens": 6433,
+    "api_call_count": 23
   }
 }
