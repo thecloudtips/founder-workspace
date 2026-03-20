@@ -30,12 +30,12 @@ Render still frame previews before committing to a full render. This is the defa
 
 1. Navigate to the managed project directory:
    ```bash
-   cd ~/.founder-os/video-studio/
+   cd ${VIDEO_PATH}
    ```
 
 2. For each frame to preview, render a still:
    ```bash
-   npx remotion still <composition-id> \
+   cd ${VIDEO_PATH} && ./node_modules/.bin/remotion still <composition-id> \
      --frame=<N> \
      --output=output/previews/<comp>-frame-<N>.png \
      --props='<json>'
@@ -48,7 +48,7 @@ Render still frame previews before committing to a full render. This is the defa
 
 4. Display the output file paths to the user so they can review the stills before proceeding.
 
-5. All preview output goes to: `~/.founder-os/video-studio/output/previews/`
+5. All preview output goes to: `${VIDEO_PATH}/output/previews/`
 
 After the user approves the previews, proceed to the full render step.
 
@@ -57,8 +57,7 @@ After the user approves the previews, proceed to the full render step.
 ### Standard video render (h264)
 
 ```bash
-cd ~/.founder-os/video-studio
-npx remotion render <composition-id> \
+cd ${VIDEO_PATH} && ./node_modules/.bin/remotion render <composition-id> \
   --output=output/<template>-<timestamp>.mp4 \
   --props='<json>' \
   --codec=h264 \
@@ -68,8 +67,7 @@ npx remotion render <composition-id> \
 ### GIF render
 
 ```bash
-cd ~/.founder-os/video-studio
-npx remotion render <composition-id> \
+cd ${VIDEO_PATH} && ./node_modules/.bin/remotion render <composition-id> \
   --output=output/<template>-<timestamp>.gif \
   --props='<json>' \
   --codec=gif \
@@ -81,7 +79,7 @@ npx remotion render <composition-id> \
 Pass `--width` and `--height` flags to override preset dimensions:
 
 ```bash
-npx remotion render <composition-id> \
+cd ${VIDEO_PATH} && ./node_modules/.bin/remotion render <composition-id> \
   --output=output/<template>-<timestamp>.mp4 \
   --props='<json>' \
   --codec=h264 \
@@ -104,14 +102,13 @@ The `--props` flag accepts a JSON string matching the template's input props int
 | Disk space | Output dir < 500MB free | Prompt user to delete old renders, show `ls -la output/` |
 | Composition not found | Invalid composition ID | List valid IDs from Root.tsx, suggest closest match |
 | Invalid props | Props don't match template interface | Show expected interface, highlight mismatched keys |
-| ffmpeg missing | ffmpeg not in PATH | Show install instructions: `brew install ffmpeg` (macOS), `apt install ffmpeg` (Linux) |
 
 When an error occurs during render:
 
 1. Log the error message and exit code.
 2. Look up the error in the table above.
 3. Apply the recovery action automatically if possible (e.g., reduce concurrency, fall back to system font).
-4. If recovery requires user input (e.g., disk space, missing ffmpeg), display the issue and suggested fix, then wait for confirmation before retrying.
+4. If recovery requires user input (e.g., disk space), display the issue and suggested fix, then wait for confirmation before retrying.
 
 ## 5. Aspect Ratio Mapping
 
