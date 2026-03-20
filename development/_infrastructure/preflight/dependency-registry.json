@@ -143,7 +143,7 @@
       "optional": ["websearch"]
     },
     "video": {
-      "required": ["node", "remotion-project", "ffmpeg", "disk-space"],
+      "required": ["node", "remotion-project", "disk-space"],
       "optional": ["late"]
     }
   },
@@ -157,15 +157,11 @@
       "description": "Node.js >= 18 for Remotion rendering"
     },
     "remotion-project": {
-      "check": "test -d ~/.founder-os/video-studio/node_modules/remotion",
-      "description": "Managed Remotion project (run /founder-os:video:init to set up)"
-    },
-    "ffmpeg": {
-      "check": "ffmpeg -version 2>/dev/null",
-      "description": "ffmpeg for video encoding"
+      "check": "node -e \"const j=JSON.parse(require('fs').readFileSync(require('os').homedir()+'/.founder-os/video-studio.json','utf8')); require('fs').accessSync(j.path+'/node_modules/remotion')\" 2>/dev/null",
+      "description": "Managed Remotion project with state file (run /founder-os:video:init to set up)"
     },
     "disk-space": {
-      "check": "df -k ~/.founder-os/video-studio/output 2>/dev/null | awk 'NR==2 {if ($4 < 512000) exit 1}'",
+      "check": "df -k $(node -e \"process.stdout.write(JSON.parse(require('fs').readFileSync(require('os').homedir()+'/.founder-os/video-studio.json','utf8')).path)\")/output 2>/dev/null | awk 'NR==2 {if ($4 < 512000) exit 1}'",
       "description": ">= 500MB free in video output directory"
     }
   }
