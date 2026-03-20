@@ -1,0 +1,32 @@
+{
+  "cli_version": "0.4.2",
+  "checkpoint_id": "a99fa05c1fbc",
+  "session_id": "72e53d30-0f28-435e-a6f6-ce6ce1fd3b71",
+  "strategy": "manual-commit",
+  "created_at": "2026-03-20T08:48:53.90479Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "docs/superpowers/plans/2026-03-20-video-studio-remediation.md",
+    "docs/superpowers/specs/2026-03-20-video-studio-deferred-issues.md",
+    "docs/superpowers/specs/2026-03-20-video-studio-remediation-design.md"
+  ],
+  "agent": "Claude Code",
+  "transcript_identifier_at_start": "b610860c-9dab-423c-896c-be2b6c6202cf",
+  "token_usage": {
+    "input_tokens": 65,
+    "cache_creation_tokens": 125132,
+    "cache_read_tokens": 1984729,
+    "output_tokens": 23711,
+    "api_call_count": 33
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-03-20T08:48:53.836871Z",
+    "agent_lines": 966,
+    "human_added": 0,
+    "human_modified": 29,
+    "human_removed": 15,
+    "total_committed": 995,
+    "agent_percentage": 97.08542713567839
+  }
+}

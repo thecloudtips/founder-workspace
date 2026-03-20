@@ -3,9 +3,12 @@
   "checkpoint_id": "a99fa05c1fbc",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 2,
+  "checkpoints_count": 3,
   "files_touched": [
     ".github/workflows/publish-npm.yml",
+    "docs/superpowers/plans/2026-03-20-video-studio-remediation.md",
+    "docs/superpowers/specs/2026-03-20-video-studio-deferred-issues.md",
+    "docs/superpowers/specs/2026-03-20-video-studio-remediation-design.md",
     "docs/troubleshooting/video-studio-remediation-plan.md"
   ],
   "sessions": [
@@ -22,13 +25,20 @@
       "context": "/a9/9fa05c1fbc/1/context.md",
       "content_hash": "/a9/9fa05c1fbc/1/content_hash.txt",
       "prompt": "/a9/9fa05c1fbc/1/prompt.txt"
+    },
+    {
+      "metadata": "/a9/9fa05c1fbc/2/metadata.json",
+      "transcript": "/a9/9fa05c1fbc/2/full.jsonl",
+      "context": "/a9/9fa05c1fbc/2/context.md",
+      "content_hash": "/a9/9fa05c1fbc/2/content_hash.txt",
+      "prompt": "/a9/9fa05c1fbc/2/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 41,
-    "cache_creation_tokens": 102212,
-    "cache_read_tokens": 3930445,
-    "output_tokens": 6433,
-    "api_call_count": 23
+    "input_tokens": 106,
+    "cache_creation_tokens": 227344,
+    "cache_read_tokens": 5915174,
+    "output_tokens": 30144,
+    "api_call_count": 56
   }
 }
