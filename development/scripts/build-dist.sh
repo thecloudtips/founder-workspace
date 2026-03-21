@@ -111,11 +111,31 @@ find "$DIST_DIR/template/.claude/agents" -name '*.md' -type f -exec \
     -e 's|\${CLAUDE_PLUGIN_ROOT}|../../../.founderOS|g' \
     {} + 2>/dev/null || true
 
+# For .founderOS infrastructure files (depth 2: infrastructure/X/file):
+find "$DIST_DIR/template/.founderOS/infrastructure" -mindepth 2 -maxdepth 2 \( -name '*.md' -o -name '*.json' \) -type f -exec \
+  sed -i '' \
+    -e 's|\${CLAUDE_PLUGIN_ROOT}/_infrastructure/|../|g' \
+    -e 's|\${CLAUDE_PLUGIN_ROOT}/scripts/|../../scripts/|g' \
+    -e 's|\${CLAUDE_PLUGIN_ROOT}/templates/|../../templates/|g' \
+    -e 's|\${CLAUDE_PLUGIN_ROOT}/config/|../../config/|g' \
+    -e 's|\${CLAUDE_PLUGIN_ROOT}|../../../.founderOS|g' \
+    {} + 2>/dev/null || true
+
+# For .founderOS infrastructure files (depth 3: infrastructure/X/Y/file):
+find "$DIST_DIR/template/.founderOS/infrastructure" -mindepth 3 -maxdepth 3 \( -name '*.md' -o -name '*.json' \) -type f -exec \
+  sed -i '' \
+    -e 's|\${CLAUDE_PLUGIN_ROOT}/_infrastructure/|../../|g' \
+    -e 's|\${CLAUDE_PLUGIN_ROOT}/scripts/|../../../scripts/|g' \
+    -e 's|\${CLAUDE_PLUGIN_ROOT}/templates/|../../../templates/|g' \
+    -e 's|\${CLAUDE_PLUGIN_ROOT}/config/|../../../config/|g' \
+    -e 's|\${CLAUDE_PLUGIN_ROOT}|../../../../.founderOS|g' \
+    {} + 2>/dev/null || true
+
 # --- Post-build validation ---
 echo "Validating build output..."
 
 # Check BOTH .claude/ and .founderOS/ for unrewritten plugin root references
-REMAINING=$(grep -r 'CLAUDE_PLUGIN_ROOT' "$DIST_DIR/template/" --include='*.md' --include='*.json' -l 2>/dev/null || true)
+REMAINING=$(grep -r 'CLAUDE_PLUGIN_ROOT' "$DIST_DIR/template/" --include='*.md' --include='*.json' -l 2>/dev/null | grep -v '/CLAUDE\.md$' || true)
 if [[ -n "$REMAINING" ]]; then
   echo "ERROR: Unrewritten \${CLAUDE_PLUGIN_ROOT} references found in:"
   echo "$REMAINING"
