@@ -10,3 +10,70 @@ Execute the plugin root resolution implementation plan at internal_docs/superpow
 ---
 
 lets fully resove the issye so option 2
+
+---
+
+ok i want to push to npm what tag do yuou recommend current is i think 1.2.1
+
+---
+
+good push the tag
+
+---
+
+ok how do i initilize the inteleigace db in 1.3.0 version
+
+---
+
+:/ 
+
+❯ /intel:status
+  ⎿  UserPromptSubmit hook error
+  ⎿  PostToolUse:ToolSearch hook error
+
+  Searched for 5 patterns (ctrl+o to expand)
+  ⎿  PostToolUse:Glob hook error
+  ⎿  PostToolUse:Glob hook error
+  ⎿  PostToolUse:Glob hook error
+  ⎿  PostToolUse:Glob hook error
+  ⎿  PostToolUse:Glob hook error
+
+⏺ The intelligence database doesn't exist yet. Let me verify by checking the .data directory.
+
+  Read 1 file (ctrl+o to expand)
+  ⎿  PostToolUse:Bash hook error
+
+⏺ ── Adaptive Intelligence Status ──────────────────
+  Status: Not initialized
+  Run any plugin command to begin capturing events.
+
+  The Intelligence database (intelligence.db) has not been created yet. It gets auto-initialized when the first plugin command captures an event. Run any /founder-os:* command (e.g., /founder-os:inbox:triage,
+  /founder-os:briefing:briefing) to begin populating the intelligence engine with hooks data, patterns, and healing events.
+
+⏺ Ran 1 stop hook (ctrl+o to expand)
+  ⎿  Stop hook error: Failed with non-blocking status code: node:internal/modules/cjs/loader:1478
+    throw err;
+    ^
+
+  Error: Cannot find module '/Users/lhalicki/coding_projects/fos-ws/.founderOS/scripts/hooks/stop.mjs'
+      at Module._resolveFilename (node:internal/modules/cjs/loader:1475:15)
+      at wrapResolveFilename (node:internal/modules/cjs/loader:1048:27)
+      at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1072:10)
+      at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1093:12)
+      at Module._load (node:internal/modules/cjs/loader:1261:25)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+      at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+      at node:internal/main/run_main_module:33:47 {
+    code: 'MODULE_NOT_FOUND',
+    requireStack: []
+  }
+
+  Node.js v25.8.1
+
+---
+
+ok so i have done the clean instalation again and it seems to be working fine now
+
+---
+
+let me test it a little and i will come back

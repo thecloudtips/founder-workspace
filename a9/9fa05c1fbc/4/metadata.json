@@ -3,11 +3,10 @@
   "checkpoint_id": "a99fa05c1fbc",
   "session_id": "c778f645-01c6-4588-b2c1-bbb6f7c64bdd",
   "strategy": "manual-commit",
-  "created_at": "2026-03-21T12:29:28.3124Z",
+  "created_at": "2026-03-21T18:32:56.193014Z",
   "branch": "main",
-  "checkpoints_count": 1,
+  "checkpoints_count": 6,
   "files_touched": [
-    "development/scripts/build-dist.sh",
     "dist/template/.founderOS/infrastructure/automation-audit/SKILL.md",
     "dist/template/.founderOS/infrastructure/automation-audit/commands/audit-report.md",
     "dist/template/.founderOS/infrastructure/automation-audit/commands/audit-scan.md",
@@ -77,23 +76,23 @@
     "dist/template/.founderOS/scripts/hooks/stop.mjs"
   ],
   "agent": "Claude Code",
-  "transcript_identifier_at_start": "8d23eb5f-1c7f-404b-bc36-fc62a7bc49a5",
-  "checkpoint_transcript_start": 111,
-  "transcript_lines_at_start": 111,
+  "transcript_identifier_at_start": "e7562fb1-9f1d-413b-9ace-4729895fd949",
+  "checkpoint_transcript_start": 198,
+  "transcript_lines_at_start": 198,
   "token_usage": {
-    "input_tokens": 11,
-    "cache_creation_tokens": 18002,
-    "cache_read_tokens": 597016,
-    "output_tokens": 12859,
-    "api_call_count": 9
+    "input_tokens": 29,
+    "cache_creation_tokens": 92145,
+    "cache_read_tokens": 1257352,
+    "output_tokens": 3285,
+    "api_call_count": 17
   },
   "initial_attribution": {
-    "calculated_at": "2026-03-21T12:29:28.292708Z",
+    "calculated_at": "2026-03-21T18:32:56.163724Z",
     "agent_lines": 0,
-    "human_added": 7066,
+    "human_added": 842,
     "human_modified": 0,
     "human_removed": 0,
-    "total_committed": 7066,
+    "total_committed": 842,
     "agent_percentage": 0
   }
 }

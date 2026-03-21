@@ -3,10 +3,9 @@
   "checkpoint_id": "a99fa05c1fbc",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 5,
+  "checkpoints_count": 10,
   "files_touched": [
     ".github/workflows/publish-npm.yml",
-    "development/scripts/build-dist.sh",
     "dist/template/.founderOS/infrastructure/automation-audit/SKILL.md",
     "dist/template/.founderOS/infrastructure/automation-audit/commands/audit-report.md",
     "dist/template/.founderOS/infrastructure/automation-audit/commands/audit-scan.md",
@@ -118,10 +117,10 @@
     }
   ],
   "token_usage": {
-    "input_tokens": 127,
-    "cache_creation_tokens": 417385,
-    "cache_read_tokens": 7123401,
-    "output_tokens": 45408,
-    "api_call_count": 70
+    "input_tokens": 145,
+    "cache_creation_tokens": 491528,
+    "cache_read_tokens": 7783737,
+    "output_tokens": 35834,
+    "api_call_count": 78
   }
 }
