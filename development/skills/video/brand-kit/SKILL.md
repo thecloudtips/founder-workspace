@@ -14,7 +14,7 @@ The brand kit is resolved using a 3-step chain. Stop at the first step that prod
 
 ### Step 1: Cached JSON
 
-Read `~/.founder-os/video-studio/assets/brand-kit.json`. If the file exists and is valid JSON matching the BrandKit interface (at minimum: `company` and `colors.primary` are present), use it directly. No further resolution needed.
+Read `${VIDEO_PATH}/assets/brand-kit.json`. If the file exists and is valid JSON matching the BrandKit interface (at minimum: `company` and `colors.primary` are present), use it directly. No further resolution needed.
 
 ### Step 2: Business Context
 
@@ -30,7 +30,7 @@ Read all `.md` files in that directory and extract:
 - **Font preferences** from font name references
 - **Logo references** from image file paths or mentions
 
-Build a partial BrandKit object from whatever is found. If the required fields (`company` and `colors.primary`) are now present, write the result to `~/.founder-os/video-studio/assets/brand-kit.json` and use it.
+Build a partial BrandKit object from whatever is found. If the required fields (`company` and `colors.primary`) are now present, write the result to `${VIDEO_PATH}/assets/brand-kit.json` and use it.
 
 ### Step 3: Prompt User
 
@@ -38,7 +38,7 @@ If the BrandKit is still incomplete after Steps 1 and 2, prompt the user for the
 - **Company name** (required)
 - **Primary brand color** as a hex value (required)
 
-Optionally guide them through a brand wizard for secondary color, accent, fonts, and logo. Write the completed BrandKit to `~/.founder-os/video-studio/assets/brand-kit.json`.
+Optionally guide them through a brand wizard for secondary color, accent, fonts, and logo. Write the completed BrandKit to `${VIDEO_PATH}/assets/brand-kit.json`.
 
 ### Default Fallbacks
 
@@ -52,7 +52,7 @@ For any missing optional fields after resolution, the `useBrandKit.ts` hook appl
 
 ## 2. brand-kit.json Schema
 
-The canonical brand kit file lives at `~/.founder-os/video-studio/assets/brand-kit.json`.
+The canonical brand kit file lives at `${VIDEO_PATH}/assets/brand-kit.json`.
 
 ```json
 {
@@ -83,7 +83,7 @@ The canonical brand kit file lives at `~/.founder-os/video-studio/assets/brand-k
 
 **Required fields:** `company`, `colors.primary`, `logo.primary`
 
-**All file paths** in brand-kit.json are relative to `~/.founder-os/video-studio/assets/`. Templates resolve them at render time via the `useBrandKit` hook.
+**All file paths** in brand-kit.json are relative to `${VIDEO_PATH}/assets/`. Templates resolve them at render time via the `useBrandKit` hook.
 
 ## 3. Asset Validation
 
@@ -95,7 +95,7 @@ Rules for validating brand assets before they are used in rendering.
 
 ### Fonts
 - Must be `.woff2`, `.woff`, `.ttf`, or `.otf` files
-- Verify the file exists at the given path relative to `~/.founder-os/video-studio/assets/`
+- Verify the file exists at the given path relative to `${VIDEO_PATH}/assets/`
 - If the font file is missing, warn the user and fall back to system sans-serif
 
 ### Logos
@@ -127,16 +127,16 @@ How `video:brand --import` pulls brand data from business context files.
 - **Font names**: mentions of specific typefaces (e.g., "Inter", "Montserrat", "Poppins")
 - **Logo file references**: paths to image files mentioned as logos or brand marks
 
-**Step 3:** If a logo file is referenced but not present in `~/.founder-os/video-studio/assets/logos/`, copy it there. Create the `logos/` directory if needed.
+**Step 3:** If a logo file is referenced but not present in `${VIDEO_PATH}/assets/logos/`, copy it there. Create the `logos/` directory if needed.
 
 **Step 4:** If fonts are mentioned by name (e.g., "Inter", "Montserrat"):
-- Check if the corresponding `.woff2` file exists in `~/.founder-os/video-studio/assets/fonts/`
+- Check if the corresponding `.woff2` file exists in `${VIDEO_PATH}/assets/fonts/`
 - If not found, suggest the user download the font and place it in `assets/fonts/`
 - Provide a direct link to Google Fonts when the font is available there
 
 **Step 5:** Build `brand-kit.json` from the extracted data, filling in as many fields as possible.
 
-**Step 6:** Write the result to `~/.founder-os/video-studio/assets/brand-kit.json`.
+**Step 6:** Write the result to `${VIDEO_PATH}/assets/brand-kit.json`.
 
 **Step 7:** If updating an existing `brand-kit.json`, show a diff of the changes before writing. Ask the user to confirm the update.
 
@@ -146,7 +146,7 @@ How fonts are loaded in Remotion templates via `@remotion/fonts`.
 
 ### Custom Fonts
 
-1. Place `.woff2` font files in `~/.founder-os/video-studio/assets/fonts/`
+1. Place `.woff2` font files in `${VIDEO_PATH}/assets/fonts/`
 2. Reference the font path in `brand-kit.json` under `fonts.heading` or `fonts.body`
 3. The `useBrandKit` hook resolves font paths and registers them with Remotion at composition mount time
 4. Templates access loaded fonts via `brandKit.fonts.heading` and `brandKit.fonts.body`
