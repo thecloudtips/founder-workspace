@@ -21,6 +21,17 @@ The pattern detection skill runs as the **final step** of every plugin command. 
 
 ---
 
+### Pre-check: Memory Store Availability
+
+Before any database operations, check that `.memory/memory.db` exists.
+
+If it does **not** exist:
+- Output: `[memory: not initialized, skipping observation logging]`
+- Return immediately — do not attempt any observation logging or pattern detection
+- This is the expected state for fresh installations
+
+If it **does** exist, proceed to Step 1.
+
 ## Observation Logging
 
 After every plugin execution completes and output has been delivered, log one observation row. This is the raw event record — pattern detection runs against the accumulated observations table.

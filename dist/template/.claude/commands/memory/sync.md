@@ -20,7 +20,7 @@ Extract these flags from `$ARGUMENTS`:
 
 Read both skills before proceeding:
 1. `_infrastructure/memory/SKILL.md` — core memory engine API (SQLite operations, status rules, confidence mechanics)
-2. `${CLAUDE_PLUGIN_ROOT}/skills/memory/notion-sync/SKILL.md` — Notion field mapping, conflict rules, rate-limit handling
+2. `skills/memory/notion-sync/SKILL.md` — Notion field mapping, conflict rules, rate-limit handling
 
 Then initialize the memory store per the core skill's initialization steps:
 ```bash
@@ -32,7 +32,7 @@ fi
 ```
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `memory` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.

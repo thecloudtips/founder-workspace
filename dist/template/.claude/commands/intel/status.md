@@ -10,7 +10,7 @@ result-format: summary
 # /founder-os:intel:status
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `intel` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.

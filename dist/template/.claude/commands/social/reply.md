@@ -12,9 +12,9 @@ Reply or comment on existing social media posts.
 
 ## Skills
 
-1. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/late-skills/late-common/SKILL.md`
-2. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/late-skills/late-publish/SKILL.md`
-3. Read `${CLAUDE_PLUGIN_ROOT}/skills/social/cross-posting/SKILL.md` — engagement patterns section
+1. Read `../../../.founderOS/infrastructure/late-skills/late-common/SKILL.md`
+2. Read `../../../.founderOS/infrastructure/late-skills/late-publish/SKILL.md`
+3. Read `skills/social/cross-posting/SKILL.md` — engagement patterns section
 
 ## Arguments
 
@@ -27,7 +27,7 @@ Reply or comment on existing social media posts.
 
 ## Business Context (Optional)
 
-Check `${CLAUDE_PLUGIN_ROOT}/_infrastructure/context/active/`.
+Check `../../../.founderOS/infrastructure/context/active/`.
 
 ## Preflight Check
 
@@ -41,7 +41,7 @@ Query for: `replies`, `engagement`, `comment style`.
 
 1. Fetch post details to understand context:
    ```bash
-   node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs posts status --post-id=<post-id>
+   node ../../../.founderOS/scripts/late-tool.mjs posts status --post-id=<post-id>
    ```
 2. Apply engagement patterns from cross-posting skill:
    - LinkedIn: professional, add value, ask follow-up questions
@@ -52,7 +52,7 @@ Query for: `replies`, `engagement`, `comment style`.
 
 For LinkedIn (first comment pattern):
 ```bash
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs posts create \
+node ../../../.founderOS/scripts/late-tool.mjs posts create \
   --accounts='["<account_id>"]' \
   --text="<reply_text>" \
   --platform-options='{"replyTo":"<post-id>"}'

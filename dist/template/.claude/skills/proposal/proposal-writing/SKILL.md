@@ -86,7 +86,7 @@ Rules:
 
 ### 6. Pricing
 
-Present 3 packages in a comparison table. Read `${CLAUDE_PLUGIN_ROOT}/skills/proposal/pricing-strategy/SKILL.md` for the full pricing methodology. Follow these layout rules:
+Present 3 packages in a comparison table. Read `skills/proposal/pricing-strategy/SKILL.md` for the full pricing methodology. Follow these layout rules:
 
 - Lead with scope, not price. The first differentiator row must describe what is included.
 - Mark the recommended package with a "Recommended" indicator.
@@ -181,4 +181,4 @@ Before outputting a proposal, verify:
 ### Reference Files
 
 For detailed section templates with worked examples:
-- **`${CLAUDE_PLUGIN_ROOT}/skills/proposal/proposal-writing/references/section-templates.md`** — Complete example content for each of the 7 proposal sections with annotations
+- **`skills/proposal/proposal-writing/references/section-templates.md`** — Complete example content for each of the 7 proposal sections with annotations

@@ -11,7 +11,7 @@ result-format: full
 Guided setup wizard for configuring the Notion CLI integration. Walks through dependency installation, API token configuration, workspace sharing, and access verification.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `setup` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -28,16 +28,16 @@ Work through each step in order. Skip steps where the condition is already satis
 
 ### 1. Install Dependencies
 
-Check if `${CLAUDE_PLUGIN_ROOT}/scripts/node_modules/` exists. If not, run:
+Check if `../../../.founderOS/scripts/node_modules/` exists. If not, run:
 
 ```bash
-npm install --prefix ${CLAUDE_PLUGIN_ROOT}/scripts
+npm install --prefix ../../../.founderOS/scripts
 ```
 
 If Node.js is not available, stop and explain that Node.js (v18+) is required. Provide a link to https://nodejs.org/ for installation.
 
 If `npm install` fails, show the error and suggest manual steps:
-- Check that `${CLAUDE_PLUGIN_ROOT}/scripts/package.json` exists
+- Check that `../../../.founderOS/scripts/package.json` exists
 - Try running `npm install` from the `scripts/` directory directly
 - Check network connectivity
 
@@ -47,7 +47,7 @@ Check if the `$NOTION_API_KEY` environment variable is set (non-empty). If yes, 
 
 ### 3. Check .env File
 
-Check if `${CLAUDE_PLUGIN_ROOT}/.env` exists and contains a `NOTION_API_KEY=` line with a non-empty value. If yes, skip to step 8.
+Check if `../../../.founderOS/.env` exists and contains a `NOTION_API_KEY=` line with a non-empty value. If yes, skip to step 8.
 
 ### 4. Create Notion Integration
 
@@ -78,7 +78,7 @@ Tell the user:
 
 Ask the user to paste their Notion API token. Once they provide it:
 
-- If `${CLAUDE_PLUGIN_ROOT}/.env` does not exist, create it with `NOTION_API_KEY=<token>`.
+- If `../../../.founderOS/.env` does not exist, create it with `NOTION_API_KEY=<token>`.
 - If `.env` exists but does not contain `NOTION_API_KEY`, append `NOTION_API_KEY=<token>` on a new line.
 - If `.env` exists and already contains `NOTION_API_KEY`, replace the existing value.
 
@@ -103,7 +103,7 @@ Tell the user:
 Run the following command to verify the integration can access Notion:
 
 ```bash
-node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs search "Founder OS"
+node ../../../.founderOS/scripts/notion-tool.mjs search "Founder OS"
 ```
 
 Check the exit code. If the command exits with a non-zero code, go to step 10 failure path.

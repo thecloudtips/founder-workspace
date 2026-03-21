@@ -12,22 +12,22 @@ Generate a structured summary of a Google Drive document. Supports quick (2-3 pa
 
 ## Load Skills
 
-Read the document-qa skill at `${CLAUDE_PLUGIN_ROOT}/skills/drive/document-qa/SKILL.md` for content extraction, summary generation, and file type handling.
+Read the document-qa skill at `skills/drive/document-qa/SKILL.md` for content extraction, summary generation, and file type handling.
 
-Read the drive-navigation skill at `${CLAUDE_PLUGIN_ROOT}/skills/drive/drive-navigation/SKILL.md` for file resolution and type detection.
+Read the drive-navigation skill at `skills/drive/drive-navigation/SKILL.md` for file resolution and type detection.
 
 ## Parse Arguments
 
 Extract from `$ARGUMENTS`:
 - `[file-id-or-name]` (required) -- Google Drive file ID or filename. If looks like an ID (alphanumeric string with no spaces, typically 25+ characters), use directly. If text, search Drive for the file. If missing, prompt: "Which file would you like to summarize? Provide a file name or Google Drive file ID." Wait for a response before proceeding.
 - `--depth=LEVEL` (optional) -- summary depth. Accepts: `quick`, `detailed`. Default: `quick`.
-- `--output=PATH` (optional) -- local file path for saved output. Uses `${CLAUDE_PLUGIN_ROOT}/templates/summary-template.md` as scaffold.
+- `--output=PATH` (optional) -- local file path for saved output. Uses `../../../.founderOS/templates/summary-template.md` as scaffold.
 
 ## Business Context (Optional)
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `drive` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -130,7 +130,7 @@ Apply content extraction from the document-qa skill:
 
 ## Step 4: Save to File (if --output)
 
-1. Read the summary template at `${CLAUDE_PLUGIN_ROOT}/templates/summary-template.md`.
+1. Read the summary template at `../../../.founderOS/templates/summary-template.md`.
 2. Replace all `{{PLACEHOLDER}}` variables with generated values:
    - `{{DOCUMENT_TITLE}}` -- file title.
    - `{{FILE_TYPE}}` -- human-readable file type.

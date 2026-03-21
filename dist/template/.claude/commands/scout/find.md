@@ -13,8 +13,8 @@ Discover external tools, skills, MCP servers, packages, and repositories that so
 ## Skills
 
 Read these skill files before proceeding:
-1. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/scout/SKILL.md` — catalog schema, sandbox management, verdict system
-2. Read `${CLAUDE_PLUGIN_ROOT}/skills/scout/research/SKILL.md` — search strategy, query formulation, scoring rubric
+1. Read `../../../.founderOS/infrastructure/scout/SKILL.md` — catalog schema, sandbox management, verdict system
+2. Read `skills/scout/research/SKILL.md` — search strategy, query formulation, scoring rubric
 
 ## Arguments
 
@@ -27,11 +27,11 @@ Read these skill files before proceeding:
 
 ## Business Context (Optional)
 
-Check `${CLAUDE_PLUGIN_ROOT}/_infrastructure/context/active/` for `.md` files. If present, read `business-info.md`, `strategy.md`, and `current-data.md`. Use context to personalize results — e.g., prioritize tools that match the tech stack, budget tier, or compliance requirements of the business.
+Check `../../../.founderOS/infrastructure/context/active/` for `.md` files. If present, read `business-info.md`, `strategy.md`, and `current-data.md`. Use context to personalize results — e.g., prioritize tools that match the tech stack, budget tier, or compliance requirements of the business.
 
 ## Preflight Check
 
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `scout` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust behavior:
@@ -46,7 +46,7 @@ Install or enable the WebSearch tool to enable full discovery.
 
 ## Step 0: Memory Context
 
-Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/memory/context-injection/SKILL.md`.
+Read `../../../.founderOS/infrastructure/memory/context-injection/SKILL.md`.
 Query memory store for: `scout discovery`, `tool research`, `external skills`, plus terms extracted from the problem description.
 Inject top 5 relevant memories into working context. If a previously evaluated tool matches the problem, surface it immediately.
 
@@ -60,7 +60,7 @@ Before executing the main logic, check for learned patterns in the Intelligence 
 
 ## Phase 1/3: Catalog & Memory Check
 
-1. Read the catalog file at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/scout/catalog.json`. If the file does not exist, treat as empty catalog.
+1. Read the catalog file at `../../../.founderOS/infrastructure/scout/catalog.json`. If the file does not exist, treat as empty catalog.
 2. Keyword-match the problem description against catalog entries (fields: `name`, `description`, `tags`, `problem_keywords`). If one or more catalog entries match with confidence ≥ 0.7:
    - Return the matching entries immediately as results (skip Phase 2).
    - Mark each result with `source: "catalog"`.
@@ -88,7 +88,7 @@ Apply the research skill's search cascade strategy:
 
 3. **Run search queries** using the query templates from the research skill. Stop early if a result reaches a confidence score ≥ 0.9 (high-confidence match found).
 
-4. **Deep mode** (`--deep` flag): Read `${CLAUDE_PLUGIN_ROOT}/agents/scout/config.json` and spawn the scout agent team via the Task tool with `run_in_background: true`. Pass the problem description, budget, and type filter. Wait for agent results before proceeding to Phase 3.
+4. **Deep mode** (`--deep` flag): Read `agents/scout/config.json` and spawn the scout agent team via the Task tool with `run_in_background: true`. Pass the problem description, budget, and type filter. Wait for agent results before proceeding to Phase 3.
 
 5. **Fetch detail pages**: For top candidate results, use WebFetch to retrieve the tool's README or homepage for richer description extraction.
 
@@ -168,7 +168,7 @@ If any error occurs during this command:
 
 ## Final Step: Observation Logging
 
-Record observation via `${CLAUDE_PLUGIN_ROOT}/_infrastructure/memory/pattern-detection/SKILL.md`:
+Record observation via `../../../.founderOS/infrastructure/memory/pattern-detection/SKILL.md`:
 - Plugin: `scout`
 - Command: `scout-find`
 - Key entities: problem description, top result names and URLs

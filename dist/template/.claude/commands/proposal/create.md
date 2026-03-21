@@ -12,9 +12,9 @@ Generate a complete professional proposal for a client with 7 structured section
 
 ## Load Skills
 
-Read the proposal-writing skill at `${CLAUDE_PLUGIN_ROOT}/skills/proposal/proposal-writing/SKILL.md` for the 7-section proposal structure, writing style rules, formatting standards, quality checklist, and output file conventions.
+Read the proposal-writing skill at `skills/proposal/proposal-writing/SKILL.md` for the 7-section proposal structure, writing style rules, formatting standards, quality checklist, and output file conventions.
 
-Read the pricing-strategy skill at `${CLAUDE_PLUGIN_ROOT}/skills/proposal/pricing-strategy/SKILL.md` for 3-tier pricing philosophy, package naming, pricing calculation frameworks, scope differentiation rules, comparison table layout, and payment terms patterns.
+Read the pricing-strategy skill at `skills/proposal/pricing-strategy/SKILL.md` for 3-tier pricing philosophy, package naming, pricing calculation frameworks, scope differentiation rules, comparison table layout, and payment terms patterns.
 
 ## Parse Arguments
 
@@ -27,7 +27,7 @@ Extract from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `proposal` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -72,7 +72,7 @@ If any error occurs during this command:
 Search for client information to personalize the proposal:
 
 1. If Notion CLI is available, search CRM Pro databases:
-   - Search "Companies" database for the client name (fuzzy match) using `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs search "<client-name>" --filter page`
+   - Search "Companies" database for the client name (fuzzy match) using `node ../../../.founderOS/scripts/notion-tool.mjs search "<client-name>" --filter page`
    - If found, retrieve: industry, past projects, relationship history, key contacts
    - Search "Deals" database for past engagements with this client
    - Summarize found context for use in Cover Letter and Understanding & Approach sections
@@ -104,11 +104,11 @@ Using the collected brief and CRM context, generate the complete 7-section propo
 6. **Pricing** — 3 packages following the pricing-strategy skill. Comparison table leads with scope, not price. Mark recommended package.
 7. **Terms & Conditions** — Payment terms, change control, IP, confidentiality.
 
-Read the proposal template at `${CLAUDE_PLUGIN_ROOT}/templates/proposal-template.md` as a structural scaffold.
+Read the proposal template at `../../../.founderOS/templates/proposal-template.md` as a structural scaffold.
 
-For detailed section examples, consult `${CLAUDE_PLUGIN_ROOT}/skills/proposal/proposal-writing/references/section-templates.md`.
+For detailed section examples, consult `skills/proposal/proposal-writing/references/section-templates.md`.
 
-For pricing calculation examples, consult `${CLAUDE_PLUGIN_ROOT}/skills/proposal/pricing-strategy/references/pricing-models.md`.
+For pricing calculation examples, consult `skills/proposal/pricing-strategy/references/pricing-models.md`.
 
 ### Step 4: Save Files
 
@@ -125,7 +125,7 @@ Save two files:
 If Notion CLI is available:
 
 1. **Database discovery** (ordered):
-   - Search for "Founder OS HQ - Deliverables" database using `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs search "Deliverables" --filter database`
+   - Search for "Founder OS HQ - Deliverables" database using `node ../../../.founderOS/scripts/notion-tool.mjs search "Deliverables" --filter database`
    - If not found, fall back to legacy "Proposal Automator - Proposals" database
    - If neither exists, skip Notion tracking and note it in the output (do NOT create the database)
 

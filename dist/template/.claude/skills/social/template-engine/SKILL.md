@@ -12,7 +12,7 @@ Template selection, combination, and performance-based ranking for social conten
 
 **Step 1: Load the template index**
 
-Read `${CLAUDE_PLUGIN_ROOT}/skills/social/templates/_index.yaml` to get the full list of available templates with their metadata.
+Read `skills/social/templates/_index.yaml` to get the full list of available templates with their metadata.
 
 **Step 2: Filter by platform**
 
@@ -28,7 +28,7 @@ Score each remaining candidate's tags against the topic keywords using fuzzy mat
 
 **Step 5: Apply performance bias (if data available)**
 
-Read `${CLAUDE_PLUGIN_ROOT}/skills/social/templates/_performance.yaml`. If the file exists and is non-empty:
+Read `skills/social/templates/_performance.yaml`. If the file exists and is non-empty:
 - Find technique scores for similar topic categories using `best_topics` lists in `technique_scores`.
 - Boost templates from techniques with higher win rates.
 - Only apply this bias after a minimum of 3 A/B tests per technique. Techniques with fewer than 3 tests are excluded from the boost calculation.
@@ -39,7 +39,7 @@ Rank all scored candidates and select the top N (N determined by command context
 
 **Step 7: Load selected templates**
 
-Read each selected template's full content from `${CLAUDE_PLUGIN_ROOT}/skills/social/templates/{name}.md`.
+Read each selected template's full content from `skills/social/templates/{name}.md`.
 
 ## 2. Combination Strategies
 

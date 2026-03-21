@@ -13,15 +13,15 @@ Sync email conversations from Gmail to the CRM Pro Communications database in No
 ## Load Skills
 
 Read these skills for processing logic:
-- `${CLAUDE_PLUGIN_ROOT}/skills/crm/crm-sync/SKILL.md` for the sync orchestration workflow, batch status report format, dry run rules, and error handling patterns
-- `${CLAUDE_PLUGIN_ROOT}/skills/crm/activity-logging/SKILL.md` for CRM write logic, AI summary generation guidelines, sentiment classification, activity type mapping, and deduplication strategy
-- `${CLAUDE_PLUGIN_ROOT}/skills/crm/client-matching/SKILL.md` for resolving email addresses to CRM clients via the 5-step progressive matching algorithm and confidence tiers
+- `skills/crm/crm-sync/SKILL.md` for the sync orchestration workflow, batch status report format, dry run rules, and error handling patterns
+- `skills/crm/activity-logging/SKILL.md` for CRM write logic, AI summary generation guidelines, sentiment classification, activity type mapping, and deduplication strategy
+- `skills/crm/client-matching/SKILL.md` for resolving email addresses to CRM clients via the 5-step progressive matching algorithm and confidence tiers
 
 ## Parse Arguments
 
 Extract from `$ARGUMENTS`:
 - First positional arg: `thread_id` (optional) -- Gmail thread ID for single-thread sync
-- `--since=Nd` (optional) -- batch mode lookback window. Default: 7d. Accepted formats: "7d", "2w", "1m", ISO date. For parsing rules see `${CLAUDE_PLUGIN_ROOT}/skills/crm/crm-sync/references/sync-patterns.md`.
+- `--since=Nd` (optional) -- batch mode lookback window. Default: 7d. Accepted formats: "7d", "2w", "1m", ISO date. For parsing rules see `skills/crm/crm-sync/references/sync-patterns.md`.
 - `--client=NAME` (optional) -- skip client matching, assign directly to the named client
 - `--dry-run` (optional) -- preview what would be synced without writing to Notion
 
@@ -31,7 +31,7 @@ If no thread_id and no --since flag: default to batch mode with --since=7d.
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `crm` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -116,7 +116,7 @@ If `$ARGUMENTS` contains `--schedule`:
 
 2. **Filter**:
    - Skip internal emails (same domain as the user's email address)
-   - Skip automated emails (noreply, notification, and distribution list patterns from the client-matching skill's reference file at `${CLAUDE_PLUGIN_ROOT}/skills/crm/client-matching/references/matching-patterns.md`)
+   - Skip automated emails (noreply, notification, and distribution list patterns from the client-matching skill's reference file at `skills/crm/client-matching/references/matching-patterns.md`)
    - Skip draft emails (Gmail "DRAFT" label) per the activity-logging skill rules
    - Skip very short threads (single message with fewer than 50 words in the body)
 

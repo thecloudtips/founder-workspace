@@ -19,7 +19,7 @@ Always search in this order to locate the target database. Never hard-code a dat
 
 To search via Notion CLI:
 ```
-node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs search "[FOS] Memory" --filter database
+node ../../../../.founderOS/scripts/notion-tool.mjs search "[FOS] Memory" --filter database
 ```
 
 Store the resolved database ID in memory for the duration of the sync session. Do not re-query on every API call.

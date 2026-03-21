@@ -21,27 +21,25 @@ This skill is referenced by every plugin command as **Step 0: Memory Context** �
 
 ## Execution Flow
 
-### Step 1: Initialize the store
+### Step 1: Check memory store availability
 
-Check that `.memory/memory.db` exists. If it does not, initialize it from the schema:
+Check that `.memory/memory.db` exists.
 
-```bash
-if [ ! -f ".memory/memory.db" ]; then
-  mkdir -p .memory
-  sqlite3 .memory/memory.db < _infrastructure/memory/schema/memory-store.sql
-fi
-```
+If it does **not** exist:
+- Output: `[memory: not initialized, skipping]`
+- Return immediately — do not create the database, do not proceed to Step 2
+- Database initialization is the responsibility of explicit setup (e.g., `/founder-os:memory:sync`), not a side effect of running a command
 
-Quick schema validation — confirm the core tables exist:
+If it **does** exist, validate the core tables:
 
 ```sql
 SELECT name FROM sqlite_master
 WHERE type = 'table'
   AND name IN ('memories', 'observations', 'adaptations');
--- Expected: 3 rows. If fewer, re-run the schema file.
+-- Expected: 3 rows.
 ```
 
-If validation fails, re-apply the schema (idempotent due to `CREATE TABLE IF NOT EXISTS`) and continue.
+If tables are missing, skip injection and output: `[memory: schema incomplete, skipping]`. Do not attempt to re-create the schema.
 
 ---
 
@@ -233,7 +231,7 @@ Memory injection must **never block or fail a plugin's primary function**. Apply
 
 | Condition | Action |
 |-----------|--------|
-| `.memory/memory.db` does not exist | Attempt initialization once. If that fails, skip injection silently and continue. |
+| `.memory/memory.db` does not exist | Output `[memory: not initialized, skipping]`. Skip injection and continue. Do not attempt initialization. |
 | Database file exists but is corrupt (SQLite error on open) | Skip injection. Log: `[memory] Warning: memory.db unreadable, skipping context injection.` Continue plugin execution. |
 | Schema tables missing after init attempt | Skip injection. Log: `[memory] Warning: schema incomplete, skipping context injection.` Continue. |
 | SQLite locked (WAL contention) | Retry once after 300ms. If still locked, skip injection and continue. |
@@ -255,7 +253,7 @@ Add this block as **Step 0b** in every plugin command file, after Step 0a (busin
 Read `_infrastructure/memory/context-injection/SKILL.md` and follow the full Execution Flow.
 
 Summary of what to do:
-1. Verify `.memory/memory.db` exists (initialize from schema if not).
+1. Check if `.memory/memory.db` exists. If not, output `[memory: not initialized, skipping]` and skip to Step 1 of the plugin's main logic.
 2. Extract company names, contact names, email domains, topics, and keywords from the current input.
 3. Run three queries: semantic (`limit=5`), company-scoped (`limit=3`), plugin-specific (`limit=2`).
 4. Deduplicate, filter to `status IN ('confirmed', 'applied')`, cap at 5 total (sort by confidence DESC).

@@ -12,7 +12,7 @@ Generate a comprehensive weekly review by auto-discovering Notion task databases
 
 ## Load Skills
 
-Read the weekly-reflection skill at `${CLAUDE_PLUGIN_ROOT}/skills/review/weekly-reflection/SKILL.md` for the complete review pipeline: week boundary rules, database auto-discovery algorithm, 3-source data gathering, blocker detection signals, priority ranking algorithm, and Notion output formatting.
+Read the weekly-reflection skill at `skills/review/weekly-reflection/SKILL.md` for the complete review pipeline: week boundary rules, database auto-discovery algorithm, 3-source data gathering, blocker detection signals, priority ranking algorithm, and Notion output formatting.
 
 ## Parse Arguments
 
@@ -28,7 +28,7 @@ Validate `--date` format (YYYY-MM-DD). Reject malformed dates with a clear error
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `review` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -132,7 +132,7 @@ If gws CLI is unavailable for Gmail, skip silently. Mark Gmail as "unavailable" 
 
 ## Step 6: Synthesize 6-Section Review
 
-Read `${CLAUDE_PLUGIN_ROOT}/skills/review/weekly-reflection/references/review-structure.md` for detailed section templates. Assemble the review with exactly 6 sections:
+Read `skills/review/weekly-reflection/references/review-structure.md` for detailed section templates. Assemble the review with exactly 6 sections:
 
 ### Section 1: Executive Summary
 - 2-3 sentence week overview with key metrics: tasks completed, meetings held, blockers detected.

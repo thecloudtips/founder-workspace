@@ -14,7 +14,7 @@ Synthesize a week's learnings into themes, connections, streak metrics, and tren
 
 Read the learning-synthesis skill before starting any step:
 
-1. `${CLAUDE_PLUGIN_ROOT}/skills/learn/learning-synthesis/SKILL.md`
+1. `skills/learn/learning-synthesis/SKILL.md`
 
 Apply learning-synthesis for all week calculations, theme detection, connection analysis, streak tracking, trend comparison, and output formatting.
 
@@ -29,7 +29,7 @@ Extract from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `learn` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -113,7 +113,7 @@ Then stop. Do not create a Weekly Insights entry for an empty week.
 
 ## Step 4: Detect Themes
 
-Read `${CLAUDE_PLUGIN_ROOT}/skills/learn/learning-synthesis/references/theme-detection-algorithm.md` for the full algorithm.
+Read `skills/learn/learning-synthesis/references/theme-detection-algorithm.md` for the full algorithm.
 
 1. Count topic frequencies across all fetched learnings.
 2. Select Top Themes (2-4 topics based on learning count thresholds).
@@ -131,7 +131,7 @@ If fewer than 3 learnings or all identical topics, note the limitation.
 
 ## Step 6: Calculate Streak
 
-Read `${CLAUDE_PLUGIN_ROOT}/skills/learn/learning-synthesis/references/streak-calculation.md` for the full algorithm.
+Read `skills/learn/learning-synthesis/references/streak-calculation.md` for the full algorithm.
 
 1. Query the Weekly Insights database for past entries.
 2. Include the current week as a virtual entry.

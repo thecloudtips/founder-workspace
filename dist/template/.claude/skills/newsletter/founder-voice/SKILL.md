@@ -212,4 +212,4 @@ Remove weak qualifiers that undermine authority:
 
 ## Voice Reference Examples
 
-Refer to `${CLAUDE_PLUGIN_ROOT}/skills/newsletter/founder-voice/references/voice-examples.md` for detailed before-and-after rewrite examples demonstrating how to transform generic content marketing into founder voice.
+Refer to `skills/newsletter/founder-voice/references/voice-examples.md` for detailed before-and-after rewrite examples demonstrating how to transform generic content marketing into founder voice.

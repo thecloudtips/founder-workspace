@@ -1,6 +1,6 @@
 # Source Patterns Reference
 
-Detailed per-source query construction, extraction rules, filtering logic, and edge case handling for the morning-briefing skill's five-source gathering pipeline. Each section covers one source in the pipeline order defined in `${CLAUDE_PLUGIN_ROOT}/skills/morning/morning-briefing/SKILL.md`.
+Detailed per-source query construction, extraction rules, filtering logic, and edge case handling for the morning-briefing skill's five-source gathering pipeline. Each section covers one source in the pipeline order defined in `skills/morning/morning-briefing/SKILL.md`.
 
 ---
 

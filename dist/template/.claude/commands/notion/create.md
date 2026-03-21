@@ -12,9 +12,9 @@ Create a new Notion page or database from a natural language description. Detect
 
 ## Load Skills
 
-Read the notion-operations skill at `${CLAUDE_PLUGIN_ROOT}/skills/notion/notion-operations/SKILL.md` for Notion CLI tool usage, workspace discovery, page operations, database operations, and content block formatting.
+Read the notion-operations skill at `skills/notion/notion-operations/SKILL.md` for Notion CLI tool usage, workspace discovery, page operations, database operations, and content block formatting.
 
-Read the notion-database-design skill at `${CLAUDE_PLUGIN_ROOT}/skills/notion/notion-database-design/SKILL.md` for natural language to schema translation, property type selection, schema design best practices, and pre-built templates.
+Read the notion-database-design skill at `skills/notion/notion-database-design/SKILL.md` for natural language to schema translation, property type selection, schema design best practices, and pre-built templates.
 
 ## Parse Arguments
 
@@ -27,7 +27,7 @@ Extract from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `notion` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -86,7 +86,7 @@ If the `--type` flag is provided, use it directly. If auto-detection is ambiguou
 ## Step 2: Resolve Parent
 
 If `--parent=NAME` is provided:
-1. Search Notion for the parent page using `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs search` with the name.
+1. Search Notion for the parent page using `node ../../../.founderOS/scripts/notion-tool.mjs search` with the name.
 2. If multiple matches, present a numbered list with parent context and last edited date. Ask the user to pick.
 3. If no matches, report: "Could not find a page named '[NAME]'. Would you like to create at the workspace root instead, or provide a different parent name?"
 
@@ -100,7 +100,7 @@ When creating a page:
 
 1. **Extract title** -- identify the page title from the description. If the description is a sentence ("meeting notes for the Q1 kickoff"), derive a concise title ("Q1 Kickoff Meeting Notes").
 2. **Extract content** -- identify any initial content the user described. Apply the content block formatting rules from the notion-operations skill to convert text to appropriate Notion block types (paragraphs, headings, lists, to-dos, code blocks).
-3. **Create** -- run `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs create-page <parent-id> --properties '<json>' --content '<json>'`.
+3. **Create** -- run `node ../../../.founderOS/scripts/notion-tool.mjs create-page <parent-id> --properties '<json>' --content '<json>'`.
 4. **Confirm** -- display the created page:
 
 ```
@@ -137,7 +137,7 @@ Create this database? (yes / no / modify)
 ```
 
 3. **Handle modification** -- if the user says "modify", ask what to change. Update the schema and re-present.
-4. **Create** -- once confirmed, run `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs create-database <parent-id> --title '<name>' --properties '<json>'`.
+4. **Create** -- once confirmed, run `node ../../../.founderOS/scripts/notion-tool.mjs create-database <parent-id> --title '<name>' --properties '<json>'`.
 5. **Confirm** -- display the created database:
 
 ```

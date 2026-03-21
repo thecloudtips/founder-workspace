@@ -12,8 +12,8 @@ Connect a new social media account via OAuth with PKCE. This is a foreground com
 
 ## Skills
 
-1. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/late-skills/late-common/SKILL.md`
-2. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/late-skills/late-accounts/SKILL.md`
+1. Read `../../../.founderOS/infrastructure/late-skills/late-common/SKILL.md`
+2. Read `../../../.founderOS/infrastructure/late-skills/late-accounts/SKILL.md`
 
 ## Arguments
 
@@ -24,7 +24,7 @@ Connect a new social media account via OAuth with PKCE. This is a foreground com
 
 ## Business Context (Optional)
 
-Check `${CLAUDE_PLUGIN_ROOT}/_infrastructure/context/active/` for `.md` files.
+Check `../../../.founderOS/infrastructure/context/active/` for `.md` files.
 
 ## Preflight Check
 
@@ -43,7 +43,7 @@ Check for learned optimizations from past `social:connect` runs.
 1. Verify Late.dev auth is working
 2. List existing accounts to check if platform already connected:
    ```bash
-   node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs accounts list
+   node ../../../.founderOS/scripts/late-tool.mjs accounts list
    ```
 3. If platform already connected, warn user and ask to continue or cancel
 
@@ -51,7 +51,7 @@ Check for learned optimizations from past `social:connect` runs.
 
 1. Initiate OAuth connection:
    ```bash
-   node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs accounts connect \
+   node ../../../.founderOS/scripts/late-tool.mjs accounts connect \
      --platform=<platform> --profile=<profile>
    ```
 2. Display authorization URL for user to open in browser
@@ -62,7 +62,7 @@ Check for learned optimizations from past `social:connect` runs.
 
 1. Run health check on new account:
    ```bash
-   node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs accounts health --account-id=<new_id>
+   node ../../../.founderOS/scripts/late-tool.mjs accounts health --account-id=<new_id>
    ```
 2. Display account status and permissions
 

@@ -10,7 +10,7 @@ result-format: full
 Run health checks on the Founder OS installation.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `setup` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -29,11 +29,11 @@ Run each check below and report results as a table with Pass/Fail status.
 
 - Run the Notion CLI diagnostic to verify connectivity:
   ```bash
-  node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs --diagnostic
+  node ../../../.founderOS/scripts/notion-tool.mjs --diagnostic
   ```
 - Then search for HQ databases:
   ```bash
-  node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs search "[FOS]" --filter database
+  node ../../../.founderOS/scripts/notion-tool.mjs search "[FOS]" --filter database
   ```
 - Count how many of the 22 expected databases exist.
 - List any missing databases by name.

@@ -12,8 +12,8 @@ Generate a structured content outline from a topic or brief, selecting the best 
 
 ## Load Skills
 
-1. Read `${CLAUDE_PLUGIN_ROOT}/skills/ideate/content-writing/SKILL.md`
-2. Read `${CLAUDE_PLUGIN_ROOT}/skills/ideate/hook-creation/SKILL.md`
+1. Read `skills/ideate/content-writing/SKILL.md`
+2. Read `skills/ideate/hook-creation/SKILL.md`
 
 ## Parse Arguments
 
@@ -38,7 +38,7 @@ Check if context files exist at `_infrastructure/context/active/`. If the direct
 
 ## Preflight Check
 
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `ideate` namespace.
 No external tool dependencies are required for this command — preflight passes trivially.
 If the check returns `blocked` for any reason, stop execution and display the fix instructions.

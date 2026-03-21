@@ -54,7 +54,7 @@ Classify each goal into a health tier by comparing actual progress against time-
 
 Do not calculate RAG for goals younger than 7 days. Early data points produce volatile scores that mislead more than inform. Display "Too early" as the RAG status and omit the goal from aggregate health summaries until the 7-day threshold is met.
 
-For the full RAG algorithm including cold-start edge cases, clamping logic, and status override rules, read `${CLAUDE_PLUGIN_ROOT}/skills/goal/progress-analysis/references/rag-status-calculation.md`.
+For the full RAG algorithm including cold-start edge cases, clamping logic, and status override rules, read `skills/goal/progress-analysis/references/rag-status-calculation.md`.
 
 ---
 
@@ -135,7 +135,7 @@ Require a minimum of 7 days of data OR 2 or more milestones completed before pro
 - **Negative velocity** (progress decreased): Display "Regressing" and flag as a critical blocker. Do not project a completion date from negative velocity.
 - **Velocity exceeding remaining work**: Cap projected completion at today (goal is effectively complete or will be within the day).
 
-For full velocity formulas, window calculation details, and milestone-to-progress conversion math, read `${CLAUDE_PLUGIN_ROOT}/skills/goal/progress-analysis/references/velocity-projection.md`.
+For full velocity formulas, window calculation details, and milestone-to-progress conversion math, read `skills/goal/progress-analysis/references/velocity-projection.md`.
 
 ---
 
@@ -168,7 +168,7 @@ Sort blockers by severity (critical first, then high, then medium) within each g
 
 A single goal may trigger multiple blocker types simultaneously. Report all detected blockers — do not suppress lower-severity flags when a higher-severity flag exists on the same goal. The combination of flags provides a richer diagnostic picture.
 
-For the full detection logic, severity escalation rules, and output schema, read `${CLAUDE_PLUGIN_ROOT}/skills/goal/progress-analysis/references/blocker-detection.md`.
+For the full detection logic, severity escalation rules, and output schema, read `skills/goal/progress-analysis/references/blocker-detection.md`.
 
 ---
 
@@ -253,6 +253,6 @@ Display "Regressing" as the projected completion value. Treat as a critical anom
 
 For detailed algorithms, formulas, and edge case handling, consult:
 
-- **`${CLAUDE_PLUGIN_ROOT}/skills/goal/progress-analysis/references/velocity-projection.md`** — Full velocity formulas with multi-window math, milestone-to-progress conversion, window re-normalization when data is sparse, and negative velocity handling
-- **`${CLAUDE_PLUGIN_ROOT}/skills/goal/progress-analysis/references/rag-status-calculation.md`** — Complete RAG algorithm with cold-start guards, clamping logic, status override rules, and no-deadline handling
-- **`${CLAUDE_PLUGIN_ROOT}/skills/goal/progress-analysis/references/blocker-detection.md`** — Detection logic for all four blocker types, severity levels, escalation rules, output schema, and multi-blocker interaction patterns
+- **`skills/goal/progress-analysis/references/velocity-projection.md`** — Full velocity formulas with multi-window math, milestone-to-progress conversion, window re-normalization when data is sparse, and negative velocity handling
+- **`skills/goal/progress-analysis/references/rag-status-calculation.md`** — Complete RAG algorithm with cold-start guards, clamping logic, status override rules, and no-deadline handling
+- **`skills/goal/progress-analysis/references/blocker-detection.md`** — Detection logic for all four blocker types, severity levels, escalation rules, output schema, and multi-blocker interaction patterns

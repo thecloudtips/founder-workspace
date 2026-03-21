@@ -11,7 +11,7 @@ Scan all Founder OS plugin Notion databases to discover which plugins are active
 
 ## Plugin Registry
 
-Load the authoritative plugin registry from `${CLAUDE_PLUGIN_ROOT}/config/task-estimates.json`. This file defines all Founder OS plugins that produce trackable Notion database records. Parse the `categories` object where each key is a task category identifier.
+Load the authoritative plugin registry from `../../../../.founderOS/config/task-estimates.json`. This file defines all Founder OS plugins that produce trackable Notion database records. Parse the `categories` object where each key is a task category identifier.
 
 Each registry entry contains:
 
@@ -36,7 +36,7 @@ Execute the following procedure for each category entry in the registry. Process
 
 ### Step 1: Load Registry
 
-Read and parse `${CLAUDE_PLUGIN_ROOT}/config/task-estimates.json`. Extract the `categories` object. Validate that the file contains at least one category entry. If the file is missing or unparseable, abort with error: "Cannot load plugin registry from config/task-estimates.json."
+Read and parse `../../../../.founderOS/config/task-estimates.json`. Extract the `categories` object. Validate that the file contains at least one category entry. If the file is missing or unparseable, abort with error: "Cannot load plugin registry from config/task-estimates.json."
 
 ### Step 2: Iterate Categories
 
@@ -255,6 +255,6 @@ The roi-calculation skill consumes this output structure directly, joining each 
 ## Additional Resources
 
 The authoritative plugin registry is maintained at:
-`${CLAUDE_PLUGIN_ROOT}/config/task-estimates.json`
+`../../../../.founderOS/config/task-estimates.json`
 
 This file is the single source of truth for which plugins to scan, which Notion databases to search for, which date properties to filter on, and which count filters to apply. When new plugins are added to the Founder OS ecosystem, add a corresponding entry to this file to include them in time savings discovery.

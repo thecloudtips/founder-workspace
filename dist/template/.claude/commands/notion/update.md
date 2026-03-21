@@ -12,7 +12,7 @@ Find a Notion page by title or URL, then update its properties or append content
 
 ## Load Skills
 
-Read the notion-operations skill at `${CLAUDE_PLUGIN_ROOT}/skills/notion/notion-operations/SKILL.md` for Notion CLI tool usage, workspace discovery, page operations (reading, updating), property value mapping, and content block formatting.
+Read the notion-operations skill at `skills/notion/notion-operations/SKILL.md` for Notion CLI tool usage, workspace discovery, page operations (reading, updating), property value mapping, and content block formatting.
 
 ## Parse Arguments
 
@@ -32,7 +32,7 @@ Examples:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `notion` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -72,8 +72,8 @@ If any error occurs during this command:
 
 ## Step 1: Find the Page
 
-1. **URL provided**: Run `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs fetch <url>`. Skip to Step 2.
-2. **Title search**: Run `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs search '<title>'`.
+1. **URL provided**: Run `node ../../../.founderOS/scripts/notion-tool.mjs fetch <url>`. Skip to Step 2.
+2. **Title search**: Run `node ../../../.founderOS/scripts/notion-tool.mjs search '<title>'`.
 3. **Single match**: Proceed to Step 2.
 4. **Multiple matches**: Present a disambiguated list following the notion-operations skill's disambiguation rules:
 
@@ -92,7 +92,7 @@ Wait for the user's selection.
 
 ## Step 2: Read Current State
 
-1. Run `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs get-page <page-id>` to read the full page.
+1. Run `node ../../../.founderOS/scripts/notion-tool.mjs get-page <page-id>` to read the full page.
 2. Extract current properties (name, type, current value for each).
 3. Extract current body content (summarize structure: number of blocks, headings, lists).
 4. Store this state for the before/after comparison.
@@ -114,7 +114,7 @@ Apply the property value mapping from the notion-operations skill:
    - "set the amount to 5000" → Number property
    - "mark as checked/complete/done" → Checkbox property or Status property
 
-2. **Validate** -- check that the target property exists on the page and the value is compatible. Consult `${CLAUDE_PLUGIN_ROOT}/skills/notion/notion-operations/references/workspace-patterns.md` for the full property value mapping table.
+2. **Validate** -- check that the target property exists on the page and the value is compatible. Consult `skills/notion/notion-operations/references/workspace-patterns.md` for the full property value mapping table.
 
 3. **Handle mismatches**:
    - Property not found: List available properties and suggest the closest match.
@@ -167,7 +167,7 @@ Wait for the user's confirmation. If the user says "no", ask what they'd like to
 
 ## Step 5: Execute and Report
 
-1. **Execute** -- run `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs update-page <page-id> --properties '<json>'`.
+1. **Execute** -- run `node ../../../.founderOS/scripts/notion-tool.mjs update-page <page-id> --properties '<json>'`.
 2. **Report** -- show the before/after summary:
 
 ### For property updates:

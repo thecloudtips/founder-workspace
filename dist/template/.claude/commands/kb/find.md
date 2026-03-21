@@ -12,7 +12,7 @@ Lightweight browse command that searches Notion and Google Drive for documents m
 
 ## Load Skills
 
-Read the knowledge-retrieval skill at `${CLAUDE_PLUGIN_ROOT}/skills/kb/knowledge-retrieval/SKILL.md` for multi-source search pipeline, query formulation, relevance scoring, and preview generation.
+Read the knowledge-retrieval skill at `skills/kb/knowledge-retrieval/SKILL.md` for multi-source search pipeline, query formulation, relevance scoring, and preview generation.
 
 Do NOT load the answer-synthesis skill. This command lists documents, it does not synthesize answers.
 
@@ -28,7 +28,7 @@ Extract from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `kb` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -90,7 +90,7 @@ Deduplicate results that appear in both sources (match by title similarity or UR
 
 If `--type` is set to anything other than `all`, filter the result set to include only documents whose classification matches the specified type.
 
-Classify each result using the 9-type taxonomy from the content-classification reference at `${CLAUDE_PLUGIN_ROOT}/skills/kb/source-indexing/references/content-classification.md`. Apply the classification decision flow: database (priority 1) > archive (priority 2) > title match (priority 3) > content match (priority 4) > parent location (priority 5) > other (priority 6).
+Classify each result using the 9-type taxonomy from the content-classification reference at `skills/kb/source-indexing/references/content-classification.md`. Apply the classification decision flow: database (priority 1) > archive (priority 2) > title match (priority 3) > content match (priority 4) > parent location (priority 5) > other (priority 6).
 
 Remove results that do not match the requested type. If all results are filtered out, report no results with a suggestion to try `--type=all`.
 

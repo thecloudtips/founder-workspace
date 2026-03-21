@@ -10,7 +10,7 @@ description: "Core Late.dev CLI conventions, authentication, error handling, and
 All Late.dev operations go through `scripts/late-tool.mjs`. Never call the Late.dev API directly.
 
 ```bash
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs <command> <subcommand> [options]
+node ../../../scripts/late-tool.mjs <command> <subcommand> [options]
 ```
 
 ## Authentication
@@ -26,7 +26,7 @@ node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs <command> <subcommand> [options
 Before any Late.dev operation, verify auth:
 
 ```bash
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs --validate-only
+node ../../../scripts/late-tool.mjs --validate-only
 ```
 
 If this fails with `LATE_AUTH_FAILED`, halt immediately with fix instructions:

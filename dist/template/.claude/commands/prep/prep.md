@@ -37,7 +37,7 @@ If `event_id` is provided, validate it by fetching the event using `gws calendar
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `prep` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -79,8 +79,8 @@ If any error occurs during this command:
 
 When `--team` is NOT present:
 
-1. Read the meeting-context skill at `${CLAUDE_PLUGIN_ROOT}/skills/prep/meeting-context/SKILL.md` for event identity resolution, meeting classification, attendee context lookup, open items compilation, document search, and graceful degradation rules.
-2. Read the talking-points skill at `${CLAUDE_PLUGIN_ROOT}/skills/prep/talking-points/SKILL.md` for framework selection logic, talking point generation rules, opener/close structure, and context-aware customization.
+1. Read the meeting-context skill at `skills/prep/meeting-context/SKILL.md` for event identity resolution, meeting classification, attendee context lookup, open items compilation, document search, and graceful degradation rules.
+2. Read the talking-points skill at `skills/prep/talking-points/SKILL.md` for framework selection logic, talking point generation rules, opener/close structure, and context-aware customization.
 3. **Check for existing meeting record**:
    - Search Notion for a database titled "[FOS] Meetings". If not found, try "Founder OS HQ - Meetings". If not found, fall back to "Meeting Prep Autopilot - Prep Notes".
    - If a database is found, look for an entry where the Event ID (rich_text) property matches the target event_id. Note: the Event ID may have been created by P07 Meeting Intelligence Hub -- if a record already exists for this Event ID, UPDATE it with prep fields rather than creating a duplicate.
@@ -170,16 +170,16 @@ When `--team` is NOT present:
 
 When `--team` IS present:
 
-1. Read the pipeline configuration at `${CLAUDE_PLUGIN_ROOT}/agents/prep/config.json`.
+1. Read the pipeline configuration at `agents/prep/config.json`.
 2. **Phase 1 -- Parallel Gathering**: Launch all 4 gatherer agents simultaneously:
-   - **Calendar Agent** -- Fetch the target event, resolve identity fields, classify meeting type, compute importance score, detect scheduling conflicts. Reads its definition from `${CLAUDE_PLUGIN_ROOT}/agents/prep/calendar-agent.md`.
-   - **Gmail Agent** -- Search email threads with each attendee within the `--hours` window, extract thread counts, unanswered emails, recent topics, and sentiment indicators. Reads its definition from `${CLAUDE_PLUGIN_ROOT}/agents/prep/gmail-agent.md`.
-   - **Notion Agent** -- Pull CRM contact data (role, company, deals, relationship status), past meeting notes, open action items, and commitments from Notion. Reads its definition from `${CLAUDE_PLUGIN_ROOT}/agents/prep/notion-agent.md`.
-   - **Drive Agent** -- Search Google Drive for documents relevant to the meeting topic and attendees via the `gws` CLI. If gws is unavailable, return immediately with status "unavailable". Reads its definition from `${CLAUDE_PLUGIN_ROOT}/agents/prep/drive-agent.md`.
+   - **Calendar Agent** -- Fetch the target event, resolve identity fields, classify meeting type, compute importance score, detect scheduling conflicts. Reads its definition from `agents/prep/calendar-agent.md`.
+   - **Gmail Agent** -- Search email threads with each attendee within the `--hours` window, extract thread counts, unanswered emails, recent topics, and sentiment indicators. Reads its definition from `agents/prep/gmail-agent.md`.
+   - **Notion Agent** -- Pull CRM contact data (role, company, deals, relationship status), past meeting notes, open action items, and commitments from Notion. Reads its definition from `agents/prep/notion-agent.md`.
+   - **Drive Agent** -- Search Google Drive for documents relevant to the meeting topic and attendees via the `gws` CLI. If gws is unavailable, return immediately with status "unavailable". Reads its definition from `agents/prep/drive-agent.md`.
 3. Wait for all gatherers to complete or timeout after 30 seconds. Any agent that times out is marked as "timed out" in the pipeline report. The pipeline continues as long as at least 2 agents return data (per `minimum_gatherers_required: 2` in config.json).
 4. **Phase 2 -- Synthesis**: Launch the **Prep Lead** agent:
-   - Reads its definition from `${CLAUDE_PLUGIN_ROOT}/agents/prep/prep-lead.md`.
-   - Reads the talking-points skill at `${CLAUDE_PLUGIN_ROOT}/skills/prep/talking-points/SKILL.md`.
+   - Reads its definition from `agents/prep/prep-lead.md`.
+   - Reads the talking-points skill at `skills/prep/talking-points/SKILL.md`.
    - Merges all gatherer outputs into attendee profiles, open items, recent context, and relevant documents.
    - Selects the appropriate talking point framework based on meeting type, generates 3-5 talking points, opener, close, and "Do NOT mention" list.
    - Creates (or updates) the Notion page with the full prep document.

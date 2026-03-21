@@ -12,7 +12,7 @@ Scan the user's Gmail sent folder to identify emails awaiting a response, detect
 
 ## Load Skill
 
-Read the follow-up-detection skill at `${CLAUDE_PLUGIN_ROOT}/skills/followup/follow-up-detection/SKILL.md` for sent-email scanning logic, thread reply detection, promise pattern matching, age-based priority tiers, exclusion rules, and priority scoring.
+Read the follow-up-detection skill at `skills/followup/follow-up-detection/SKILL.md` for sent-email scanning logic, thread reply detection, promise pattern matching, age-based priority tiers, exclusion rules, and priority scoring.
 
 ## Parse Arguments
 
@@ -25,7 +25,7 @@ Extract flags from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `followup` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -79,7 +79,7 @@ If `$ARGUMENTS` contains `--schedule`:
 
 2. **Identify awaiting-reply threads**: For each thread, determine whether the user sent the last message. If the user sent the last message and no reply has been received, flag the thread as "Awaiting Reply." Apply the thread reply detection logic from the skill.
 
-3. **Detect promises**: Scan flagged threads for bidirectional promise patterns. For outbound promises (user's sent messages), check for delivery, response, action, and temporal commitment language. For inbound promises (received messages), check the same categories plus deferral language. Consult `${CLAUDE_PLUGIN_ROOT}/skills/followup/follow-up-detection/references/promise-patterns.md` for the complete pattern library. Classify each promise as "Promise Made", "Promise Received", or "Awaiting Response."
+3. **Detect promises**: Scan flagged threads for bidirectional promise patterns. For outbound promises (user's sent messages), check for delivery, response, action, and temporal commitment language. For inbound promises (received messages), check the same categories plus deferral language. Consult `skills/followup/follow-up-detection/references/promise-patterns.md` for the complete pattern library. Classify each promise as "Promise Made", "Promise Received", or "Awaiting Response."
 
 4. **Apply exclusion rules**: Filter out threads matching exclusion criteria from the skill: no-reply addresses, automated senders, service addresses, newsletters, auto-replies, transactional confirmations, mailing list messages, and calendar invitations.
 

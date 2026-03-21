@@ -14,11 +14,11 @@ Generate a raw content draft from a topic in one pass. This command executes the
 
 Read all skills before starting any phase:
 
-1. `${CLAUDE_PLUGIN_ROOT}/skills/ideate/content-writing/SKILL.md`
-2. `${CLAUDE_PLUGIN_ROOT}/skills/ideate/hook-creation/SKILL.md`
-3. `${CLAUDE_PLUGIN_ROOT}/skills/ideate/founder-voice/SKILL.md`
-4. `${CLAUDE_PLUGIN_ROOT}/_infrastructure/humanize-content/SKILL.md`
-5. `${CLAUDE_PLUGIN_ROOT}/_infrastructure/humanize-content/references/linkedin-humanization.md`
+1. `skills/ideate/content-writing/SKILL.md`
+2. `skills/ideate/hook-creation/SKILL.md`
+3. `skills/ideate/founder-voice/SKILL.md`
+4. `../../../.founderOS/infrastructure/humanize-content/SKILL.md`
+5. `../../../.founderOS/infrastructure/humanize-content/references/linkedin-humanization.md`
 
 Apply content-writing for structure and formatting rules, hook-creation for the opening lines, and founder-voice for tone throughout the draft. Apply humanize-content for natural-sounding prose. The `--tone` flag selects the humanization tone preset (default: Professional).
 
@@ -38,7 +38,7 @@ Extract the topic and flags from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `ideate` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.

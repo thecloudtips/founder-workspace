@@ -14,9 +14,9 @@ Execute a workflow YAML file by parsing its steps, resolving the dependency DAG,
 
 Read all three skills before starting:
 
-1. `${CLAUDE_PLUGIN_ROOT}/skills/workflow/workflow-design/SKILL.md`
-2. `${CLAUDE_PLUGIN_ROOT}/skills/workflow/workflow-execution/SKILL.md`
-3. `${CLAUDE_PLUGIN_ROOT}/skills/workflow/workflow-scheduling/SKILL.md`
+1. `skills/workflow/workflow-design/SKILL.md`
+2. `skills/workflow/workflow-execution/SKILL.md`
+3. `skills/workflow/workflow-scheduling/SKILL.md`
 
 ## Parse Arguments
 
@@ -33,7 +33,7 @@ If `$ARGUMENTS` is empty, list workflow files found in `workflows/` directory an
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `workflow` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -90,11 +90,11 @@ Read and parse the workflow YAML file. If YAML parsing fails, display the parse 
 
 ## Step 3: Validate
 
-Run all 14 validation rules from the workflow-design skill (read `${CLAUDE_PLUGIN_ROOT}/skills/workflow/workflow-design/references/validation-rules.md`). Collect all violations. If any errors (not warnings) exist, display all violations and stop. Warnings are displayed but do not block execution.
+Run all 14 validation rules from the workflow-design skill (read `skills/workflow/workflow-design/references/validation-rules.md`). Collect all violations. If any errors (not warnings) exist, display all violations and stop. Warnings are displayed but do not block execution.
 
 ## Step 4: Resolve DAG
 
-Apply Kahn's topological sort to determine step execution order (read `${CLAUDE_PLUGIN_ROOT}/skills/workflow/workflow-design/references/dag-resolution.md`). Identify parallel batches for display.
+Apply Kahn's topological sort to determine step execution order (read `skills/workflow/workflow-design/references/dag-resolution.md`). Identify parallel batches for display.
 
 ## Step 5: Handle --dry-run
 
@@ -149,7 +149,7 @@ Follow the step execution protocol from workflow-execution skill:
    e. Invoke the command with args
    f. Capture output, store in context under output_as
    g. Display result: `✓ (Ns)` or `✗ Failed (reason)` or `⊘ Skipped (reason)`
-   h. On failure, apply error handling rules from `${CLAUDE_PLUGIN_ROOT}/skills/workflow/workflow-execution/references/error-handling.md`
+   h. On failure, apply error handling rules from `skills/workflow/workflow-execution/references/error-handling.md`
 
 ## Step 8: Display Summary
 

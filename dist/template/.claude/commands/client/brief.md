@@ -21,7 +21,7 @@ If no client name is provided, ask the user: "Which client do you need a brief f
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `client` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -61,8 +61,8 @@ If any error occurs during this command:
 
 ## Process
 
-1. Read the relationship-summary skill at `${CLAUDE_PLUGIN_ROOT}/skills/client/relationship-summary/SKILL.md` for the executive brief template, sentiment scoring, engagement metrics, risk flags, and health score formula.
-2. Read the client-context skill at `${CLAUDE_PLUGIN_ROOT}/skills/client/client-context/SKILL.md` for CRM schema and data source hierarchy.
+1. Read the relationship-summary skill at `skills/client/relationship-summary/SKILL.md` for the executive brief template, sentiment scoring, engagement metrics, risk flags, and health score formula.
+2. Read the client-context skill at `skills/client/client-context/SKILL.md` for CRM schema and data source hierarchy.
 3. **Check dossier cache**:
    - Locate the Companies database using the discovery order: search "[FOS] Companies" first, then "Founder OS HQ - Companies", then "Companies" or "CRM - Companies", then fall back to a standalone "Client Dossiers" database.
    - Search the discovered database for a page matching the client name.

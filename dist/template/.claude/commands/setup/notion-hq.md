@@ -9,7 +9,7 @@ result-format: summary
 Create all Founder OS HQ Notion databases programmatically.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `setup` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -33,17 +33,17 @@ No arguments needed. The command reads configuration from `.env` (NOTION_API_KEY
 2. Read the manifest file at `_infrastructure/notion-db-templates/founder-os-hq-manifest.json` to get the complete list of databases and their creation order.
 
 3. For each database in the manifest's `creation_order` array:
-   a. Search Notion for an existing database named `[FOS] <display_name>` using `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs search "[FOS] <display_name>" --filter database`.
+   a. Search Notion for an existing database named `[FOS] <display_name>` using `node ../../../.founderOS/scripts/notion-tool.mjs search "[FOS] <display_name>" --filter database`.
    b. If found, report "Already exists" and skip to the next database.
    c. If not found, read the template JSON from `_infrastructure/notion-db-templates/<template_filename>.json`.
-   d. Create a Notion database using `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs create-database <parent-id> --title "[FOS] <display_name>" --properties '<properties-json>'` with the properties from the template.
+   d. Create a Notion database using `node ../../../.founderOS/scripts/notion-tool.mjs create-database <parent-id> --title "[FOS] <display_name>" --properties '<properties-json>'` with the properties from the template.
    e. Name it `[FOS] <display_name>` (e.g., `[FOS] Companies`, `[FOS] Tasks`).
 
 4. After all databases are created, wire up relations:
    - Read the `relations` section from the manifest.
-   - For each relation, use `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs update-database <db-id> --properties '<relation-properties-json>'` to add relation properties connecting databases (e.g., Tasks → Companies, Finance → Companies).
+   - For each relation, use `node ../../../.founderOS/scripts/notion-tool.mjs update-database <db-id> --properties '<relation-properties-json>'` to add relation properties connecting databases (e.g., Tasks → Companies, Finance → Companies).
 
-5. Create a "Founder OS HQ" top-level page as a dashboard using `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs create-page <parent-id> --properties '<properties-json>' --content '<content-json>'`.
+5. Create a "Founder OS HQ" top-level page as a dashboard using `node ../../../.founderOS/scripts/notion-tool.mjs create-page <parent-id> --properties '<properties-json>' --content '<content-json>'`.
 
 6. Print a summary showing each database with its status (Created / Already Exists / Failed).
 

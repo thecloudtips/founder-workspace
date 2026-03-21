@@ -38,7 +38,7 @@ Scan each thread for positive and negative signal indicators. Count each signal 
 - Complaint keywords in negative context
 - Formality shift
 
-For signal definitions, keyword lists, and detection criteria per signal type, see `${CLAUDE_PLUGIN_ROOT}/skills/health/sentiment-analysis/references/signal-patterns.md`.
+For signal definitions, keyword lists, and detection criteria per signal type, see `skills/health/sentiment-analysis/references/signal-patterns.md`.
 
 ### Net Score Calculation
 
@@ -104,7 +104,7 @@ Scan meeting events for positive and negative behavioral signals.
 - Client stops sharing agenda
 - Frequency declining
 
-For the full signal dictionary with detection criteria and thresholds, see `${CLAUDE_PLUGIN_ROOT}/skills/health/sentiment-analysis/references/signal-patterns.md`.
+For the full signal dictionary with detection criteria and thresholds, see `skills/health/sentiment-analysis/references/signal-patterns.md`.
 
 ### Net Score Calculation
 

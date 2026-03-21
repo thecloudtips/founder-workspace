@@ -14,7 +14,7 @@ description: "Late.dev account management covering OAuth flows, account health c
 5. Account appears in `accounts list`
 
 ```bash
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs accounts connect \
+node ../../../../.founderOS/scripts/late-tool.mjs accounts connect \
   --platform=linkedin --profile=default
 ```
 
@@ -27,7 +27,7 @@ Security requirements:
 ## Health Checks
 
 ```bash
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs accounts health --account-id=acc_123
+node ../../../../.founderOS/scripts/late-tool.mjs accounts health --account-id=acc_123
 ```
 
 Validates token validity and permissions. Distinguish:
@@ -38,16 +38,16 @@ Validates token validity and permissions. Distinguish:
 
 ```bash
 # List profiles (brand groupings)
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs profiles list
+node ../../../../.founderOS/scripts/late-tool.mjs profiles list
 
 # Create profile
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs profiles create --name="My Brand"
+node ../../../../.founderOS/scripts/late-tool.mjs profiles create --name="My Brand"
 ```
 
 ## Disconnect
 
 ```bash
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs accounts disconnect --account-id=acc_123
+node ../../../../.founderOS/scripts/late-tool.mjs accounts disconnect --account-id=acc_123
 ```
 
 Logs disconnect event to `.late/audit.log`.

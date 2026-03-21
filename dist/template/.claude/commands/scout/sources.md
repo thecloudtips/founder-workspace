@@ -13,7 +13,7 @@ View the current list of scout search sources with their priorities and status. 
 ## Skills
 
 Read these skill files before proceeding:
-1. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/scout/SKILL.md` — sources schema, source types, priority ordering rules
+1. Read `../../../.founderOS/infrastructure/scout/SKILL.md` — sources schema, source types, priority ordering rules
 
 ## Arguments
 
@@ -27,11 +27,11 @@ If no arguments are provided, display the current source list and exit.
 
 ## Business Context (Optional)
 
-Check `${CLAUDE_PLUGIN_ROOT}/_infrastructure/context/active/` for `.md` files. If present, read them to personalize behavior — e.g., suggest relevant sources for the business's technology domain.
+Check `../../../.founderOS/infrastructure/context/active/` for `.md` files. If present, read them to personalize behavior — e.g., suggest relevant sources for the business's technology domain.
 
 ## Preflight Check
 
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `scout` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust behavior:
@@ -40,7 +40,7 @@ If the check returns `degraded`, note which optional sources are unavailable and
 
 ## Step 0: Memory Context
 
-Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/memory/context-injection/SKILL.md`.
+Read `../../../.founderOS/infrastructure/memory/context-injection/SKILL.md`.
 Query memory store for: `scout sources`, `search configuration`.
 Inject top 5 relevant memories. If a memory references a previously added or removed source, surface a note.
 
@@ -54,7 +54,7 @@ Before executing the main logic, check for learned patterns in the Intelligence 
 
 ## Read Current Sources
 
-1. Read the sources file at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/scout/sources.json`.
+1. Read the sources file at `../../../.founderOS/infrastructure/scout/sources.json`.
 
 2. If the file does not exist, initialize with the default source list defined in the scout SKILL.md. Write the defaults to `sources.json` before continuing.
 
@@ -101,7 +101,7 @@ Apply mutations in this order if flags are provided:
 ## Write Back (if mutated)
 
 If any mutation was applied (`--add`, `--remove`, or `--reorder`):
-1. Write the updated sources list back to `${CLAUDE_PLUGIN_ROOT}/_infrastructure/scout/sources.json`.
+1. Write the updated sources list back to `../../../.founderOS/infrastructure/scout/sources.json`.
 2. Confirm: `[Scout] Sources updated — [N] sources configured.`
 
 ## Display Current Source List
@@ -142,7 +142,7 @@ If any error occurs during this command:
 
 ## Final Step: Observation Logging
 
-Record observation via `${CLAUDE_PLUGIN_ROOT}/_infrastructure/memory/pattern-detection/SKILL.md`:
+Record observation via `../../../.founderOS/infrastructure/memory/pattern-detection/SKILL.md`:
 - Plugin: `scout`
 - Command: `scout-sources`
 - Key entities: mutations applied (add/remove/reorder), source IDs affected

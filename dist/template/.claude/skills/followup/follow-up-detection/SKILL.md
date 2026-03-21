@@ -63,7 +63,7 @@ Scan email thread content for explicit commitments -- both promises the user mad
 
 ### Pattern Matching
 
-Scan sent messages for commitment language across four categories: delivery commitments, response commitments, action commitments, and temporal commitments. Scan received messages for the same categories plus deferral language (high follow-up signal). For the complete pattern library with specific phrases for each category, see `${CLAUDE_PLUGIN_ROOT}/skills/followup/follow-up-detection/references/promise-patterns.md`.
+Scan sent messages for commitment language across four categories: delivery commitments, response commitments, action commitments, and temporal commitments. Scan received messages for the same categories plus deferral language (high follow-up signal). For the complete pattern library with specific phrases for each category, see `skills/followup/follow-up-detection/references/promise-patterns.md`.
 
 When a temporal commitment accompanies a promise, extract the implied deadline and factor it into the priority score. A missed deadline elevates priority by +1 (cap at 5).
 

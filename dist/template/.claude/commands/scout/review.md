@@ -13,8 +13,8 @@ Re-run the 6-point security scan on a previously installed scouted tool. Updates
 ## Skills
 
 Read these skill files before proceeding:
-1. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/scout/SKILL.md` — catalog schema, sandbox layout, tool ID generation
-2. Read `${CLAUDE_PLUGIN_ROOT}/skills/scout/security/SKILL.md` — 6-point security checklist, verdict schema, audit trail rules
+1. Read `../../../.founderOS/infrastructure/scout/SKILL.md` — catalog schema, sandbox layout, tool ID generation
+2. Read `skills/scout/security/SKILL.md` — 6-point security checklist, verdict schema, audit trail rules
 
 ## Arguments
 
@@ -24,11 +24,11 @@ Read these skill files before proceeding:
 
 ## Business Context (Optional)
 
-Check `${CLAUDE_PLUGIN_ROOT}/_infrastructure/context/active/` for `.md` files. If present, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output. If files don't exist, skip silently.
+Check `../../../.founderOS/infrastructure/context/active/` for `.md` files. If present, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output. If files don't exist, skip silently.
 
 ## Preflight Check
 
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `scout` namespace.
 - Required: (none)
 - Optional: `websearch`
@@ -38,7 +38,7 @@ If the check returns `degraded`, note which optional sources are unavailable and
 
 ## Step 0: Memory Context
 
-Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/memory/context-injection/SKILL.md`.
+Read `../../../.founderOS/infrastructure/memory/context-injection/SKILL.md`.
 Query memory store for: `scout review`, `security assessment`.
 Inject top 5 relevant memories into working context for this execution.
 
@@ -52,7 +52,7 @@ Before executing the main logic, check for learned patterns in the Intelligence 
 
 ## Phase 1/3: Locate Tool
 
-1. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/scout/catalog.json`.
+1. Read `../../../.founderOS/infrastructure/scout/catalog.json`.
 2. Find the entry matching `tool-id` (exact match on the `id` field).
 3. If no matching entry exists, halt with:
    ```
@@ -75,7 +75,7 @@ Before executing the main logic, check for learned patterns in the Intelligence 
 ## Phase 2/3: Security Scan
 
 1. Spawn a background `security-auditor` agent via the Task tool with:
-   - `${CLAUDE_PLUGIN_ROOT}/skills/scout/security/SKILL.md` as checklist context
+   - `skills/scout/security/SKILL.md` as checklist context
    - All files in `_infrastructure/scout/sandbox/<tool-id>/_downloaded/` as target corpus
    - Instructions to run all six checks (prompt injection, secret exfiltration, overly broad tools, data leakage, supply chain risk, permission escalation) and produce a verdict JSON
 2. Overwrite `_infrastructure/scout/sandbox/<tool-id>/_review/report.json` with the new verdict JSON.
@@ -83,7 +83,7 @@ Before executing the main logic, check for learned patterns in the Intelligence 
 
 ## Phase 3/3: Update & Present
 
-1. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/scout/catalog.json`.
+1. Read `../../../.founderOS/infrastructure/scout/catalog.json`.
 2. Update the matching entry:
    - Set `security_verdict` to the new overall verdict.
    - Set `verdict_report` to the relative path of the updated `report.json`.
@@ -136,7 +136,7 @@ Always notify: `[Heal] {description of what happened and what was done}`
 
 ## Final Step: Observation Logging
 
-Record observation via `${CLAUDE_PLUGIN_ROOT}/_infrastructure/memory/pattern-detection/SKILL.md`:
+Record observation via `../../../.founderOS/infrastructure/memory/pattern-detection/SKILL.md`:
 - Plugin: `scout`
 - Command: `scout-review`
 - Key entities: tool ID, previous verdict, new verdict

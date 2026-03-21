@@ -81,7 +81,7 @@ Auto-set Start Date to today when a goal transitions from Not Started to In Prog
 
 Prevent invalid transitions: a goal cannot move from Completed back to In Progress (require unarchive or re-open as a new goal). A goal cannot move from Archived to any state without explicit `--reopen` confirmation.
 
-Reference `${CLAUDE_PLUGIN_ROOT}/skills/goal/goal-tracking/references/status-lifecycle.md` for the full transition matrix, guard conditions, and error messages for each invalid transition.
+Reference `skills/goal/goal-tracking/references/status-lifecycle.md` for the full transition matrix, guard conditions, and error messages for each invalid transition.
 
 ## Milestone Progress Formula
 
@@ -103,7 +103,7 @@ Round the result to the nearest integer. Clamp to the range 0-100.
 
 After every progress recalculation, append a new entry to the Progress Snapshots field: `{"date": "YYYY-MM-DD", "progress": N}`. Use these snapshots for velocity calculation and projected completion estimation.
 
-Reference `${CLAUDE_PLUGIN_ROOT}/skills/goal/goal-tracking/references/milestone-progress-formula.md` for edge cases, division-by-zero handling, and worked examples.
+Reference `skills/goal/goal-tracking/references/milestone-progress-formula.md` for edge cases, division-by-zero handling, and worked examples.
 
 ## Category Taxonomy
 
@@ -232,5 +232,5 @@ When the last active milestone transitions to Done and progress reaches 100%:
 
 Consult these reference files for detailed algorithms and worked examples:
 
-- `${CLAUDE_PLUGIN_ROOT}/skills/goal/goal-tracking/references/milestone-progress-formula.md` — Full formula specification with division-by-zero guards, partial credit rules, rounding behavior, and step-by-step worked examples for common and edge-case scenarios.
-- `${CLAUDE_PLUGIN_ROOT}/skills/goal/goal-tracking/references/status-lifecycle.md` — Complete transition matrix covering all valid and invalid status changes, guard conditions for each transition, auto-trigger rules, and error messages to display for blocked transitions.
+- `skills/goal/goal-tracking/references/milestone-progress-formula.md` — Full formula specification with division-by-zero guards, partial credit rules, rounding behavior, and step-by-step worked examples for common and edge-case scenarios.
+- `skills/goal/goal-tracking/references/status-lifecycle.md` — Complete transition matrix covering all valid and invalid status changes, guard conditions for each transition, auto-trigger rules, and error messages to display for blocked transitions.

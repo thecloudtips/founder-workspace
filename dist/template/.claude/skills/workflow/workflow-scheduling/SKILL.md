@@ -32,7 +32,7 @@ Common patterns:
 | First of month | `0 10 1 * *` | 10 AM on 1st |
 | Every 30 min | `*/30 * * * *` | Every half hour |
 
-Reference `${CLAUDE_PLUGIN_ROOT}/skills/workflow/workflow-scheduling/references/cron-syntax.md` for complete syntax reference, validation rules, and edge cases.
+Reference `skills/workflow/workflow-scheduling/references/cron-syntax.md` for complete syntax reference, validation rules, and edge cases.
 
 ## Natural Language to Cron Conversion
 Convert common natural language schedule descriptions to cron expressions:
@@ -72,7 +72,7 @@ Generate a shell script and crontab entry for persistent scheduling:
 - Never modify the user's crontab directly — output instructions for manual installation
 - Include the timezone in a comment above the crontab entry
 
-Reference `${CLAUDE_PLUGIN_ROOT}/skills/workflow/workflow-scheduling/references/os-cron-generation.md` for runner script template, crontab format, and installation instructions.
+Reference `skills/workflow/workflow-scheduling/references/os-cron-generation.md` for runner script template, crontab format, and installation instructions.
 
 ## Schedule Management
 Support these operations on scheduled workflows:
@@ -104,5 +104,5 @@ Validate schedule configuration:
 - Conflicting schedules: multiple workflows can run at the same time — warn but allow
 
 ## Additional Resources
-- `${CLAUDE_PLUGIN_ROOT}/skills/workflow/workflow-scheduling/references/cron-syntax.md` — Complete 5-field cron syntax specification, validation rules, special characters, common patterns, and edge cases
-- `${CLAUDE_PLUGIN_ROOT}/skills/workflow/workflow-scheduling/references/os-cron-generation.md` — Runner script template, crontab entry format, installation/removal instructions, and troubleshooting guide
+- `skills/workflow/workflow-scheduling/references/cron-syntax.md` — Complete 5-field cron syntax specification, validation rules, special characters, common patterns, and edge cases
+- `skills/workflow/workflow-scheduling/references/os-cron-generation.md` — Runner script template, crontab entry format, installation/removal instructions, and troubleshooting guide

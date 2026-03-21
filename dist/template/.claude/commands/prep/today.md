@@ -24,7 +24,7 @@ If an argument is malformed (e.g., `--hours=abc`), reject it with a clear error:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `prep` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -66,9 +66,9 @@ If any error occurs during this command:
 
 ### Step 1: Load Skills
 
-1. Read the meeting-context skill at `${CLAUDE_PLUGIN_ROOT}/skills/prep/meeting-context/SKILL.md` for event identity resolution, meeting classification, attendee context lookup, event filtering rules, and graceful degradation rules.
-2. Read the talking-points skill at `${CLAUDE_PLUGIN_ROOT}/skills/prep/talking-points/SKILL.md` for framework selection, talking point generation, open/close structure, and context-aware customization.
-3. If `--team` is present, read the pipeline configuration at `${CLAUDE_PLUGIN_ROOT}/agents/prep/config.json`.
+1. Read the meeting-context skill at `skills/prep/meeting-context/SKILL.md` for event identity resolution, meeting classification, attendee context lookup, event filtering rules, and graceful degradation rules.
+2. Read the talking-points skill at `skills/prep/talking-points/SKILL.md` for framework selection, talking point generation, open/close structure, and context-aware customization.
+3. If `--team` is present, read the pipeline configuration at `agents/prep/config.json`.
 
 ### Step 2: Fetch Today's Calendar Events
 
@@ -126,7 +126,7 @@ For each meeting in start-time order:
 1. Display progress: "Prepping meeting [current]/[total]: [Title] ([time])..."
 2. Execute the full `/founder-os:meeting:prep` logic for this single meeting:
    - **If `--team` is NOT present**: Run single-agent mode. Use cached attendee data. Perform event identity resolution, meeting classification, Google Drive document search, open items compilation, talking point generation, and output assembly per the meeting-context and talking-points skills.
-   - **If `--team` IS present**: Launch the parallel-gathering pipeline per `${CLAUDE_PLUGIN_ROOT}/agents/prep/config.json`. Pass cached attendee data to the gatherer agents to avoid redundant lookups. Agents read their definitions from `${CLAUDE_PLUGIN_ROOT}/agents/prep/[agent-name].md`.
+   - **If `--team` IS present**: Launch the parallel-gathering pipeline per `agents/prep/config.json`. Pass cached attendee data to the gatherer agents to avoid redundant lookups. Agents read their definitions from `agents/prep/[agent-name].md`.
 3. **Save to Notion**:
    - Search for a Notion database titled "[FOS] Meetings". If not found, try "Founder OS HQ - Meetings". If not found, fall back to "Meeting Prep Autopilot - Prep Notes". If none exists, warn and continue without Notion storage.
    - Check if a record already exists for this meeting (match by Event ID rich_text). The record may have been created by P07 Meeting Intelligence Hub. If yes, update the existing entry with P03-owned fields only (Prep Notes, Talking Points, Importance Score, Sources Used, Meeting Title, Date, Attendees, Meeting Type, Generated At). Do not overwrite P07 fields. If no existing record, create a new entry. If the meeting is with a known client, set the Company relation.

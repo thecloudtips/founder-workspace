@@ -1,6 +1,6 @@
 # Citation Formats and Drive Document QA Reference
 
-Detailed specifications for citation formatting in Google Drive document answers, including inline placement rules, Drive URL formatting, spreadsheet and section citations, selection criteria, no-citation scenarios, worked examples, and edge cases. Referenced by `${CLAUDE_PLUGIN_ROOT}/skills/drive/document-qa/SKILL.md`.
+Detailed specifications for citation formatting in Google Drive document answers, including inline placement rules, Drive URL formatting, spreadsheet and section citations, selection criteria, no-citation scenarios, worked examples, and edge cases. Referenced by `skills/drive/document-qa/SKILL.md`.
 
 ---
 
@@ -327,7 +327,7 @@ When the same content appears in both a shared folder and a personal copy:
 
 ## Confidence Scoring Dimensions
 
-Evaluate confidence across four dimensions, consistent with the thresholds defined in `${CLAUDE_PLUGIN_ROOT}/skills/drive/document-qa/SKILL.md`.
+Evaluate confidence across four dimensions, consistent with the thresholds defined in `skills/drive/document-qa/SKILL.md`.
 
 | Dimension | High Signal | Medium Signal | Low Signal |
 |-----------|-------------|---------------|------------|

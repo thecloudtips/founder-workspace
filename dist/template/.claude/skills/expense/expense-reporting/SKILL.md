@@ -113,7 +113,7 @@ Table grouping expenses by Budget Code. Columns: Budget Code, Department, Amount
 
 Compare the current period to the previous period of the same length (e.g., March 2024 vs February 2024; Q1 2024 vs Q4 2023). Present the comparison as described below in the Trend Analysis Methodology section.
 
-Consult `${CLAUDE_PLUGIN_ROOT}/skills/expense/expense-reporting/references/report-sections.md` for detailed section templates, example output, table formats, and column calculation formulas.
+Consult `skills/expense/expense-reporting/references/report-sections.md` for detailed section templates, example output, table formats, and column calculation formulas.
 
 ## Trend Analysis Methodology
 

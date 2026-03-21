@@ -47,7 +47,7 @@ Use `site:` operators to target high-quality sources directly rather than relyin
 5. Wrap exact phrases in double quotes to force phrase matching (e.g., `"product update"`, `"contact sales"`).
 6. Append competitor context when disambiguating common names (e.g., `"Mercury" bank startup` not just `Mercury`).
 
-Consult `${CLAUDE_PLUGIN_ROOT}/skills/compete/competitive-research/references/query-patterns.md` for full templated queries for each dimension, including site-specific variants and matrix query patterns for multi-competitor research.
+Consult `skills/compete/competitive-research/references/query-patterns.md` for full templated queries for each dimension, including site-specific variants and matrix query patterns for multi-competitor research.
 
 ## Data Extraction
 

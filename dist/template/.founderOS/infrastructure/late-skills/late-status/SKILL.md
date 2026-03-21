@@ -8,7 +8,7 @@ description: "Late.dev read operations for checking post status, listing posts, 
 ## Check Post Status
 
 ```bash
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs posts status --post-id=post_abc123
+node ../../../scripts/late-tool.mjs posts status --post-id=post_abc123
 ```
 
 Returns per-platform delivery status. Terminal states: `published`, `failed`. Non-terminal: `pending`, `processing`.
@@ -17,13 +17,13 @@ Returns per-platform delivery status. Terminal states: `published`, `failed`. No
 
 ```bash
 # All recent posts
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs posts list --limit=10
+node ../../../scripts/late-tool.mjs posts list --limit=10
 
 # Filter by status
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs posts list --status=failed
+node ../../../scripts/late-tool.mjs posts list --status=failed
 
 # Filter by profile
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs posts list --profile=prof_123
+node ../../../scripts/late-tool.mjs posts list --profile=prof_123
 ```
 
 ## Analytics
@@ -32,10 +32,10 @@ Requires Late.dev Analytics add-on. If unavailable, returns error — degrade gr
 
 ```bash
 # Post-level analytics
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs analytics get --post-id=post_abc123
+node ../../../scripts/late-tool.mjs analytics get --post-id=post_abc123
 
 # Account-level analytics
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs analytics get --account-id=acc_123 --date-range=7d
+node ../../../scripts/late-tool.mjs analytics get --account-id=acc_123 --date-range=7d
 ```
 
 Analytics response includes: likes, comments, shares, impressions, reach, clicks.

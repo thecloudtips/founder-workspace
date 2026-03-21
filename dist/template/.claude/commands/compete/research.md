@@ -12,9 +12,9 @@ Gather competitive intelligence on a company using targeted web searches across 
 
 ## Load Skills
 
-Read the competitive-research skill at `${CLAUDE_PLUGIN_ROOT}/skills/compete/competitive-research/SKILL.md` for surface scan strategy, query formulation, data extraction normalization, and the competitor_data output schema.
+Read the competitive-research skill at `skills/compete/competitive-research/SKILL.md` for surface scan strategy, query formulation, data extraction normalization, and the competitor_data output schema.
 
-Read the market-analysis skill at `${CLAUDE_PLUGIN_ROOT}/skills/compete/market-analysis/SKILL.md` for SWOT synthesis, positioning characterization, and strategic recommendation generation.
+Read the market-analysis skill at `skills/compete/market-analysis/SKILL.md` for SWOT synthesis, positioning characterization, and strategic recommendation generation.
 
 ## Parse Arguments
 
@@ -27,7 +27,7 @@ Extract from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `compete` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -78,7 +78,7 @@ Apply the competitive-research skill:
    - Positioning: `site:[domain]` (homepage), `[company] about`
    - News: `[company] funding OR launch OR "product update" [year]`
 
-   Consult `${CLAUDE_PLUGIN_ROOT}/skills/compete/competitive-research/references/query-patterns.md` for full templated query variants.
+   Consult `skills/compete/competitive-research/references/query-patterns.md` for full templated query variants.
 
 3. **Execute searches**: Run the web searches using the WebSearch tool. Extract and organize findings into the competitor_data schema defined in the competitive-research skill.
 
@@ -88,7 +88,7 @@ Apply the competitive-research skill:
 
 Apply the market-analysis skill:
 
-5. **Build SWOT**: Infer strengths, weaknesses, opportunities, and threats from the structured research data. Apply inference rules from `${CLAUDE_PLUGIN_ROOT}/skills/compete/market-analysis/references/analysis-frameworks.md`.
+5. **Build SWOT**: Infer strengths, weaknesses, opportunities, and threats from the structured research data. Apply inference rules from `skills/compete/market-analysis/references/analysis-frameworks.md`.
 
 6. **Classify positioning**: Assign a positioning archetype and messaging characterization.
 
@@ -100,7 +100,7 @@ Apply the market-analysis skill:
 
 9. **Create output directory**: Create `competitive-intel/` directory at the working directory if it does not exist.
 
-10. **Write report**: Save the formatted report to the output path. Use the report template at `${CLAUDE_PLUGIN_ROOT}/templates/competitive-report.md` as the structural scaffold. Fill all sections with researched data.
+10. **Write report**: Save the formatted report to the output path. Use the report template at `../../../.founderOS/templates/competitive-report.md` as the structural scaffold. Fill all sections with researched data.
 
 ## Notion Integration
 

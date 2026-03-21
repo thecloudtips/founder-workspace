@@ -15,13 +15,13 @@ description: "Late.dev media upload workflow with presigned URLs, validation, an
 
 ```bash
 # Step 1: Get presigned URL
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs media presign \
+node ../../../scripts/late-tool.mjs media presign \
   --filename=photo.jpg --content-type=image/jpeg
 # Returns: { "publicUrl": "https://...", "uploadUrl": "https://..." }
 # Note: uploadUrl is internal only — never log it
 
 # Step 2: Reference in post
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs posts create \
+node ../../../scripts/late-tool.mjs posts create \
   --accounts='["acc_123"]' \
   --text="Check this out!" \
   --media='[{"publicUrl":"https://...","type":"image"}]'

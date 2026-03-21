@@ -10,7 +10,7 @@ globs:
 
 Process a normalized meeting transcript through four independent extraction pipelines: summary generation, key decisions logging, follow-up commitment detection, and topic extraction. Each pipeline operates independently on the same input and produces its own output section. The combined result forms a structured meeting intelligence report suitable for Notion storage or chat display. This skill handles analysis only -- source gathering and transcript normalization are the responsibility of the source-gathering skill.
 
-For the complete detection pattern libraries referenced throughout this document, see `${CLAUDE_PLUGIN_ROOT}/skills/meeting/meeting-analysis/references/extraction-patterns.md`.
+For the complete detection pattern libraries referenced throughout this document, see `skills/meeting/meeting-analysis/references/extraction-patterns.md`.
 
 ## Input Format
 
@@ -56,7 +56,7 @@ Detect and extract explicit and inferred decisions from the transcript.
 
 Scan for decision language using two confidence tiers:
 
-**Explicit decisions** (confidence: Explicit) -- Direct statements of a resolved choice. Key patterns include "We decided...", "Agreement:", "Let's go with...", "The decision is...", "Going forward...", "We'll proceed with...", "Final answer is...". See `${CLAUDE_PLUGIN_ROOT}/skills/meeting/meeting-analysis/references/extraction-patterns.md` for the full pattern list.
+**Explicit decisions** (confidence: Explicit) -- Direct statements of a resolved choice. Key patterns include "We decided...", "Agreement:", "Let's go with...", "The decision is...", "Going forward...", "We'll proceed with...", "Final answer is...". See `skills/meeting/meeting-analysis/references/extraction-patterns.md` for the full pattern list.
 
 **Inferred decisions** (confidence: Inferred) -- Contextual consensus without direct decision language. Detect when a proposal receives no objection and discussion moves on, when a participant states a plan and others agree or remain silent, or when a topic concludes with an implicit resolution.
 
@@ -81,7 +81,7 @@ Detect actionable commitments that participants made during the meeting. Format 
 
 #### Detection Approach
 
-Scan for commitment language where a named person accepts or is assigned a task. Key patterns include "I'll send...", "I'll have that by...", "[Name] will...", "Can you [action] by [date]?", "By [date] we need to...", "[Name], please...", "I'm going to...", "Let me take care of...". See `${CLAUDE_PLUGIN_ROOT}/skills/meeting/meeting-analysis/references/extraction-patterns.md` for the full pattern list.
+Scan for commitment language where a named person accepts or is assigned a task. Key patterns include "I'll send...", "I'll have that by...", "[Name] will...", "Can you [action] by [date]?", "By [date] we need to...", "[Name], please...", "I'm going to...", "Let me take care of...". See `skills/meeting/meeting-analysis/references/extraction-patterns.md` for the full pattern list.
 
 #### Commitment Record Fields
 
@@ -263,4 +263,4 @@ When the transcript contains clear meeting boundaries (new date headers, "Meetin
 
 Consult these reference files for detailed implementation guidance:
 
-- `${CLAUDE_PLUGIN_ROOT}/skills/meeting/meeting-analysis/references/extraction-patterns.md` -- Complete detection pattern libraries for decisions, commitments, topic extraction, and disagreement signals. Includes language variants, edge case patterns, and false positive filters.
+- `skills/meeting/meeting-analysis/references/extraction-patterns.md` -- Complete detection pattern libraries for decisions, commitments, topic extraction, and disagreement signals. Includes language variants, edge case patterns, and false positive filters.

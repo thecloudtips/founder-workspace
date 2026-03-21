@@ -19,7 +19,7 @@ The current namespace name (e.g., `inbox` from `/founder-os:inbox:triage`).
 
 ### Step 1: Read the Registry
 
-Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/dependency-registry.json`.
+Read `../preflight/dependency-registry.json`.
 
 Look up the current namespace in the `namespaces` object.
 
@@ -32,7 +32,7 @@ For each dependency listed in the namespace's `required` and `optional` arrays, 
 
 | Dependency | Check Method |
 |-----------|-------------|
-| `notion` | Check if `$NOTION_API_KEY` env var is set: `echo $NOTION_API_KEY`. If empty, mark failed. If set, run `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs search "test" 2>/dev/null` — exit code 0 means available. |
+| `notion` | Check if `$NOTION_API_KEY` env var is set: `echo $NOTION_API_KEY`. If empty, mark failed. If set, run `node ../../scripts/notion-tool.mjs search "test" 2>/dev/null` — exit code 0 means available. |
 | `gws:gmail`, `gws:calendar`, `gws:drive` | Run `which gws`. If not found, all gws dependencies fail. If found, run `gws auth status`. If auth is valid, all gws dependencies pass. **Only run `which gws` + `gws auth status` once** even if multiple gws dependencies are listed. |
 | `filesystem` | Check if filesystem MCP tools (e.g., `list_directory`, `read_file`) are in the current tool list. These are MCP tools, not CLI — check tool availability. |
 | `slack` | Check if Slack MCP tools (e.g., `slack_list_channels`) are in the current tool list. |
@@ -88,4 +88,4 @@ If you have already verified a dependency earlier in this conversation (e.g., yo
 
 ## Reference
 
-Fix instructions are in `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/references/fix-messages.md`.
+Fix instructions are in `../preflight/references/fix-messages.md`.

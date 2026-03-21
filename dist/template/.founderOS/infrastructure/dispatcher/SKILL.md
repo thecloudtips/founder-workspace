@@ -48,7 +48,7 @@ Continue to Step 4.
 
 Before spawning the subagent, gather lightweight context references (NOT full file contents):
 
-1. **Business context paths**: List files in `${CLAUDE_PLUGIN_ROOT}/_infrastructure/context/active/` — pass paths to subagent (it reads them itself)
+1. **Business context paths**: List files in `../context/active/` — pass paths to subagent (it reads them itself)
 2. **Memory context**: Query memory engine for top 5 relevant memories for this command's namespace. Pass the memory text into the subagent prompt. This is the ONE read the dispatcher does — it's small (~200-400 tokens) and saves the subagent from having to initialize memory search.
 3. **Intelligence patterns**: If Intelligence Engine [3] is active, fetch learned patterns for the namespace. Pass pattern text into subagent prompt.
 4. **Skill file paths**: List the skill files referenced in the command markdown — pass paths (not contents) to subagent.
@@ -84,7 +84,7 @@ You are executing a Founder OS command as a background subagent.
 [Arguments and flags passed by the user, exactly as provided]
 
 ## Context Files
-- Business context: ${CLAUDE_PLUGIN_ROOT}/_infrastructure/context/active/
+- Business context: ../context/active/
 - Read relevant skill files referenced in the command
 
 ## Relevant Memories

@@ -30,7 +30,7 @@ The Notion CLI tool (`notion-tool.mjs`) exposes these commands. Use them as the 
 
 All commands are invoked via Bash:
 ```
-node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs <command> [args]
+node ../../../../.founderOS/scripts/notion-tool.mjs <command> [args]
 ```
 
 All output is JSON to stdout. Errors are structured JSON to stderr with exit code 1.
@@ -103,13 +103,13 @@ Map natural language change descriptions to property updates or content modifica
 - "yes", "true", "checked" → Checkbox property: true
 - "tag it as X" → Multi-select property: add "X"
 
-Consult `${CLAUDE_PLUGIN_ROOT}/skills/notion/notion-operations/references/workspace-patterns.md` for the full property value mapping table and advanced update patterns.
+Consult `skills/notion/notion-operations/references/workspace-patterns.md` for the full property value mapping table and advanced update patterns.
 
 ## Database Operations
 
 ### Creating Databases
 
-Database creation is handled jointly with the `notion-database-design` skill (see `${CLAUDE_PLUGIN_ROOT}/skills/notion/notion-database-design/SKILL.md`). This skill provides the operational execution; the design skill provides schema translation.
+Database creation is handled jointly with the `notion-database-design` skill (see `skills/notion/notion-database-design/SKILL.md`). This skill provides the operational execution; the design skill provides schema translation.
 
 1. Resolve the parent page (databases must have a parent page).
 2. Receive the property schema from the design skill or from a template.
@@ -149,7 +149,7 @@ Translate natural language questions into database queries with filters and sort
 
 Limit results to `--limit=N` (default 10). If more results exist, note the total count.
 
-Consult `${CLAUDE_PLUGIN_ROOT}/skills/notion/notion-operations/references/workspace-patterns.md` for NL-to-filter translation examples and complex filter patterns.
+Consult `skills/notion/notion-operations/references/workspace-patterns.md` for NL-to-filter translation examples and complex filter patterns.
 
 ## Search Strategies
 
@@ -203,4 +203,4 @@ Preserve inline formatting: **bold**, *italic*, `code`, ~~strikethrough~~, [link
 ### Reference Files
 
 For detailed patterns and advanced techniques, consult:
-- **`${CLAUDE_PLUGIN_ROOT}/skills/notion/notion-operations/references/workspace-patterns.md`** — NL-to-filter translation examples, property value mapping tables, complex query patterns, and multi-block content construction examples
+- **`skills/notion/notion-operations/references/workspace-patterns.md`** — NL-to-filter translation examples, property value mapping tables, complex query patterns, and multi-block content construction examples

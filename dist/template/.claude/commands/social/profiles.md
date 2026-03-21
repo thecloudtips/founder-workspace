@@ -12,8 +12,8 @@ Manage Late.dev profiles — brand groupings that organize social accounts.
 
 ## Skills
 
-1. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/late-skills/late-common/SKILL.md`
-2. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/late-skills/late-accounts/SKILL.md`
+1. Read `../../../.founderOS/infrastructure/late-skills/late-common/SKILL.md`
+2. Read `../../../.founderOS/infrastructure/late-skills/late-accounts/SKILL.md`
 
 ## Arguments
 
@@ -26,7 +26,7 @@ Manage Late.dev profiles — brand groupings that organize social accounts.
 
 ## Business Context (Optional)
 
-Check `${CLAUDE_PLUGIN_ROOT}/_infrastructure/context/active/` for `.md` files.
+Check `../../../.founderOS/infrastructure/context/active/` for `.md` files.
 
 ## Preflight Check
 
@@ -45,7 +45,7 @@ Check for learned optimizations from past `social:profiles` runs.
 ### List Profiles
 
 ```bash
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs profiles list
+node ../../../.founderOS/scripts/late-tool.mjs profiles list
 ```
 
 | Profile | ID | Accounts |
@@ -55,7 +55,7 @@ node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs profiles list
 ### Create Profile
 
 ```bash
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs profiles create --name="<name>"
+node ../../../.founderOS/scripts/late-tool.mjs profiles create --name="<name>"
 ```
 
 ### Delete Profile

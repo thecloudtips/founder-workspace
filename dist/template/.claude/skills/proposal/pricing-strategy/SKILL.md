@@ -175,4 +175,4 @@ Choose the pattern that matches the client's likely preference. For new clients,
 ### Reference Files
 
 For detailed pricing calculation examples and worked scenarios:
-- **`${CLAUDE_PLUGIN_ROOT}/skills/proposal/pricing-strategy/references/pricing-models.md`** — Complete examples of effort-based, value-based, and competitive pricing calculations with different project types
+- **`skills/proposal/pricing-strategy/references/pricing-models.md`** — Complete examples of effort-based, value-based, and competitive pricing calculations with different project types

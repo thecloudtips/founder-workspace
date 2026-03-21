@@ -13,7 +13,7 @@ Craft high-impact opening lines for social media content that stop the scroll, s
 
 The hook is the single highest-leverage element of any social media post. Every platform truncates or de-prioritizes content that fails to capture attention in the first few seconds. If the hook fails, the post fails -- regardless of the quality of the body content. Every hook must accomplish three things in its platform-specific window: interrupt the scroll pattern, create a curiosity gap or emotional response, and establish relevance to the target audience.
 
-For detailed hook examples organized by formula type and audience segment, see `${CLAUDE_PLUGIN_ROOT}/skills/ideate/hook-creation/references/hook-templates.md`.
+For detailed hook examples organized by formula type and audience segment, see `skills/ideate/hook-creation/references/hook-templates.md`.
 
 ---
 

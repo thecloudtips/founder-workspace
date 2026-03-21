@@ -27,7 +27,7 @@ For each step in the resolved execution order:
 7. On failure: check continue_on_error flag. If false and defaults.stop_on_error is true, halt the workflow. If true, mark step as failed and continue.
 8. Enforce timeout: if step exceeds timeout_seconds, terminate and mark as timed_out
 
-Reference `${CLAUDE_PLUGIN_ROOT}/skills/workflow/workflow-execution/references/step-runner.md` for detailed execution protocol, condition evaluation, and timeout handling.
+Reference `skills/workflow/workflow-execution/references/step-runner.md` for detailed execution protocol, condition evaluation, and timeout handling.
 
 ## Context Management
 - Initialize a fresh context object at the start of each run
@@ -39,7 +39,7 @@ Reference `${CLAUDE_PLUGIN_ROOT}/skills/workflow/workflow-execution/references/s
 - Unresolved context references (key not found): leave the raw `{{context.key}}` string and log a warning
 - Context is ephemeral — discarded after run completion
 
-Reference `${CLAUDE_PLUGIN_ROOT}/skills/workflow/workflow-execution/references/context-management.md` for substitution rules, reserved keys, truncation policy, and security considerations.
+Reference `skills/workflow/workflow-execution/references/context-management.md` for substitution rules, reserved keys, truncation policy, and security considerations.
 
 ## Error Handling Strategy
 Three-tier error classification:
@@ -53,7 +53,7 @@ Error handling decision tree:
 - Step fails + continue_on_error=false + stop_on_error=false → mark failed, continue
 - Multiple steps depend on failed step → skip all downstream dependents
 
-Reference `${CLAUDE_PLUGIN_ROOT}/skills/workflow/workflow-execution/references/error-handling.md` for decision trees, error message templates, and recovery strategies.
+Reference `skills/workflow/workflow-execution/references/error-handling.md` for decision trees, error message templates, and recovery strategies.
 
 ## Resume Capability
 Support resuming a failed workflow from a specific step using `--from=step-id`:
@@ -116,6 +116,6 @@ Duration: 23s
 - Empty context reference in args: leave raw template string, log warning
 
 ## Additional Resources
-- `${CLAUDE_PLUGIN_ROOT}/skills/workflow/workflow-execution/references/step-runner.md` — Step execution protocol, condition evaluation, timeout enforcement, and command invocation details
-- `${CLAUDE_PLUGIN_ROOT}/skills/workflow/workflow-execution/references/context-management.md` — Context initialization, substitution rules, reserved keys, truncation, and security considerations
-- `${CLAUDE_PLUGIN_ROOT}/skills/workflow/workflow-execution/references/error-handling.md` — Error classification, decision trees, error templates, recovery strategies, and resume protocol
+- `skills/workflow/workflow-execution/references/step-runner.md` — Step execution protocol, condition evaluation, timeout enforcement, and command invocation details
+- `skills/workflow/workflow-execution/references/context-management.md` — Context initialization, substitution rules, reserved keys, truncation, and security considerations
+- `skills/workflow/workflow-execution/references/error-handling.md` — Error classification, decision trees, error templates, recovery strategies, and resume protocol

@@ -24,7 +24,7 @@ If no client name is provided, ask the user: "Which client would you like to loa
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `client` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -66,8 +66,8 @@ If any error occurs during this command:
 
 When `--team` is NOT present:
 
-1. Read the client-context skill at `${CLAUDE_PLUGIN_ROOT}/skills/client/client-context/SKILL.md` for CRM schema, lookup strategies, extraction rules, and completeness scoring.
-2. Read the relationship-summary skill at `${CLAUDE_PLUGIN_ROOT}/skills/client/relationship-summary/SKILL.md` for health scoring and sentiment analysis.
+1. Read the client-context skill at `skills/client/client-context/SKILL.md` for CRM schema, lookup strategies, extraction rules, and completeness scoring.
+2. Read the relationship-summary skill at `skills/client/relationship-summary/SKILL.md` for health scoring and sentiment analysis.
 3. **Check cache first** (unless `--refresh`):
    - Locate the Companies database using the discovery order: search "[FOS] Companies" first, then "Founder OS HQ - Companies", then "Companies" or "CRM - Companies", then fall back to a standalone "Client Dossiers" database.
    - Search the discovered database for a page matching the client name.
@@ -130,7 +130,7 @@ When `--team` is NOT present:
 
 When `--team` IS present:
 
-1. Read the pipeline configuration at `${CLAUDE_PLUGIN_ROOT}/agents/client/config.json`.
+1. Read the pipeline configuration at `agents/client/config.json`.
 2. Execute the full 6-agent parallel-gathering pipeline:
    - **Phase 1 — Parallel Gathering**: Launch all 5 gatherer agents simultaneously:
      - **CRM Agent** — Pull Notion CRM data (required)
@@ -143,7 +143,7 @@ When `--team` IS present:
      - Calculate completeness score and health metrics
      - Cache the dossier on the Companies page (Dossier properties)
      - Write enrichments to the same Companies page (health score) and related DBs (risk levels, sentiment)
-3. Each agent reads its definition from `${CLAUDE_PLUGIN_ROOT}/agents/client/`.
+3. Each agent reads its definition from `agents/client/`.
 4. Present the final dossier with pipeline execution summary:
    - Which sources succeeded, failed, or were unavailable
    - Timing per agent

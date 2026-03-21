@@ -12,13 +12,13 @@ Extract structured action items from pasted text (meeting transcripts, email thr
 
 ## Load Skill
 
-Read the action-extraction skill at `${CLAUDE_PLUGIN_ROOT}/skills/actions/action-extraction/SKILL.md` for verb patterns, owner inference rules, deadline parsing, priority scoring, duplicate detection, and Notion task creation procedures.
+Read the action-extraction skill at `skills/actions/action-extraction/SKILL.md` for verb patterns, owner inference rules, deadline parsing, priority scoring, duplicate detection, and Notion task creation procedures.
 
 ## Business Context (Optional)
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `actions` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.

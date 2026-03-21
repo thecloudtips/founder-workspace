@@ -14,8 +14,8 @@ Full pipeline -- gather a transcript from any supported source, run 4 analysis p
 
 Read both skills before starting any step:
 
-1. `${CLAUDE_PLUGIN_ROOT}/skills/meeting/source-gathering/SKILL.md`
-2. `${CLAUDE_PLUGIN_ROOT}/skills/meeting/meeting-analysis/SKILL.md`
+1. `skills/meeting/source-gathering/SKILL.md`
+2. `skills/meeting/meeting-analysis/SKILL.md`
 
 ## Parse Arguments
 
@@ -31,7 +31,7 @@ Extract the source identifier and flags from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `meeting` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -134,7 +134,7 @@ If email enrichment was performed (Step 2), incorporate email context into all p
 
 ## Step 4: Save Transcript
 
-1. Save the normalized transcript to `transcripts/[meeting-slug]-[date].md` relative to `${CLAUDE_PLUGIN_ROOT}`.
+1. Save the normalized transcript to `transcripts/[meeting-slug]-[date].md` relative to `../../../.founderOS`.
 2. Create the `transcripts/` directory if it does not exist.
 3. Generate the slug: take the meeting title, convert to lowercase, replace spaces with hyphens, strip all characters except letters, numbers, and hyphens, collapse consecutive hyphens.
 4. If no date is available, use today's date in YYYY-MM-DD format.

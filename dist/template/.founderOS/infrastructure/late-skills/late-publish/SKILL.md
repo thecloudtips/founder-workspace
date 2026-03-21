@@ -8,7 +8,7 @@ description: "Late.dev publishing patterns for creating, scheduling, and cross-p
 ## Immediate Publish
 
 ```bash
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs posts create \
+node ../../../scripts/late-tool.mjs posts create \
   --accounts='["acc_123"]' \
   --text="Post content here"
 ```
@@ -18,7 +18,7 @@ The CLI sets `publishNow: true` when neither `--schedule` nor `--draft` is provi
 ## Scheduled Publish
 
 ```bash
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs posts create \
+node ../../../scripts/late-tool.mjs posts create \
   --accounts='["acc_123"]' \
   --text="Scheduled post" \
   --schedule="2026-03-15T09:00:00-05:00"
@@ -29,7 +29,7 @@ Always use ISO 8601 with timezone offset. Convert natural language times to ISO 
 ## Draft
 
 ```bash
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs posts create \
+node ../../../scripts/late-tool.mjs posts create \
   --accounts='["acc_123"]' \
   --text="Draft content" \
   --draft
@@ -40,7 +40,7 @@ node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs posts create \
 Single API call with multiple account IDs:
 
 ```bash
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs posts create \
+node ../../../scripts/late-tool.mjs posts create \
   --accounts='["acc_linkedin_123","acc_twitter_456"]' \
   --text="Cross-platform post"
 ```
@@ -64,7 +64,7 @@ Pass as JSON via `--platform-options`:
 When a cross-post partially fails (some platforms succeed, others fail):
 
 ```bash
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs posts retry --post-id=post_abc123
+node ../../../scripts/late-tool.mjs posts retry --post-id=post_abc123
 ```
 
 This retries only the failed platform deliveries within the post.

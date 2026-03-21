@@ -11,13 +11,13 @@ Generate structured, complete Standard Operating Procedures from raw process des
 
 ## Purpose and Context
 
-Transform raw process descriptions, verbal walkthroughs, meeting notes, or ad-hoc workflow knowledge into formal SOPs that any team member can follow without prior context. Every SOP must follow the 7-section structure, enforce imperative writing style, include a Mermaid flowchart diagram, and generate troubleshooting entries proportional to the workflow's complexity. Use the detailed section guidelines at `${CLAUDE_PLUGIN_ROOT}/skills/workflow-doc/sop-writing/references/sop-sections.md` as the authoritative reference for per-section formatting, required content, and common mistakes.
+Transform raw process descriptions, verbal walkthroughs, meeting notes, or ad-hoc workflow knowledge into formal SOPs that any team member can follow without prior context. Every SOP must follow the 7-section structure, enforce imperative writing style, include a Mermaid flowchart diagram, and generate troubleshooting entries proportional to the workflow's complexity. Use the detailed section guidelines at `skills/workflow-doc/sop-writing/references/sop-sections.md` as the authoritative reference for per-section formatting, required content, and common mistakes.
 
 ---
 
 ## 7-Section SOP Structure
 
-Every SOP follows a fixed 7-section architecture. Each section serves a distinct purpose and has specific content requirements. Refer to `${CLAUDE_PLUGIN_ROOT}/skills/workflow-doc/sop-writing/references/sop-sections.md` for detailed per-section guidelines, example content, minimum requirements, and common mistakes to avoid.
+Every SOP follows a fixed 7-section architecture. Each section serves a distinct purpose and has specific content requirements. Refer to `skills/workflow-doc/sop-writing/references/sop-sections.md` for detailed per-section guidelines, example content, minimum requirements, and common mistakes to avoid.
 
 | Section | Title | Purpose |
 |---------|-------|---------|
@@ -259,4 +259,4 @@ Before outputting an SOP, confirm every item:
 - [ ] Terminology is consistent throughout -- no synonym switching
 - [ ] File is named `sop-[workflow-slug]-[YYYY-MM-DD].md`
 
-For detailed cross-section consistency verification, consult the Cross-Section Consistency Checks in `${CLAUDE_PLUGIN_ROOT}/skills/workflow-doc/sop-writing/references/sop-sections.md`.
+For detailed cross-section consistency verification, consult the Cross-Section Consistency Checks in `skills/workflow-doc/sop-writing/references/sop-sections.md`.

@@ -50,7 +50,7 @@ Structure the final output for delivery.
 
 ## Citation System
 
-Use numbered inline references and a citation block. Every answer must include at least one citation. See `${CLAUDE_PLUGIN_ROOT}/skills/kb/answer-synthesis/references/citation-formats.md` for full format specification, examples, and edge cases.
+Use numbered inline references and a citation block. Every answer must include at least one citation. See `skills/kb/answer-synthesis/references/citation-formats.md` for full format specification, examples, and edge cases.
 
 ### Inline Citations
 
@@ -112,7 +112,7 @@ Assign when ANY of the following are true:
 
 When confidence is Low, prepend a warning: "Low confidence -- this answer is based on limited or potentially outdated sources. Verify before acting on it."
 
-For detailed scoring criteria with worked examples, see `${CLAUDE_PLUGIN_ROOT}/skills/kb/answer-synthesis/references/citation-formats.md`.
+For detailed scoring criteria with worked examples, see `skills/kb/answer-synthesis/references/citation-formats.md`.
 
 ## No-Answer Pathway
 

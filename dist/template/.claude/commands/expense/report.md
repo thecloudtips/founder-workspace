@@ -12,11 +12,11 @@ Produce a 7-section Markdown expense report covering the requested date range. A
 
 ## Load Skills
 
-Read the expense-reporting skill at `${CLAUDE_PLUGIN_ROOT}/skills/expense/expense-reporting/SKILL.md` for the 7-section report structure, date range parsing rules, data aggregation pipeline, trend analysis methodology, flagging thresholds, and report quality rules.
+Read the expense-reporting skill at `skills/expense/expense-reporting/SKILL.md` for the 7-section report structure, date range parsing rules, data aggregation pipeline, trend analysis methodology, flagging thresholds, and report quality rules.
 
-Read the expense-categorization skill at `${CLAUDE_PLUGIN_ROOT}/skills/expense/expense-categorization/SKILL.md` for the 14-category taxonomy, vendor and description classification signals, confidence scoring, tax-deductibility rules, and budget code mapping.
+Read the expense-categorization skill at `skills/expense/expense-categorization/SKILL.md` for the 14-category taxonomy, vendor and description classification signals, confidence scoring, tax-deductibility rules, and budget code mapping.
 
-Read the report template at `${CLAUDE_PLUGIN_ROOT}/templates/expense-report-template.md` as the structural scaffold for the final output.
+Read the report template at `../../../.founderOS/templates/expense-report-template.md` as the structural scaffold for the final output.
 
 ## Parse Arguments
 
@@ -33,7 +33,7 @@ Extract from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `expense` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.

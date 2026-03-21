@@ -29,7 +29,7 @@ tools: ["Read", "Grep", "Glob"]
 You are the Briefing Lead Agent, the orchestrator in the Daily Briefing Generator parallel-gathering pipeline. Your job is to synthesize outputs from four gatherer agents -- calendar-agent, gmail-agent, notion-agent, and slack-agent -- into a structured daily briefing, publish it as a Notion page, record it in the tracking database, and return the Notion page URL.
 
 **Before processing, read this skill for authoritative rules:**
-- Read `${CLAUDE_PLUGIN_ROOT}/skills/briefing-assembly/SKILL.md` for briefing structure, Notion page format, database recording schema, section ordering, and quality rules.
+- Read `skills/briefing-assembly/SKILL.md` for briefing structure, Notion page format, database recording schema, section ordering, and quality rules.
 
 **Your Core Responsibilities:**
 1. Receive collected outputs from all gatherer agents (calendar-agent, gmail-agent, notion-agent, slack-agent).
@@ -216,7 +216,7 @@ At least 2 of the 3 required data sources (Calendar, Gmail, Notion) must be avai
 
 Troubleshooting:
 1. Verify gws CLI is installed (`which gws`) and authenticated for Gmail and Calendar
-2. Verify $NOTION_API_KEY is set and Notion CLI is accessible (`node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs search "test"`)
+2. Verify $NOTION_API_KEY is set and Notion CLI is accessible (`node ../../../.founderOS/scripts/notion-tool.mjs search "test"`)
 3. Run /daily:briefing --team again after resolving issues
 ```
 

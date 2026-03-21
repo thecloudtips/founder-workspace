@@ -39,7 +39,7 @@ tools: ["Bash"]
 For each platform variant:
 
 ```bash
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs posts create \
+node ../../../.founderOS/scripts/late-tool.mjs posts create \
   --accounts='["<account_id_for_platform>"]' \
   --text="<adapted_text>" \
   --media='<media_items_json>' \

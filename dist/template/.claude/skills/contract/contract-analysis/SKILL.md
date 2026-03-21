@@ -22,7 +22,7 @@ Read contract files from the local filesystem using the Filesystem MCP server. S
 
 For all formats, treat the entire file content as the contract text. Do not attempt to process ZIP, XLSX, CSV, or image-only files (JPG, PNG). If given an unsupported format, return an error message listing the four supported formats and stop.
 
-When a file path is provided, resolve it relative to the current working directory. Use `${CLAUDE_PLUGIN_ROOT}` as the base for any plugin-internal file references.
+When a file path is provided, resolve it relative to the current working directory. Use `../../../../.founderOS` as the base for any plugin-internal file references.
 
 ## Contract Type Detection
 
@@ -75,7 +75,7 @@ Not all sections will appear in every contract. Report which sections were ident
 
 ## Key Term Categories
 
-Extract terms across these seven categories. For each category, capture the specific values, conditions, and notable provisions found in the contract. Below is a summary of what to extract per category -- for detailed phrase patterns, example clause language, and extraction rules, see `${CLAUDE_PLUGIN_ROOT}/skills/contract/contract-analysis/references/clause-patterns.md`.
+Extract terms across these seven categories. For each category, capture the specific values, conditions, and notable provisions found in the contract. Below is a summary of what to extract per category -- for detailed phrase patterns, example clause language, and extraction rules, see `skills/contract/contract-analysis/references/clause-patterns.md`.
 
 ### 1. Payment
 

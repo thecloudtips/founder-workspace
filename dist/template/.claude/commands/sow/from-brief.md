@@ -24,7 +24,7 @@ Extract from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `sow` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -81,7 +81,7 @@ If the value does NOT start with `https://`:
 If the value starts with `https://www.notion.so/` or `https://notion.so/`:
 
 1. Check if the Notion CLI is available. If not, halt with: "Notion CLI is required to load Notion pages. Run `/founder-os:setup:notion-cli` to configure."
-2. Call `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs fetch <url>` with the full URL.
+2. Call `node ../../../.founderOS/scripts/notion-tool.mjs fetch <url>` with the full URL.
 3. Extract the page title, body text, and any structured properties from the response.
 4. If the page is not found or access is denied, halt and report: "Could not access Notion page: [url]. Check that the page is shared with your Notion integration."
 
@@ -128,9 +128,9 @@ If `project_description` is empty or could not be extracted, halt and ask: "The 
 ### Default Mode (no `--team`)
 
 1. Read all 3 skills:
-   - `${CLAUDE_PLUGIN_ROOT}/skills/sow/scope-definition/SKILL.md`
-   - `${CLAUDE_PLUGIN_ROOT}/skills/sow/sow-writing/SKILL.md`
-   - `${CLAUDE_PLUGIN_ROOT}/skills/sow/risk-assessment/SKILL.md`
+   - `skills/sow/scope-definition/SKILL.md`
+   - `skills/sow/sow-writing/SKILL.md`
+   - `skills/sow/risk-assessment/SKILL.md`
 
 2. Using the extracted brief fields as your source material, generate 3 SOW options:
    - **Option A — Conservative**: P90 confidence, 20% scope buffer. Core deliverables only, well-defined boundaries, lowest risk.
@@ -203,23 +203,23 @@ If `project_description` is empty or could not be extracted, halt and ask: "The 
 
 ### Team Mode (`--team`)
 
-1. Read `${CLAUDE_PLUGIN_ROOT}/agents/sow/config.json`.
+1. Read `agents/sow/config.json`.
 
 2. Pass the fully extracted brief fields (client_name, project_description, budget_constraint, timeline_constraint, key_priorities, additional_context) as structured input to the pipeline.
 
 3. Execute the competing-hypotheses pipeline:
 
    **Phase 1 — Parallel Hypothesis Generation** (all 3 scope agents run simultaneously):
-   - `scope-agent-a` (`${CLAUDE_PLUGIN_ROOT}/agents/sow/scope-agent-a.md`) — interprets the brief conservatively
-   - `scope-agent-b` (`${CLAUDE_PLUGIN_ROOT}/agents/sow/scope-agent-b.md`) — interprets the brief for balanced value
-   - `scope-agent-c` (`${CLAUDE_PLUGIN_ROOT}/agents/sow/scope-agent-c.md`) — interprets the brief ambitiously
+   - `scope-agent-a` (`agents/sow/scope-agent-a.md`) — interprets the brief conservatively
+   - `scope-agent-b` (`agents/sow/scope-agent-b.md`) — interprets the brief for balanced value
+   - `scope-agent-c` (`agents/sow/scope-agent-c.md`) — interprets the brief ambitiously
 
    **Phase 2 — Parallel Analysis** (both agents evaluate all 3 Phase 1 proposals):
-   - `risk-agent` (`${CLAUDE_PLUGIN_ROOT}/agents/sow/risk-agent.md`) — scores risks across all three proposals
-   - `pricing-agent` (`${CLAUDE_PLUGIN_ROOT}/agents/sow/pricing-agent.md`) — estimates cost and value for all three proposals
+   - `risk-agent` (`agents/sow/risk-agent.md`) — scores risks across all three proposals
+   - `pricing-agent` (`agents/sow/pricing-agent.md`) — estimates cost and value for all three proposals
 
    **Phase 3 — Synthesis**:
-   - `sow-lead` (`${CLAUDE_PLUGIN_ROOT}/agents/sow/sow-lead.md`) — synthesizes Phase 1 proposals and Phase 2 analysis into a final SOW document with 3 named client packages and a comparison table
+   - `sow-lead` (`agents/sow/sow-lead.md`) — synthesizes Phase 1 proposals and Phase 2 analysis into a final SOW document with 3 named client packages and a comparison table
 
 4. If fewer than 2 Phase 1 agents complete successfully, halt and report which agents failed. Do not proceed to Phase 2 with only 1 proposal.
 

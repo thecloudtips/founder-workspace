@@ -14,9 +14,9 @@ Generate a comprehensive goal progress dashboard with dashboard table, RAG break
 
 Read all three skills:
 
-1. `${CLAUDE_PLUGIN_ROOT}/skills/goal/goal-tracking/SKILL.md`
-2. `${CLAUDE_PLUGIN_ROOT}/skills/goal/progress-analysis/SKILL.md`
-3. `${CLAUDE_PLUGIN_ROOT}/skills/goal/goal-reporting/SKILL.md`
+1. `skills/goal/goal-tracking/SKILL.md`
+2. `skills/goal/progress-analysis/SKILL.md`
+3. `skills/goal/goal-reporting/SKILL.md`
 
 ## Parse Arguments
 
@@ -30,7 +30,7 @@ Read all three skills:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `goal` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -83,13 +83,13 @@ If any error occurs during this command:
    - Blocker detection
    Update the goal pages with fresh RAG Status and Projected Completion values.
 
-5. **Render Dashboard Table**: Build table per dashboard-table-format specification. Read `${CLAUDE_PLUGIN_ROOT}/skills/goal/goal-reporting/references/dashboard-table-format.md` for full formatting rules. Sort by RAG severity.
+5. **Render Dashboard Table**: Build table per dashboard-table-format specification. Read `skills/goal/goal-reporting/references/dashboard-table-format.md` for full formatting rules. Sort by RAG severity.
 
 6. **Render RAG Breakdown**: Group goals by RAG tier. Red first, then Yellow, Green, Not Started. 1-2 sentence analysis per group.
 
 7. **Render Needs Attention**: List goals with active blockers sorted by severity. Include blocker detail and suggested action.
 
-8. **Generate Gantt Timeline**: Build Mermaid gantt chart per gantt-generation specification. Read `${CLAUDE_PLUGIN_ROOT}/skills/goal/goal-reporting/references/gantt-generation.md` for syntax. Group by category, apply color directives.
+8. **Generate Gantt Timeline**: Build Mermaid gantt chart per gantt-generation specification. Read `skills/goal/goal-reporting/references/gantt-generation.md` for syntax. Group by category, apply color directives.
 
 9. **Output Report**: Based on --output:
    - chat: Display full report in chat with Mermaid in fenced code block

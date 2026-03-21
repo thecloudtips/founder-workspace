@@ -19,7 +19,7 @@ Extract from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `briefing` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -59,7 +59,7 @@ If any error occurs during this command:
 
 ## Process
 
-1. Read the briefing-assembly skill at `${CLAUDE_PLUGIN_ROOT}/skills/briefing/briefing-assembly/SKILL.md` for Notion page format, database schema, section structure, and quality standards.
+1. Read the briefing-assembly skill at `skills/briefing/briefing-assembly/SKILL.md` for Notion page format, database schema, section structure, and quality standards.
 
 2. **Locate existing briefing**:
    - Search Notion for the "[FOS] Briefings" database using the search API by title.
@@ -84,7 +84,7 @@ If any error occurs during this command:
 
 5. **Check email updates** (if gws CLI is available):
    - Search for unread emails received after the Generated At timestamp using `gws gmail users messages list --params '{"userId":"me","q":"is:unread after:YYYY/MM/DD","maxResults":50}' --format json`.
-   - Read the email-prioritization skill at `${CLAUDE_PLUGIN_ROOT}/skills/briefing/email-prioritization/SKILL.md` for the Eisenhower matrix, sender tier classification, and scoring signals.
+   - Read the email-prioritization skill at `skills/briefing/email-prioritization/SKILL.md` for the Eisenhower matrix, sender tier classification, and scoring signals.
    - Apply the same priority scoring from the email-prioritization skill to new emails.
    - Only surface Q1 and Q2 emails. Ignore Q3 and Q4 emails -- the morning briefing already covers lower-priority items.
    - Extract highlights using the same format: sender, subject, summary, quadrant, action needed.

@@ -140,7 +140,7 @@ When quoting `clause_text`, extract the exact language from the contract. Do not
 
 ## Comparison Logic vs Standard Terms
 
-When the `/founder-os:contract:compare` command invokes this skill, compare each extracted term against the standard-terms template at `${CLAUDE_PLUGIN_ROOT}/templates/standard-terms.md`. Perform the comparison as follows:
+When the `/founder-os:contract:compare` command invokes this skill, compare each extracted term against the standard-terms template at `../../../../.founderOS/templates/standard-terms.md`. Perform the comparison as follows:
 
 1. Load the standard-terms template. If the template file does not exist, warn the user: "Standard terms template not found at templates/standard-terms.md -- comparison unavailable. Run /founder-os:contract:analyze for standalone risk detection." Fall back to standalone risk detection.
 
@@ -224,4 +224,4 @@ When analyzing very short contracts or informal agreements (letters of engagemen
 
 ## Reference
 
-For comprehensive risk pattern detection including specific phrases to look for, example clause text, and detailed mitigation language for all severity tiers, see `${CLAUDE_PLUGIN_ROOT}/skills/contract/legal-risk-detection/references/risk-patterns.md`.
+For comprehensive risk pattern detection including specific phrases to look for, example clause text, and detailed mitigation language for all severity tiers, see `skills/contract/legal-risk-detection/references/risk-patterns.md`.

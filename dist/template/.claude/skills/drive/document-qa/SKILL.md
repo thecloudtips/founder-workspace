@@ -73,7 +73,7 @@ Structure the final output for delivery.
 
 ## Citation System
 
-Use numbered inline references and a citation block. Every Q&A answer must include at least one citation. See `${CLAUDE_PLUGIN_ROOT}/skills/drive/document-qa/references/citation-formats.md` for full format specification, examples, and edge cases.
+Use numbered inline references and a citation block. Every Q&A answer must include at least one citation. See `skills/drive/document-qa/references/citation-formats.md` for full format specification, examples, and edge cases.
 
 ### Inline Citations
 
@@ -135,7 +135,7 @@ Assign when ANY of the following are true:
 
 When confidence is Low, prepend a warning: "Low confidence -- this answer is based on limited or potentially outdated sources. Verify before acting on it."
 
-For detailed scoring criteria with worked examples, see `${CLAUDE_PLUGIN_ROOT}/skills/drive/document-qa/references/citation-formats.md`.
+For detailed scoring criteria with worked examples, see `skills/drive/document-qa/references/citation-formats.md`.
 
 ## Summary Generation (Summarization Mode)
 
@@ -161,7 +161,7 @@ For Sheets with multiple tabs: summarize each tab as a separate section under it
 
 ### Summary Output
 
-When the `--output` flag is provided, write the summary to a local file using the template at `${CLAUDE_PLUGIN_ROOT}/templates/summary-template.md`. When no `--output` flag is provided, deliver the summary directly in chat.
+When the `--output` flag is provided, write the summary to a local file using the template at `../../../../.founderOS/templates/summary-template.md`. When no `--output` flag is provided, deliver the summary directly in chat.
 
 All summaries include a metadata header: document title, Drive URL, last modified date, and file type.
 

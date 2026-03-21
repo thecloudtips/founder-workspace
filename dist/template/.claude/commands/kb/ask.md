@@ -12,9 +12,9 @@ Search Notion pages/databases and Google Drive documents to answer the user's qu
 
 ## Load Skills
 
-Read the knowledge-retrieval skill at `${CLAUDE_PLUGIN_ROOT}/skills/kb/knowledge-retrieval/SKILL.md` for multi-source search across Notion and Google Drive, query formulation, relevance scoring, content extraction, and preview generation.
+Read the knowledge-retrieval skill at `skills/kb/knowledge-retrieval/SKILL.md` for multi-source search across Notion and Google Drive, query formulation, relevance scoring, content extraction, and preview generation.
 
-Read the answer-synthesis skill at `${CLAUDE_PLUGIN_ROOT}/skills/kb/answer-synthesis/SKILL.md` for source assessment, answer construction with inline citations, confidence rating, conflict reconciliation, and the no-answer pathway.
+Read the answer-synthesis skill at `skills/kb/answer-synthesis/SKILL.md` for source assessment, answer construction with inline citations, confidence rating, conflict reconciliation, and the no-answer pathway.
 
 ## Parse Arguments
 
@@ -30,7 +30,7 @@ Extract from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `kb` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -73,7 +73,7 @@ If any error occurs during this command:
 Apply the knowledge-retrieval skill:
 
 1. **Formulate queries**: Generate 2-3 query variants from the user's question using the literal, synonym, and broadened variant rules.
-2. **Search Notion**: Execute `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs search "<query>"` with each query variant. Collect all returned pages and database entries. Display progress: "Searching Notion..."
+2. **Search Notion**: Execute `node ../../../.founderOS/scripts/notion-tool.mjs search "<query>"` with each query variant. Collect all returned pages and database entries. Display progress: "Searching Notion..."
 3. **Search Google Drive** (when `--sources` is `all` or `drive` AND gws CLI is available): Use Bash to run `gws drive files list --params '{"q":"fullText contains '\''[query]'\''","pageSize":20,"fields":"files(id,name,mimeType,modifiedTime,webViewLink)"}' --format json` with each query variant. Filter to supported file types (Google Docs, Sheets, PDF, plain text, Markdown). Display progress: "Searching Google Drive..."
 4. **Skip Drive silently** when `--sources=notion` or when gws CLI is unavailable and `--sources=all`. Set `drive_status: "unavailable"` internally. Check availability with `which gws`.
 5. **Deduplicate**: Remove results that appear in both Notion and Drive (match by title similarity).

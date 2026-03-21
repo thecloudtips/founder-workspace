@@ -14,7 +14,7 @@ Research a topic to discover content angles, supporting data, and platform-speci
 
 Read these skill files before proceeding:
 
-1. Read `${CLAUDE_PLUGIN_ROOT}/skills/ideate/content-writing/SKILL.md` — platform knowledge, content frameworks, audience patterns
+1. Read `skills/ideate/content-writing/SKILL.md` — platform knowledge, content frameworks, audience patterns
 
 ## Arguments
 
@@ -26,11 +26,11 @@ Read these skill files before proceeding:
 
 ## Business Context (Optional)
 
-Check `${CLAUDE_PLUGIN_ROOT}/_infrastructure/context/active/` for `.md` files. If present, read them to personalize research angles toward the user's brand, industry, and audience.
+Check `../../../.founderOS/infrastructure/context/active/` for `.md` files. If present, read them to personalize research angles toward the user's brand, industry, and audience.
 
 ## Preflight Check
 
-Run `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md` for namespace `ideate`.
+Run `../../../.founderOS/infrastructure/preflight/SKILL.md` for namespace `ideate`.
 - Required: none
 - Optional: `websearch` (for live web research)
 
@@ -39,13 +39,13 @@ If WebSearch is unavailable, degrade gracefully:
 
 ## Step 0: Memory Context
 
-Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/memory/context-injection/SKILL.md`.
+Read `../../../.founderOS/infrastructure/memory/context-injection/SKILL.md`.
 Query memory store for: `content ideation`, `research`, topic keywords, user's brand voice, past content performance.
 Inject top 5 relevant memories.
 
 ## Observation: Start
 
-Record observation via `${CLAUDE_PLUGIN_ROOT}/_infrastructure/memory/pattern-detection/SKILL.md`:
+Record observation via `../../../.founderOS/infrastructure/memory/pattern-detection/SKILL.md`:
 - plugin: `ideate`
 - command: `ideate-research`
 - event: `start`
@@ -54,7 +54,7 @@ Record observation via `${CLAUDE_PLUGIN_ROOT}/_infrastructure/memory/pattern-det
 ## Intelligence: Apply Learned Patterns
 
 Check for learned optimizations from past runs:
-- Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/intelligence/SKILL.md`
+- Read `../../../.founderOS/infrastructure/intelligence/SKILL.md`
 - Query for plugin `ideate`, command `ideate-research`
 - Apply any confirmed patterns (e.g., preferred angle types, successful frameworks, platform biases)
 
@@ -153,7 +153,7 @@ Next step: Run /ideate:draft "[selected angle]" --platform=<platform> to generat
 
 ## Observation: End
 
-Record observation via `${CLAUDE_PLUGIN_ROOT}/_infrastructure/memory/pattern-detection/SKILL.md`:
+Record observation via `../../../.founderOS/infrastructure/memory/pattern-detection/SKILL.md`:
 - plugin: `ideate`
 - command: `ideate-research`
 - event: `end`

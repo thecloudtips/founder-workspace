@@ -12,11 +12,11 @@ Display a compact, chat-only summary of time saved by Founder OS plugins. No fil
 
 ## Load Skills
 
-Read the cross-plugin-discovery skill at `${CLAUDE_PLUGIN_ROOT}/skills/savings/cross-plugin-discovery/SKILL.md` for the plugin scanning algorithm and DiscoveryResult schema.
+Read the cross-plugin-discovery skill at `skills/savings/cross-plugin-discovery/SKILL.md` for the plugin scanning algorithm and DiscoveryResult schema.
 
-Read the roi-calculation skill at `${CLAUDE_PLUGIN_ROOT}/skills/savings/roi-calculation/SKILL.md` for the calculation formulas, configuration resolution, and quick summary format.
+Read the roi-calculation skill at `skills/savings/roi-calculation/SKILL.md` for the calculation formulas, configuration resolution, and quick summary format.
 
-Read the task estimates registry at `${CLAUDE_PLUGIN_ROOT}/config/task-estimates.json` for the plugin-to-database mapping.
+Read the task estimates registry at `../../../.founderOS/config/task-estimates.json` for the plugin-to-database mapping.
 
 ## Parse Arguments
 
@@ -28,7 +28,7 @@ Extract from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `savings` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -76,7 +76,7 @@ If any error occurs during this command:
 
 ### Step 2: Load Configuration
 
-1. Read `${CLAUDE_PLUGIN_ROOT}/config/user-config.json` if it exists for hourly_rate and overrides.
+1. Read `../../../.founderOS/config/user-config.json` if it exists for hourly_rate and overrides.
 2. Fall back to defaults from task-estimates.json (hourly_rate_default: 150).
 
 ### Step 3: Discover Active Plugins

@@ -12,10 +12,10 @@ Schedule posts for future publication at specific times or into queue slots.
 
 ## Skills
 
-1. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/late-skills/late-common/SKILL.md`
-2. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/late-skills/late-publish/SKILL.md`
-3. Read `${CLAUDE_PLUGIN_ROOT}/skills/social/posting-cadence/SKILL.md`
-4. Read `${CLAUDE_PLUGIN_ROOT}/skills/social/platform-adaptation/SKILL.md`
+1. Read `../../../.founderOS/infrastructure/late-skills/late-common/SKILL.md`
+2. Read `../../../.founderOS/infrastructure/late-skills/late-publish/SKILL.md`
+3. Read `skills/social/posting-cadence/SKILL.md`
+4. Read `skills/social/platform-adaptation/SKILL.md`
 
 ## Arguments
 
@@ -32,7 +32,7 @@ If neither `--at` nor `--queue`, suggest optimal times from posting-cadence skil
 
 ## Business Context (Optional)
 
-Check `${CLAUDE_PLUGIN_ROOT}/_infrastructure/context/active/`.
+Check `../../../.founderOS/infrastructure/context/active/`.
 
 ## Preflight Check
 
@@ -56,7 +56,7 @@ Same as `social:post` Phase 1.
 ## Phase 3/3: Create Scheduled Post
 
 ```bash
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs posts create \
+node ../../../.founderOS/scripts/late-tool.mjs posts create \
   --accounts='["<account_id>"]' \
   --text="<text>" \
   --schedule="<iso_timestamp>"

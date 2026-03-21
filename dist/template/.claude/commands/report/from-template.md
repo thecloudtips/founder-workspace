@@ -21,7 +21,7 @@ Generate a report using a predefined template structure. Templates provide secti
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `report` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -63,7 +63,7 @@ If any error occurs during this command:
 
 When no `--template` is specified, or when listing templates:
 
-Read all template files from `${CLAUDE_PLUGIN_ROOT}/templates/report-templates/` and present:
+Read all template files from `../../../.founderOS/templates/report-templates/` and present:
 
 | Template | Description | Best For |
 |----------|-------------|----------|
@@ -77,8 +77,8 @@ Ask the user to select a template.
 
 When `--team` is NOT present:
 
-1. Read all 5 skills from `${CLAUDE_PLUGIN_ROOT}/skills/report/*/SKILL.md`.
-2. Read the selected template from `${CLAUDE_PLUGIN_ROOT}/templates/report-templates/[template-name].md`.
+1. Read all 5 skills from `skills/report/*/SKILL.md`.
+2. Read the selected template from `../../../.founderOS/templates/report-templates/[template-name].md`.
 3. Read the data source (auto-detect format per data-extraction skill).
 4. Analyze data per data-analysis skill.
 5. Generate report following the template structure:
@@ -92,7 +92,7 @@ When `--team` is NOT present:
 When `--team` IS present:
 
 1. Read template and pass it as part of the pipeline input.
-2. Read `${CLAUDE_PLUGIN_ROOT}/agents/report/config.json` and execute the 5-agent pipeline.
+2. Read `agents/report/config.json` and execute the 5-agent pipeline.
 3. The Writing Agent receives both analysis results AND template structure — it must follow the template.
 4. Present final output with pipeline report.
 

@@ -23,7 +23,7 @@ If `--date` is omitted, use today's date. If `--date` is provided, validate the 
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `briefing` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -75,10 +75,10 @@ If `$ARGUMENTS` contains `--schedule`:
 
 When `--team` is NOT present:
 
-1. Read the briefing-assembly skill at `${CLAUDE_PLUGIN_ROOT}/skills/briefing/briefing-assembly/SKILL.md` for the briefing structure, section ordering rules, and Notion page format.
-2. Read the meeting-prep skill at `${CLAUDE_PLUGIN_ROOT}/skills/briefing/meeting-prep/SKILL.md` for meeting classification rules, prep note generation, and attendee context.
-3. Read the email-prioritization skill at `${CLAUDE_PLUGIN_ROOT}/skills/briefing/email-prioritization/SKILL.md` for priority scoring rubric and highlight extraction.
-4. Read the task-curation skill at `${CLAUDE_PLUGIN_ROOT}/skills/briefing/task-curation/SKILL.md` for task grouping, priority sorting, and overdue handling.
+1. Read the briefing-assembly skill at `skills/briefing/briefing-assembly/SKILL.md` for the briefing structure, section ordering rules, and Notion page format.
+2. Read the meeting-prep skill at `skills/briefing/meeting-prep/SKILL.md` for meeting classification rules, prep note generation, and attendee context.
+3. Read the email-prioritization skill at `skills/briefing/email-prioritization/SKILL.md` for priority scoring rubric and highlight extraction.
+4. Read the task-curation skill at `skills/briefing/task-curation/SKILL.md` for task grouping, priority sorting, and overdue handling.
 5. **Check for existing briefing**:
    - Search Notion for a database titled "[FOS] Briefings".
    - If not found, try "Founder OS HQ - Briefings". If not found, fall back to "Daily Briefing Generator - Briefings".
@@ -136,15 +136,15 @@ When `--team` is NOT present:
 
 When `--team` IS present:
 
-1. Read the pipeline configuration at `${CLAUDE_PLUGIN_ROOT}/agents/briefing/config.json`.
+1. Read the pipeline configuration at `agents/briefing/config.json`.
 2. **Phase 1 -- Parallel Gathering**: Launch all 4 gatherer agents simultaneously:
-   - **Calendar Agent** -- Fetch and classify all events for the target date, generate prep notes, detect conflicts. Reads its definition from `${CLAUDE_PLUGIN_ROOT}/agents/briefing/calendar-agent.md`.
-   - **Gmail Agent** -- Search unread emails within the `--hours` window, apply priority scoring, extract highlights. Reads its definition from `${CLAUDE_PLUGIN_ROOT}/agents/briefing/gmail-agent.md`.
-   - **Notion Agent** -- Query tasks due on target date plus overdue items, group by project, sort by priority. Reads its definition from `${CLAUDE_PLUGIN_ROOT}/agents/briefing/notion-agent.md`.
-   - **Slack Agent** -- If Slack MCP is configured, fetch mentions and DMs. If unavailable, return immediately with status "unavailable". Reads its definition from `${CLAUDE_PLUGIN_ROOT}/agents/briefing/slack-agent.md`.
+   - **Calendar Agent** -- Fetch and classify all events for the target date, generate prep notes, detect conflicts. Reads its definition from `agents/briefing/calendar-agent.md`.
+   - **Gmail Agent** -- Search unread emails within the `--hours` window, apply priority scoring, extract highlights. Reads its definition from `agents/briefing/gmail-agent.md`.
+   - **Notion Agent** -- Query tasks due on target date plus overdue items, group by project, sort by priority. Reads its definition from `agents/briefing/notion-agent.md`.
+   - **Slack Agent** -- If Slack MCP is configured, fetch mentions and DMs. If unavailable, return immediately with status "unavailable". Reads its definition from `agents/briefing/slack-agent.md`.
 3. Wait for all gatherers to complete or timeout after 30 seconds. Any agent that times out is marked as "timed out" in the pipeline report. The pipeline continues as long as at least 2 agents return data.
 4. **Phase 2 -- Synthesis**: Launch the **Briefing Lead** agent:
-   - Reads its definition from `${CLAUDE_PLUGIN_ROOT}/agents/briefing/briefing-lead.md`.
+   - Reads its definition from `agents/briefing/briefing-lead.md`.
    - Merges all gatherer outputs into a unified briefing.
    - Creates (or updates) the Notion page with the full briefing.
    - Writes stats to the "[FOS] Briefings" database (fall back to "Founder OS HQ - Briefings", then "Daily Briefing Generator - Briefings"; skip if none exists). Always sets Type = "Daily Briefing".

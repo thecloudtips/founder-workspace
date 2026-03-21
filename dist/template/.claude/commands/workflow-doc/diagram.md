@@ -13,8 +13,8 @@ Generate a quick Mermaid flowchart from a workflow description or an existing do
 ## Load Skills
 
 Read both skills before starting:
-1. `${CLAUDE_PLUGIN_ROOT}/skills/workflow-doc/workflow-documentation/SKILL.md`
-2. `${CLAUDE_PLUGIN_ROOT}/skills/workflow-doc/sop-writing/SKILL.md`
+1. `skills/workflow-doc/workflow-documentation/SKILL.md`
+2. `skills/workflow-doc/sop-writing/SKILL.md`
 
 ## Parse Arguments
 
@@ -26,7 +26,7 @@ Extract from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `workflow-doc` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.

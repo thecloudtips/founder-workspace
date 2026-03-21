@@ -12,9 +12,9 @@ Scan the user's CRM in Notion to compute a 5-metric health score for every activ
 
 ## Load Skills
 
-Read the client-health-scoring skill at `${CLAUDE_PLUGIN_ROOT}/skills/health/client-health-scoring/SKILL.md` for the 5-metric scoring algorithm, RAG classification thresholds, data source integration, caching strategy, risk flag taxonomy, and scoring formulas.
+Read the client-health-scoring skill at `skills/health/client-health-scoring/SKILL.md` for the 5-metric scoring algorithm, RAG classification thresholds, data source integration, caching strategy, risk flag taxonomy, and scoring formulas.
 
-Read the sentiment-analysis skill at `${CLAUDE_PLUGIN_ROOT}/skills/health/sentiment-analysis/SKILL.md` for email and meeting sentiment extraction needed by the Sentiment metric.
+Read the sentiment-analysis skill at `skills/health/sentiment-analysis/SKILL.md` for email and meeting sentiment extraction needed by the Sentiment metric.
 
 ## Parse Arguments
 
@@ -28,7 +28,7 @@ Extract flags from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `health` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.

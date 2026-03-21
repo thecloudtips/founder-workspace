@@ -41,7 +41,7 @@ Generate 2-3 query variants from the user's original input to maximize recall. G
 - Do not add words the user never implied. Synonyms must be reasonable substitutions, not speculative expansions.
 - Preserve proper nouns (company names, product names, project names) verbatim in at least one variant.
 
-Consult `${CLAUDE_PLUGIN_ROOT}/skills/drive/drive-navigation/references/search-strategies.md` for detailed query variant examples, file-type filtering patterns, and search-within-folder techniques.
+Consult `skills/drive/drive-navigation/references/search-strategies.md` for detailed query variant examples, file-type filtering patterns, and search-within-folder techniques.
 
 ## File Type Handling
 
@@ -58,7 +58,7 @@ Filter search results to supported file types and apply type-specific content ex
 
 Apply content truncation rules: 3000-character cap per file for extraction, 500-character cap for previews.
 
-Consult `${CLAUDE_PLUGIN_ROOT}/skills/drive/drive-navigation/references/file-type-handling.md` for detailed parsing patterns, extraction logic per type, and truncation rules.
+Consult `skills/drive/drive-navigation/references/file-type-handling.md` for detailed parsing patterns, extraction logic per type, and truncation rules.
 
 ## Relevance Scoring
 
@@ -106,7 +106,7 @@ Score based on the file's last modified date.
 
 **Composite score:** Sum all three factors. Rank results by composite score descending.
 
-Consult `${CLAUDE_PLUGIN_ROOT}/skills/drive/drive-navigation/references/search-strategies.md` for scoring formula pseudocode, worked examples with score breakdowns, and edge case adjustments.
+Consult `skills/drive/drive-navigation/references/search-strategies.md` for scoring formula pseudocode, worked examples with score breakdowns, and edge case adjustments.
 
 ## Folder Traversal
 

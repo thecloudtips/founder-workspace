@@ -8,11 +8,11 @@ result-format: full
 
 # /founder-os:savings:configure
 
-Set up or update the hourly rate and custom time estimates used by all savings commands. Configuration is stored in `${CLAUDE_PLUGIN_ROOT}/config/user-config.json`.
+Set up or update the hourly rate and custom time estimates used by all savings commands. Configuration is stored in `../../../.founderOS/config/user-config.json`.
 
 ## Load Skills
 
-Read the roi-calculation skill at `${CLAUDE_PLUGIN_ROOT}/skills/savings/roi-calculation/SKILL.md` for the configuration resolution priority order and user config schema.
+Read the roi-calculation skill at `skills/savings/roi-calculation/SKILL.md` for the configuration resolution priority order and user config schema.
 
 ## Parse Arguments
 
@@ -25,7 +25,7 @@ Extract from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `savings` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -67,8 +67,8 @@ If any error occurs during this command:
 
 ### Step 1: Load Current Configuration
 
-1. Read `${CLAUDE_PLUGIN_ROOT}/config/user-config.json` if it exists.
-2. Read `${CLAUDE_PLUGIN_ROOT}/config/task-estimates.json` for default values.
+1. Read `../../../.founderOS/config/user-config.json` if it exists.
+2. Read `../../../.founderOS/config/task-estimates.json` for default values.
 3. Display current configuration:
 
 ```
@@ -121,7 +121,7 @@ If yes:
 
 ### Step 5: Save Configuration
 
-Write `${CLAUDE_PLUGIN_ROOT}/config/user-config.json`:
+Write `../../../.founderOS/config/user-config.json`:
 
 ```json
 {

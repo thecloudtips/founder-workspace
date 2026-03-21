@@ -10,7 +10,7 @@ globs:
 
 Gather meeting transcripts and notes from multiple sources, normalize them into a unified NormalizedTranscript structure, and pass the result downstream to the meeting-analysis skill. Support five source adapters: Fireflies.ai file exports, Notion meeting notes pages, Otter.ai file exports, Gemini transcripts from Google Drive, and generic local files. When the user does not specify a source type, auto-detect from content patterns.
 
-For detailed format detection patterns, signature strings, and example content per source, see `${CLAUDE_PLUGIN_ROOT}/skills/meeting/source-gathering/references/source-formats.md`.
+For detailed format detection patterns, signature strings, and example content per source, see `skills/meeting/source-gathering/references/source-formats.md`.
 
 ## Source Detection Algorithm
 
@@ -58,7 +58,7 @@ For each field, attempt extraction in this order and use the first successful re
 
 ## Source Adapter Guidelines
 
-Each adapter handles source-specific ingestion and maps output to the NormalizedTranscript schema. Detailed format patterns and example content live in `${CLAUDE_PLUGIN_ROOT}/skills/meeting/source-gathering/references/source-formats.md`.
+Each adapter handles source-specific ingestion and maps output to the NormalizedTranscript schema. Detailed format patterns and example content live in `skills/meeting/source-gathering/references/source-formats.md`.
 
 ### Adapter 1: Fireflies.ai
 
@@ -125,7 +125,7 @@ Maintain a lookup of signature patterns per source. The primary patterns:
 - **SRT format**: Lines matching `^\d+$` followed by lines matching `\d{2}:\d{2}:\d{2},\d{3} --> \d{2}:\d{2}:\d{2},\d{3}$`.
 - **VTT format**: File begins with `WEBVTT` header line.
 
-For the full pattern catalog with examples, see `${CLAUDE_PLUGIN_ROOT}/skills/meeting/source-gathering/references/source-formats.md`.
+For the full pattern catalog with examples, see `skills/meeting/source-gathering/references/source-formats.md`.
 
 ## Speaker Label Normalization
 
@@ -189,4 +189,4 @@ The NormalizedTranscript output feeds directly into the meeting-analysis skill. 
 
 Consult this reference file for detailed implementation guidance:
 
-- `${CLAUDE_PLUGIN_ROOT}/skills/meeting/source-gathering/references/source-formats.md` -- Detailed format detection patterns per source, example file headers and footers, JSON schema examples for Fireflies exports, SRT/VTT format specifications, Notion page structure patterns, and Gemini transcript format samples.
+- `skills/meeting/source-gathering/references/source-formats.md` -- Detailed format detection patterns per source, example file headers and footers, JSON schema examples for Fireflies exports, SRT/VTT format specifications, Notion page structure patterns, and Gemini transcript format samples.

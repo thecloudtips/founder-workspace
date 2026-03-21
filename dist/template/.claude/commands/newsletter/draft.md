@@ -12,15 +12,15 @@ Write a complete newsletter draft from an outline, applying founder-voice tone a
 
 ## Load Skills
 
-Read the newsletter-writing skill at `${CLAUDE_PLUGIN_ROOT}/skills/newsletter/newsletter-writing/SKILL.md` for structure rules, section writing patterns, hook types, transition techniques, takeaway formatting, CTA patterns, and Substack-compatible markdown constraints.
+Read the newsletter-writing skill at `skills/newsletter/newsletter-writing/SKILL.md` for structure rules, section writing patterns, hook types, transition techniques, takeaway formatting, CTA patterns, and Substack-compatible markdown constraints.
 
-Read the founder-voice skill at `${CLAUDE_PLUGIN_ROOT}/skills/newsletter/founder-voice/SKILL.md` for tone calibration, sentence rhythm, opinion injection patterns, practical framing techniques, and voice anti-patterns.
+Read the founder-voice skill at `skills/newsletter/founder-voice/SKILL.md` for tone calibration, sentence rhythm, opinion injection patterns, practical framing techniques, and voice anti-patterns.
 
-Read the newsletter template at `${CLAUDE_PLUGIN_ROOT}/templates/newsletter-template.md` for the structural scaffold to follow when assembling the final draft.
+Read the newsletter template at `../../../.founderOS/templates/newsletter-template.md` for the structural scaffold to follow when assembling the final draft.
 
-Read the humanize-content skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/humanize-content/SKILL.md` for natural-sounding prose generation and post-processing validation.
+Read the humanize-content skill at `../../../.founderOS/infrastructure/humanize-content/SKILL.md` for natural-sounding prose generation and post-processing validation.
 
-Read the newsletter humanization reference at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/humanize-content/references/newsletter-humanization.md` for newsletter-specific humanization rules.
+Read the newsletter humanization reference at `../../../.founderOS/infrastructure/humanize-content/references/newsletter-humanization.md` for newsletter-specific humanization rules.
 
 Apply humanize-content for natural-sounding prose. The `--tone` flag selects the humanization tone preset (default: Professional).
 
@@ -34,7 +34,7 @@ Extract flags from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `newsletter` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -94,13 +94,13 @@ For each section defined in the outline, in order:
 
 1. **Write the section heading**: Use the section title from the outline as an H2 heading.
 
-2. **Write section body**: Follow the newsletter-writing skill's structure rules for the section type. Consult `${CLAUDE_PLUGIN_ROOT}/skills/newsletter/newsletter-writing/references/section-templates.md` for section type guidance (analysis, how-to, case study, opinion, trend, etc.).
+2. **Write section body**: Follow the newsletter-writing skill's structure rules for the section type. Consult `skills/newsletter/newsletter-writing/references/section-templates.md` for section type guidance (analysis, how-to, case study, opinion, trend, etc.).
 
 3. **Apply founder-voice patterns throughout**:
    - Opinion injection: Weave in perspective with phrases like "Here is why this matters...", "This is the part most people get wrong...", "I have seen this play out dozens of times..."
    - Practical framing: Ground abstract ideas with "What this means for you...", "The takeaway here is simple...", "Here is what I would actually do..."
    - Short-long sentence rhythm: Alternate punchy statements with detailed follow-ups.
-   - Consult `${CLAUDE_PLUGIN_ROOT}/skills/newsletter/founder-voice/references/voice-examples.md` for tone calibration and phrasing examples.
+   - Consult `skills/newsletter/founder-voice/references/voice-examples.md` for tone calibration and phrasing examples.
 
 4. **Include source references inline**: Where the outline references external sources, integrate them naturally as hyperlinks within the text. Do not use footnotes or endnote-style numbering — Substack does not support them.
 

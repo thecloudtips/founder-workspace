@@ -12,7 +12,7 @@ Crawl the Notion workspace and Google Drive to build a structured catalog of all
 
 ## Load Skills
 
-Read the source-indexing skill at `${CLAUDE_PLUGIN_ROOT}/skills/kb/source-indexing/SKILL.md` for the full source discovery pipeline, 9-type content classification taxonomy, metadata extraction schema, freshness tier calculation, keyword extraction methodology, and Notion DB output logic.
+Read the source-indexing skill at `skills/kb/source-indexing/SKILL.md` for the full source discovery pipeline, 9-type content classification taxonomy, metadata extraction schema, freshness tier calculation, keyword extraction methodology, and Notion DB output logic.
 
 ## Parse Arguments
 
@@ -27,7 +27,7 @@ Extract from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `kb` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -71,8 +71,8 @@ Apply the source-indexing skill's discovery pipeline. Track counts as scanning p
 
 ### Phase 1: Notion Discovery (when scope includes `notion` or `all`)
 
-1. Search for all accessible pages via `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs search "" --filter page`. Paginate through all results until no more are returned. Cap at 500 pages.
-2. Search for all accessible databases via `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs search "" --filter database`.
+1. Search for all accessible pages via `node ../../../.founderOS/scripts/notion-tool.mjs search "" --filter page`. Paginate through all results until no more are returned. Cap at 500 pages.
+2. Search for all accessible databases via `node ../../../.founderOS/scripts/notion-tool.mjs search "" --filter database`.
 3. Display progress every 10 pages: "Discovering sources... [N] found so far"
 4. When 500-page cap is reached, warn: "Reached 500-page limit. Indexed the 500 most recently edited pages. Re-run with specific parent filters to index additional sections."
 
@@ -101,7 +101,7 @@ For each discovered source, extract the metadata fields defined in the source-in
 4. **Last Edited**: `last_edited_time` (Notion) or `modifiedTime` (Drive) as ISO 8601.
 5. **Parent Location**: Breadcrumb path from parent property (Notion) or folder path (Drive).
 6. **Word Count**: Approximate word count from content. 0 for databases and empty pages.
-7. **Content**: Retrieve the first 3000 characters via `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs get-page <page-id>` for Notion pages (for classification and keyword extraction). For Drive files, use title and folder context only.
+7. **Content**: Retrieve the first 3000 characters via `node ../../../.founderOS/scripts/notion-tool.mjs get-page <page-id>` for Notion pages (for classification and keyword extraction). For Drive files, use title and folder context only.
 
 Display progress every 10 sources: "Extracting metadata... [N] of [total] sources processed"
 
@@ -111,7 +111,7 @@ When a source returns a permission error or 404 during metadata extraction, set 
 
 Apply the source-indexing skill's 9-type classification taxonomy to each source using first-match-wins priority:
 
-1. **Title pattern matching** — match against known patterns per classification type (consult `${CLAUDE_PLUGIN_ROOT}/skills/kb/source-indexing/references/content-classification.md`).
+1. **Title pattern matching** — match against known patterns per classification type (consult `skills/kb/source-indexing/references/content-classification.md`).
 2. **Content structure analysis** — analyze the first 3000 characters for structural signals (headings, lists, Q&A patterns, step numbering).
 3. **Parent location heuristics** — use parent page or folder name as classification hint.
 

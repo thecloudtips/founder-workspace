@@ -16,14 +16,14 @@ Generate two content variants using different templates, publish them staggered,
 
 Read these skill files before proceeding:
 
-1. Read `${CLAUDE_PLUGIN_ROOT}/skills/social/template-engine/SKILL.md`
-2. Read `${CLAUDE_PLUGIN_ROOT}/skills/social/platform-adaptation/SKILL.md`
-3. Read `${CLAUDE_PLUGIN_ROOT}/skills/social/posting-cadence/SKILL.md` — for stagger timing
-4. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/late-skills/late-common/SKILL.md`
-5. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/late-skills/late-publish/SKILL.md`
-6. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/late-skills/late-status/SKILL.md` — for analytics
-7. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/humanize-content/SKILL.md`
-8. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/humanize-content/references/social-humanization.md`
+1. Read `skills/social/template-engine/SKILL.md`
+2. Read `skills/social/platform-adaptation/SKILL.md`
+3. Read `skills/social/posting-cadence/SKILL.md` — for stagger timing
+4. Read `../../../.founderOS/infrastructure/late-skills/late-common/SKILL.md`
+5. Read `../../../.founderOS/infrastructure/late-skills/late-publish/SKILL.md`
+6. Read `../../../.founderOS/infrastructure/late-skills/late-status/SKILL.md` — for analytics
+7. Read `../../../.founderOS/infrastructure/humanize-content/SKILL.md`
+8. Read `../../../.founderOS/infrastructure/humanize-content/references/social-humanization.md`
 
 ## Arguments
 
@@ -38,23 +38,23 @@ Read these skill files before proceeding:
 
 ## Business Context (Optional)
 
-Check `${CLAUDE_PLUGIN_ROOT}/_infrastructure/context/active/` for `.md` files. If present, read them to personalize tone, voice, and brand.
+Check `../../../.founderOS/infrastructure/context/active/` for `.md` files. If present, read them to personalize tone, voice, and brand.
 
 ## Preflight Check
 
-Run `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md` for namespace `social`.
+Run `../../../.founderOS/infrastructure/preflight/SKILL.md` for namespace `social`.
 - Required: `late` (validate `$LATE_API_KEY` + probe `late-tool.mjs --validate-only`)
 - Optional: `notion` (for Content DB logging), `filesystem` (for file-based sources)
 
 **Interim check** (until preflight ships):
 ```bash
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs --validate-only
+node ../../../.founderOS/scripts/late-tool.mjs --validate-only
 ```
 If failed: show fix instructions from `_infrastructure/preflight/references/fix-messages.md` > `late`.
 
 ## Step 0: Memory Context
 
-Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/memory/context-injection/SKILL.md`.
+Read `../../../.founderOS/infrastructure/memory/context-injection/SKILL.md`.
 Query memory store for: `social ab-test`, `template performance`, `content variants`, user's brand voice.
 Inject top 5 relevant memories.
 
@@ -79,7 +79,7 @@ This command operates in two distinct invocations:
 
 Display: `Phase 1/2: Generating test variants...`
 
-1. **Select templates**: Read available templates from `${CLAUDE_PLUGIN_ROOT}/skills/social/templates/`. Choose two templates that use different structural techniques.
+1. **Select templates**: Read available templates from `skills/social/templates/`. Choose two templates that use different structural techniques.
    - If `--templates=a,b` provided: use those specific template IDs (e.g., `--templates=jan25-1,feb25-3`)
    - Otherwise: select two templates with the highest divergence in technique (e.g., story vs. listicle, hook-first vs. stat-first). Avoid templates with the same `technique` field.
 2. **Generate variant A**: Apply template A to the topic using the template-engine skill. Apply humanize-content skill.
@@ -118,7 +118,7 @@ Display: `Phase 2/2: Publishing test...`
 
 1. **Post variant A immediately**:
    ```bash
-   node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs posts create \
+   node ../../../.founderOS/scripts/late-tool.mjs posts create \
      --accounts='["<account_id>"]' \
      --text="<variant_a_text>"
    ```
@@ -126,14 +126,14 @@ Display: `Phase 2/2: Publishing test...`
 
 2. **Schedule variant B** for `now + stagger hours` (default: 48):
    ```bash
-   node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs posts create \
+   node ../../../.founderOS/scripts/late-tool.mjs posts create \
      --accounts='["<account_id>"]' \
      --text="<variant_b_text>" \
      --schedule="<iso_timestamp_now_plus_stagger>"
    ```
    Capture returned `post_id` as `post_id_b`.
 
-3. **Write pending test entry** to `${CLAUDE_PLUGIN_ROOT}/skills/social/templates/_performance.yaml` under `pending_tests`:
+3. **Write pending test entry** to `skills/social/templates/_performance.yaml` under `pending_tests`:
    ```yaml
    - created: "<iso_timestamp_now>"
      topic: "<topic>"
@@ -155,13 +155,13 @@ Display: `Phase 2/2: Publishing test...`
 
 Display: `Phase 1/2: Checking test results...`
 
-1. **Read `pending_tests`** from `${CLAUDE_PLUGIN_ROOT}/skills/social/templates/_performance.yaml`.
+1. **Read `pending_tests`** from `skills/social/templates/_performance.yaml`.
 2. **Filter** for tests where `measure_after` date is in the past (i.e., `measure_after <= now`).
 3. For each eligible pending test:
    - **Attempt to fetch analytics via Late.dev**:
      ```bash
-     node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs analytics get --post-id=<post_id_a>
-     node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs analytics get --post-id=<post_id_b>
+     node ../../../.founderOS/scripts/late-tool.mjs analytics get --post-id=<post_id_a>
+     node ../../../.founderOS/scripts/late-tool.mjs analytics get --post-id=<post_id_b>
      ```
    - **If Late.dev Analytics unavailable** (graceful degradation): display message:
      ```
@@ -253,7 +253,7 @@ After each invocation, display:
 
 ## Final Step: Observation Logging
 
-Record observation via `${CLAUDE_PLUGIN_ROOT}/_infrastructure/memory/pattern-detection/SKILL.md`:
+Record observation via `../../../.founderOS/infrastructure/memory/pattern-detection/SKILL.md`:
 - Templates used in A and B
 - Platform tested
 - Whether user edited a variant before approving

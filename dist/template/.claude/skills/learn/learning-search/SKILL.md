@@ -164,4 +164,4 @@ For queries with no topic filter, no date filter, and a single common word as ke
 ### Reference Files
 
 For detailed filter construction and Notion query patterns, consult:
-- **`${CLAUDE_PLUGIN_ROOT}/skills/learn/learning-search/references/search-filter-logic.md`** — Sequential filter pipeline construction, Notion API query building, composite relevance scoring formula, and edge case handling for complex multi-filter queries
+- **`skills/learn/learning-search/references/search-filter-logic.md`** — Sequential filter pipeline construction, Notion API query building, composite relevance scoring formula, and edge case handling for complex multi-filter queries

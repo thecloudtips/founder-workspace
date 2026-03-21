@@ -1,6 +1,6 @@
 # Citation Formats and Answer Synthesis Reference
 
-Detailed specifications for citation formatting, confidence scoring, no-answer templates, conflict reconciliation, and answer length guidelines. Referenced by `${CLAUDE_PLUGIN_ROOT}/skills/kb/answer-synthesis/SKILL.md`.
+Detailed specifications for citation formatting, confidence scoring, no-answer templates, conflict reconciliation, and answer length guidelines. Referenced by `skills/kb/answer-synthesis/SKILL.md`.
 
 ---
 

@@ -182,7 +182,7 @@ When the user provides a `--file` flag with a path:
 - Read the file from the local filesystem using the Filesystem MCP server.
 - Support these formats: `.md`, `.txt`, `.doc`, `.docx`, `.pdf`.
 - Resolve relative paths from the current working directory.
-- Use `${CLAUDE_PLUGIN_ROOT}` as the base for any plugin-internal file references.
+- Use `../../../../.founderOS` as the base for any plugin-internal file references.
 - If the file cannot be read or does not exist, return an error: "File not found or cannot be read: [path]. Verify the file path and format."
 
 ### No Input (Interactive Prompt)

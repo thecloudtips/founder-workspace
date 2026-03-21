@@ -33,7 +33,7 @@ Process all clients through these steps in order:
 | 4 | Payment Status | 0.20 | P11 Invoice Processor DB |
 | 5 | Sentiment | 0.15 | sentiment-analysis skill output |
 
-All weights sum to 1.00. For the composite formula, exponential decay curves, quick-reference tables, and per-metric edge case handling, see `${CLAUDE_PLUGIN_ROOT}/skills/health/client-health-scoring/references/scoring-formulas.md`.
+All weights sum to 1.00. For the composite formula, exponential decay curves, quick-reference tables, and per-metric edge case handling, see `skills/health/client-health-scoring/references/scoring-formulas.md`.
 
 ## RAG Classification
 
@@ -135,7 +135,7 @@ A client may have zero, one, or multiple risk flags simultaneously. Display all 
 
 ## Edge Cases
 
-Handle the following situations using the rules outlined below. For detailed scoring formulas, decay curves, and per-metric edge case handling, see `${CLAUDE_PLUGIN_ROOT}/skills/health/client-health-scoring/references/scoring-formulas.md`.
+Handle the following situations using the rules outlined below. For detailed scoring formulas, decay curves, and per-metric edge case handling, see `skills/health/client-health-scoring/references/scoring-formulas.md`.
 
 ### No Email History
 When no Gmail threads exist for a client, set Last Contact score to 0 and Response Time score to 50 (neutral). Add the "No Recent Contact" risk flag.

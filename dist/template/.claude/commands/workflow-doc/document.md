@@ -14,9 +14,9 @@ Transform a workflow description into a complete, structured SOP document with a
 
 Read both skills and the template before starting any phase:
 
-1. `${CLAUDE_PLUGIN_ROOT}/skills/workflow-doc/workflow-documentation/SKILL.md`
-2. `${CLAUDE_PLUGIN_ROOT}/skills/workflow-doc/sop-writing/SKILL.md`
-3. `${CLAUDE_PLUGIN_ROOT}/templates/sop-template.md`
+1. `skills/workflow-doc/workflow-documentation/SKILL.md`
+2. `skills/workflow-doc/sop-writing/SKILL.md`
+3. `../../../.founderOS/templates/sop-template.md`
 
 Apply workflow-documentation for structured component extraction and sop-writing for document generation, formatting rules, and Mermaid diagram construction.
 
@@ -33,7 +33,7 @@ Extract the description and flags from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `workflow-doc` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -110,7 +110,7 @@ Display: **"Extraction complete. Generating SOP..."**
 
 Display: **"Phase 2/4: Generating SOP document..."**
 
-1. Apply the sop-writing skill to produce all 7 sections following the template scaffold from `${CLAUDE_PLUGIN_ROOT}/templates/sop-template.md`. Generate each section using the extracted components from Phase 1:
+1. Apply the sop-writing skill to produce all 7 sections following the template scaffold from `../../../.founderOS/templates/sop-template.md`. Generate each section using the extracted components from Phase 1:
    - Follow the template's section order and heading structure exactly
    - Fill in all template sections with content derived from the workflow analysis
    - Use clear, imperative language for procedural steps

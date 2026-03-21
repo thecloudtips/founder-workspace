@@ -217,7 +217,7 @@ Apply the Non-Blocking Presentation Rules above. If RED, display the warning ban
 ## Reference
 
 For catalog structure and tool discovery patterns, consult:
-`${CLAUDE_PLUGIN_ROOT}/skills/scout/integration/SKILL.md`
+`skills/scout/integration/SKILL.md`
 
 For research and source discovery patterns, consult:
-`${CLAUDE_PLUGIN_ROOT}/skills/scout/research/SKILL.md`
+`skills/scout/research/SKILL.md`

@@ -12,7 +12,7 @@ Search Notion pages and query databases using natural language. Translate questi
 
 ## Load Skills
 
-Read the notion-operations skill at `${CLAUDE_PLUGIN_ROOT}/skills/notion/notion-operations/SKILL.md` for Notion CLI tool usage, workspace discovery, search strategies, and database querying with NL-to-filter translation.
+Read the notion-operations skill at `skills/notion/notion-operations/SKILL.md` for Notion CLI tool usage, workspace discovery, search strategies, and database querying with NL-to-filter translation.
 
 ## Parse Arguments
 
@@ -25,7 +25,7 @@ Extract from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `notion` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -91,15 +91,15 @@ Classify the question into one of three query modes:
    - "high priority" → Priority equals "High"
    - "assigned to Sarah" → Assignee contains "Sarah"
    - "created this week" → Created after start of current week
-   - Consult `${CLAUDE_PLUGIN_ROOT}/skills/notion/notion-operations/references/workspace-patterns.md` for the full translation table.
+   - Consult `skills/notion/notion-operations/references/workspace-patterns.md` for the full translation table.
 4. **Apply sort** -- infer sort order from the question (latest → date desc, highest priority → priority desc, default → last edited desc).
-5. **Execute** -- query the database via `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs query <database-id> --filter '<json>' --sorts '<json>'`.
+5. **Execute** -- query the database via `node ../../../.founderOS/scripts/notion-tool.mjs query <database-id> --filter '<json>' --sorts '<json>'`.
 6. **Cap results** -- limit to `--limit` (default 10).
 
 ### Page Search Mode
 
 1. **Extract search terms** -- pull key terms from the question. Strip question words and filler.
-2. **Search Notion** -- run `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs search '<terms>'`.
+2. **Search Notion** -- run `node ../../../.founderOS/scripts/notion-tool.mjs search '<terms>'`.
 3. **If sparse results** -- retry with a shorter/broader query.
 4. **Cap results** -- limit to `--limit` (default 10).
 

@@ -62,7 +62,7 @@ Example: `2026-W10` → Monday 2026-03-02 through Sunday 2026-03-08.
 
 ## Theme Detection
 
-Analyze the Topics distribution across all learnings in the target week. For the full algorithm including frequency counting, minimum thresholds, and selection rules, read `${CLAUDE_PLUGIN_ROOT}/skills/learn/learning-synthesis/references/theme-detection-algorithm.md`.
+Analyze the Topics distribution across all learnings in the target week. For the full algorithm including frequency counting, minimum thresholds, and selection rules, read `skills/learn/learning-synthesis/references/theme-detection-algorithm.md`.
 
 ### Quick Reference
 
@@ -92,7 +92,7 @@ When fewer than 3 learnings exist for the week, or all learnings share identical
 
 ## Streak Calculation
 
-Track consecutive weeks of learning activity. For the full backwards-scan algorithm, gap detection, and display formatting, read `${CLAUDE_PLUGIN_ROOT}/skills/learn/learning-synthesis/references/streak-calculation.md`.
+Track consecutive weeks of learning activity. For the full backwards-scan algorithm, gap detection, and display formatting, read `skills/learn/learning-synthesis/references/streak-calculation.md`.
 
 ### Quick Reference
 
@@ -223,5 +223,5 @@ For weeks with more than 20 learnings, the Learnings List in chat output should 
 ### Reference Files
 
 For detailed algorithms, consult:
-- **`${CLAUDE_PLUGIN_ROOT}/skills/learn/learning-synthesis/references/theme-detection-algorithm.md`** — Frequency counting methodology, minimum thresholds based on learning count, Top Themes selection rules, and tie-breaking logic
-- **`${CLAUDE_PLUGIN_ROOT}/skills/learn/learning-synthesis/references/streak-calculation.md`** — Backwards-scan algorithm for consecutive week detection, gap identification, display formatting rules, and edge cases for streak reset
+- **`skills/learn/learning-synthesis/references/theme-detection-algorithm.md`** — Frequency counting methodology, minimum thresholds based on learning count, Top Themes selection rules, and tie-breaking logic
+- **`skills/learn/learning-synthesis/references/streak-calculation.md`** — Backwards-scan algorithm for consecutive week detection, gap identification, display formatting rules, and edge cases for streak reset

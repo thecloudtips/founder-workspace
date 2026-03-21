@@ -49,7 +49,7 @@ Choose the most appropriate property type for each attribute. Default to the sim
 | Computed value | Formula | Full Name (first + last), Days Until Due |
 | Aggregation | Rollup | Task Count, Total Hours |
 
-Consult `${CLAUDE_PLUGIN_ROOT}/skills/notion/notion-database-design/references/property-types.md` for complete property type specifications, configuration options, and advanced patterns.
+Consult `skills/notion/notion-database-design/references/property-types.md` for complete property type specifications, configuration options, and advanced patterns.
 
 ## Schema Design Best Practices
 
@@ -107,7 +107,7 @@ Five business-essential templates are available for instant deployment via `/fou
 
 When the user runs `/founder-os:notion:template` without a name, list all 5 templates with a one-line description. When a template name is specified, load the full schema definition and create the database.
 
-Consult `${CLAUDE_PLUGIN_ROOT}/skills/notion/notion-database-design/references/templates.md` for the complete property definitions, default options, and view configurations for each template.
+Consult `skills/notion/notion-database-design/references/templates.md` for the complete property definitions, default options, and view configurations for each template.
 
 ## Schema Confirmation Protocol
 
@@ -147,5 +147,5 @@ If the user says "modify", ask which properties to add, remove, or change. Updat
 ### Reference Files
 
 For detailed property specifications and template schemas, consult:
-- **`${CLAUDE_PLUGIN_ROOT}/skills/notion/notion-database-design/references/property-types.md`** — Complete Notion property type reference with configuration options, format specifications, and advanced patterns
-- **`${CLAUDE_PLUGIN_ROOT}/skills/notion/notion-database-design/references/templates.md`** — Full schema definitions for all 5 business templates with property details, default options, and view configurations
+- **`skills/notion/notion-database-design/references/property-types.md`** — Complete Notion property type reference with configuration options, format specifications, and advanced patterns
+- **`skills/notion/notion-database-design/references/templates.md`** — Full schema definitions for all 5 business templates with property details, default options, and view configurations

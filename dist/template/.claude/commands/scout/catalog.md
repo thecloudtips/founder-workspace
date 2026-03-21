@@ -13,7 +13,7 @@ Browse the local scout catalog of discovered tools. Filter by security verdict, 
 ## Skills
 
 Read these skill files before proceeding:
-1. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/scout/SKILL.md` — catalog schema, verdict definitions, status values
+1. Read `../../../.founderOS/infrastructure/scout/SKILL.md` — catalog schema, verdict definitions, status values
 
 ## Arguments
 
@@ -26,11 +26,11 @@ Read these skill files before proceeding:
 
 ## Business Context (Optional)
 
-Check `${CLAUDE_PLUGIN_ROOT}/_infrastructure/context/active/` for `.md` files. If present, read them to personalize behavior — e.g., highlight tools relevant to the current business tech stack.
+Check `../../../.founderOS/infrastructure/context/active/` for `.md` files. If present, read them to personalize behavior — e.g., highlight tools relevant to the current business tech stack.
 
 ## Preflight Check
 
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `scout` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust behavior:
@@ -39,7 +39,7 @@ If the check returns `degraded`, note which optional sources are unavailable and
 
 ## Step 0: Memory Context
 
-Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/memory/context-injection/SKILL.md`.
+Read `../../../.founderOS/infrastructure/memory/context-injection/SKILL.md`.
 Query memory store for: `scout catalog`, `installed tools`.
 Inject top 5 relevant memories. If a memory references a recently installed or evaluated tool, surface a note alongside the catalog entry.
 
@@ -53,7 +53,7 @@ Before executing the main logic, check for learned patterns in the Intelligence 
 
 ## Read & Filter Catalog
 
-1. Read the catalog file at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/scout/catalog.json`.
+1. Read the catalog file at `../../../.founderOS/infrastructure/scout/catalog.json`.
 
 2. If the file does not exist or is empty, display:
    ```
@@ -124,7 +124,7 @@ If any error occurs during this command:
 
 ## Final Step: Observation Logging
 
-Record observation via `${CLAUDE_PLUGIN_ROOT}/_infrastructure/memory/pattern-detection/SKILL.md`:
+Record observation via `../../../.founderOS/infrastructure/memory/pattern-detection/SKILL.md`:
 - Plugin: `scout`
 - Command: `scout-catalog`
 - Key entities: filters applied, entry count returned

@@ -14,7 +14,7 @@ This skill handles the relevance and filtering layer only. Channel scanning, thr
 
 ## Noise Filtering
 
-Apply noise filters BEFORE any scoring to reduce the working set and prevent low-value messages from inflating results. Load the complete noise pattern library from `${CLAUDE_PLUGIN_ROOT}/skills/slack/message-prioritization/references/noise-patterns.md` for detailed detection methods, regex patterns, and exception rules.
+Apply noise filters BEFORE any scoring to reduce the working set and prevent low-value messages from inflating results. Load the complete noise pattern library from `skills/slack/message-prioritization/references/noise-patterns.md` for detailed detection methods, regex patterns, and exception rules.
 
 ### Filter Application Order
 
@@ -330,4 +330,4 @@ Include `my_action_items` and `my_direct_mentions` as separate counts so the com
 ## Reference Files
 
 For detailed noise filtering rules including 6 categories, regex detection patterns, exception conditions, and channel-level adjustments, consult:
-`${CLAUDE_PLUGIN_ROOT}/skills/slack/message-prioritization/references/noise-patterns.md`
+`skills/slack/message-prioritization/references/noise-patterns.md`

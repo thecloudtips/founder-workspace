@@ -117,7 +117,7 @@ Fetch thread replies selectively to minimize API calls while capturing important
 Fetch replies only when a parent message meets at least one criterion:
 
 1. `reply_count >= 3` -- meaningful discussion, not simple acknowledgment.
-2. Parent text contains decision keywords from `${CLAUDE_PLUGIN_ROOT}/skills/slack/slack-analysis/references/decision-patterns.md`.
+2. Parent text contains decision keywords from `skills/slack/slack-analysis/references/decision-patterns.md`.
 3. Parent contains @mention + task verb (review, update, fix, deploy, create, test, check, send, prepare, schedule).
 4. `reaction_count >= 5` -- strong engagement signal.
 
@@ -133,7 +133,7 @@ Classify every message into exactly one of 9 types using first-match-wins priori
 
 | Priority | Type | Detection Signals |
 |----------|------|------------------|
-| 1 | `decision` | Matches patterns from `${CLAUDE_PLUGIN_ROOT}/skills/slack/slack-analysis/references/decision-patterns.md` + context signal validation (keyword + 2+ positive signals) |
+| 1 | `decision` | Matches patterns from `skills/slack/slack-analysis/references/decision-patterns.md` + context signal validation (keyword + 2+ positive signals) |
 | 2 | `announcement` | Posted by channel creator or workspace admin, OR contains `@channel`/`@here`/`<!channel>`/`<!here>`, OR starts with "Announcing", "Important:", "Update:", "Notice:", "Reminder:", "Please note", "Attention" |
 | 3 | `action_assignment` | @mention (`<@U...>`) within 50 chars of a task verb: review, update, fix, deploy, create, test, check, send, prepare, schedule, write, approve, investigate, resolve, submit, implement |
 | 4 | `question` | Ends with `?` after trimming, OR starts with question word (who, what, when, where, why, how, can, could, should, would, is, are, does, do, will, has, have). Match whole words at message start only |
@@ -186,4 +186,4 @@ Handle these 6 scenarios without halting the scan:
 
 For complete decision detection keyword categories, context signal validation rules, confidence classification criteria, and common false positive patterns, consult:
 
-`${CLAUDE_PLUGIN_ROOT}/skills/slack/slack-analysis/references/decision-patterns.md`
+`skills/slack/slack-analysis/references/decision-patterns.md`

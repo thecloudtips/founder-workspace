@@ -9,7 +9,7 @@ globs:
 
 Generate a structured 6-section weekly review page in Notion by auto-discovering task databases, gathering calendar events and email threads, detecting blockers, and producing next-week priorities. The full pipeline runs in a single agent pass (no agent teams). Record each review in a tracking database for historical reference.
 
-For detailed section templates see `${CLAUDE_PLUGIN_ROOT}/skills/review/weekly-reflection/references/review-structure.md`. For source-specific query patterns see `${CLAUDE_PLUGIN_ROOT}/skills/review/weekly-reflection/references/data-sources.md`.
+For detailed section templates see `skills/review/weekly-reflection/references/review-structure.md`. For source-specific query patterns see `skills/review/weekly-reflection/references/data-sources.md`.
 
 ## Week Boundaries
 
@@ -77,7 +77,7 @@ Query Gmail for sent and received threads within the review week window.
 
 ## Review Section Structure
 
-Assemble the review page with exactly 6 sections in this order. For detailed templates, content examples, and the complete example output, see `${CLAUDE_PLUGIN_ROOT}/skills/review/weekly-reflection/references/review-structure.md`.
+Assemble the review page with exactly 6 sections in this order. For detailed templates, content examples, and the complete example output, see `skills/review/weekly-reflection/references/review-structure.md`.
 
 | # | Section | Primary Source | Purpose |
 |---|---------|----------------|---------|
@@ -226,5 +226,5 @@ When a source returns successfully but has no data for the week (zero completed 
 
 Consult these reference files for detailed implementation guidance:
 
-- `${CLAUDE_PLUGIN_ROOT}/skills/review/weekly-reflection/references/data-sources.md` -- Notion query filter construction, Calendar API parameters, Gmail search syntax, field extraction schemas, and source-specific edge cases.
-- `${CLAUDE_PLUGIN_ROOT}/skills/review/weekly-reflection/references/review-structure.md` -- Detailed templates for each of the 6 review sections, content examples, Notion block type mapping, and formatting constraints.
+- `skills/review/weekly-reflection/references/data-sources.md` -- Notion query filter construction, Calendar API parameters, Gmail search syntax, field extraction schemas, and source-specific edge cases.
+- `skills/review/weekly-reflection/references/review-structure.md` -- Detailed templates for each of the 6 review sections, content examples, Notion block type mapping, and formatting constraints.

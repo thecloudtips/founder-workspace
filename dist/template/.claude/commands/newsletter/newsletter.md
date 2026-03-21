@@ -14,12 +14,12 @@ Research a topic, build a structured outline, and write a complete newsletter dr
 
 Read all three skills and the template before starting any phase:
 
-1. `${CLAUDE_PLUGIN_ROOT}/skills/newsletter/topic-research/SKILL.md`
-2. `${CLAUDE_PLUGIN_ROOT}/skills/newsletter/newsletter-writing/SKILL.md`
-3. `${CLAUDE_PLUGIN_ROOT}/skills/newsletter/founder-voice/SKILL.md`
-4. `${CLAUDE_PLUGIN_ROOT}/templates/newsletter-template.md`
-5. `${CLAUDE_PLUGIN_ROOT}/_infrastructure/humanize-content/SKILL.md`
-6. `${CLAUDE_PLUGIN_ROOT}/_infrastructure/humanize-content/references/newsletter-humanization.md`
+1. `skills/newsletter/topic-research/SKILL.md`
+2. `skills/newsletter/newsletter-writing/SKILL.md`
+3. `skills/newsletter/founder-voice/SKILL.md`
+4. `../../../.founderOS/templates/newsletter-template.md`
+5. `../../../.founderOS/infrastructure/humanize-content/SKILL.md`
+6. `../../../.founderOS/infrastructure/humanize-content/references/newsletter-humanization.md`
 
 Apply the topic-research skill during Phase 1, the newsletter-writing skill during Phases 2 and 3, and the founder-voice skill during Phase 3. The template is the formatting scaffold for the final draft. Apply humanize-content for natural-sounding prose during Phase 3.
 
@@ -38,7 +38,7 @@ Extract the topic and flags from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `newsletter` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -206,7 +206,7 @@ Display: **"Phase 3/3: Writing newsletter in founder voice..."**
 
 Execute the full draft process per the newsletter-writing and founder-voice skills:
 
-1. **Write the full newsletter** using the template scaffold from `${CLAUDE_PLUGIN_ROOT}/templates/newsletter-template.md`:
+1. **Write the full newsletter** using the template scaffold from `../../../.founderOS/templates/newsletter-template.md`:
    - Replace all `{{PLACEHOLDERS}}` with actual content
    - Apply the four-part structure: Hook, Main Content (N sections), Key Takeaways, CTA
    - Write in founder voice per the founder-voice skill: professional, conversational, opinionated

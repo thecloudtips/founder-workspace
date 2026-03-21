@@ -21,7 +21,7 @@ Extract these flags from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `report` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -64,11 +64,11 @@ If any error occurs during this command:
 When `--team` is NOT present:
 
 1. Read ALL 5 skills:
-   - `${CLAUDE_PLUGIN_ROOT}/skills/report/data-extraction/SKILL.md`
-   - `${CLAUDE_PLUGIN_ROOT}/skills/report/data-analysis/SKILL.md`
-   - `${CLAUDE_PLUGIN_ROOT}/skills/report/report-writing/SKILL.md`
-   - `${CLAUDE_PLUGIN_ROOT}/skills/report/chart-generation/SKILL.md`
-   - `${CLAUDE_PLUGIN_ROOT}/skills/report/executive-summary/SKILL.md`
+   - `skills/report/data-extraction/SKILL.md`
+   - `skills/report/data-analysis/SKILL.md`
+   - `skills/report/report-writing/SKILL.md`
+   - `skills/report/chart-generation/SKILL.md`
+   - `skills/report/executive-summary/SKILL.md`
 2. If `--data` is provided, read the data source. Auto-detect format (CSV, JSON, text).
 3. If no `--data`, ask the user for their data source or report requirements.
 4. Perform analysis using the data-analysis skill rules.
@@ -99,14 +99,14 @@ When `--team` is NOT present:
 
 When `--team` IS present:
 
-1. Read the pipeline configuration at `${CLAUDE_PLUGIN_ROOT}/agents/report/config.json`.
+1. Read the pipeline configuration at `agents/report/config.json`.
 2. Execute the full 5-agent pipeline sequentially:
    - **Research Agent** → gather and extract data from all sources
    - **Analysis Agent** → process, analyze, identify trends
    - **Writing Agent** → generate report prose with executive summary
    - **Formatting Agent** → add Mermaid charts, format tables, write output file
    - **QA Agent** → review for accuracy and consistency (recommend-only)
-3. Each agent reads its definition from `${CLAUDE_PLUGIN_ROOT}/agents/report/`.
+3. Each agent reads its definition from `agents/report/`.
 4. Pass structured JSON output from each agent as input to the next.
 5. Present the final pipeline report with:
    - Report output path
@@ -121,7 +121,7 @@ Detect the data source type and handle accordingly:
 - `.csv` files → Parse as comma-separated values. Extract headers as column names, detect numeric vs. text columns, handle quoted fields and escaped commas. Summarize row count and column types.
 - `.json` files → Parse as JSON. Support both array-of-objects and nested structures. Flatten nested keys using dot notation for analysis. Detect numeric fields for statistical analysis.
 - `.txt` / `.md` / `.log` files → Read as plain text. Extract structured data via pattern matching (tables, key-value pairs, bullet lists). For log files, parse timestamps and group by time intervals.
-- Notion database → Query via Notion CLI (if configured). Use `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs search "<db-name>" --filter database` to find the database by name, then `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs query <db-id>` to fetch all pages. Extract property values as columns for analysis.
+- Notion database → Query via Notion CLI (if configured). Use `node ../../../.founderOS/scripts/notion-tool.mjs search "<db-name>" --filter database` to find the database by name, then `node ../../../.founderOS/scripts/notion-tool.mjs query <db-id>` to fetch all pages. Extract property values as columns for analysis.
 - Directory path → Scan for all supported file types (`.csv`, `.json`, `.txt`, `.md`, `.log`). Process each file individually, then merge results. Report which files were included and any that were skipped.
 
 ## Observation: End

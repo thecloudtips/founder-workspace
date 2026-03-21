@@ -12,8 +12,8 @@ Manage posting queue time slots for automated scheduling.
 
 ## Skills
 
-1. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/late-skills/late-common/SKILL.md`
-2. Read `${CLAUDE_PLUGIN_ROOT}/skills/social/posting-cadence/SKILL.md`
+1. Read `../../../.founderOS/infrastructure/late-skills/late-common/SKILL.md`
+2. Read `skills/social/posting-cadence/SKILL.md`
 
 ## Arguments
 
@@ -43,7 +43,7 @@ Check for learned optimizations from past `social:queue` runs.
 ### List Queue Slots
 
 ```bash
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs queue list [--profile=<profile>]
+node ../../../.founderOS/scripts/late-tool.mjs queue list [--profile=<profile>]
 ```
 
 Display:
@@ -56,7 +56,7 @@ Display:
 ### Add Queue Slot
 
 ```bash
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs queue add \
+node ../../../.founderOS/scripts/late-tool.mjs queue add \
   --profile=<profile> --day=<day> --time=<time>
 ```
 
@@ -67,7 +67,7 @@ If no slots exist, suggest defaults from posting-cadence skill:
 ### Remove Queue Slot
 
 ```bash
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs queue remove --slot-id=<slot-id>
+node ../../../.founderOS/scripts/late-tool.mjs queue remove --slot-id=<slot-id>
 ```
 
 ## Final Step: Observation Logging

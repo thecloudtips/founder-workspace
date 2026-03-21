@@ -38,7 +38,7 @@ For each media file:
 3. **Validate content-type**: Match MIME type to file magic bytes
 4. **Get presigned URL**:
    ```bash
-   node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs media presign \
+   node ../../../.founderOS/scripts/late-tool.mjs media presign \
      --filename=<filename> --content-type=<mime-type>
    ```
 5. **Upload**: PUT to presigned URL (internal)

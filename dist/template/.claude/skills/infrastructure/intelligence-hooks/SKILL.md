@@ -146,7 +146,7 @@ Use for decisions that:
 ## Database Location
 
 The Intelligence database (`intelligence.db`) is stored at:
-- `${CLAUDE_PLUGIN_ROOT}/../.intelligence/intelligence.db` (relative to any plugin)
+- `../../../../.founderOS/../.intelligence/intelligence.db` (relative to any plugin)
 - Or `_infrastructure/intelligence/.data/intelligence.db` (repo-relative)
 
 The `.data/` directory should be added to `.gitignore` — it contains user-specific runtime data.

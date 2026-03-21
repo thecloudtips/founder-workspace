@@ -12,8 +12,8 @@ View engagement metrics for posts. Requires Late.dev Analytics add-on.
 
 ## Skills
 
-1. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/late-skills/late-common/SKILL.md`
-2. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/late-skills/late-status/SKILL.md`
+1. Read `../../../.founderOS/infrastructure/late-skills/late-common/SKILL.md`
+2. Read `../../../.founderOS/infrastructure/late-skills/late-status/SKILL.md`
 
 ## Arguments
 
@@ -39,7 +39,7 @@ Check for learned optimizations from past `social:analytics` runs.
 ## Phase 1/1: Fetch & Display Analytics
 
 ```bash
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs analytics get \
+node ../../../.founderOS/scripts/late-tool.mjs analytics get \
   [--post-id=<post-id>] \
   [--account-id=<account-id>] \
   [--date-range=<range>]

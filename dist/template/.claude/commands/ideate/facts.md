@@ -12,7 +12,7 @@ Extract facts, statistics, and quotable data from documents or URLs to back your
 
 ## Load Skills
 
-Read `${CLAUDE_PLUGIN_ROOT}/skills/ideate/content-writing/SKILL.md` for framework context on how facts integrate into content structure, hook creation, and credibility building.
+Read `skills/ideate/content-writing/SKILL.md` for framework context on how facts integrate into content structure, hook creation, and credibility building.
 
 ## Parse Arguments
 
@@ -30,7 +30,7 @@ Check if context files exist at `_infrastructure/context/active/`. If the direct
 
 ## Preflight Check
 
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `ideate` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.

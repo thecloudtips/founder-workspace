@@ -29,7 +29,7 @@ Create each activity record with these properties:
 | Summary | rich_text | AI-generated | 2-3 sentence summary of content |
 | Sentiment | select | AI-classified | "Positive", "Neutral", "Negative" |
 
-For the full list of optional properties beyond this core set, see `${CLAUDE_PLUGIN_ROOT}/skills/crm/activity-logging/references/activity-schema.md`.
+For the full list of optional properties beyond this core set, see `skills/crm/activity-logging/references/activity-schema.md`.
 
 ## Activity Type Mapping
 
@@ -77,7 +77,7 @@ Classify each activity into one of three sentiment values:
 
 When signals are mixed (e.g., gratitude for past work but concern about upcoming deadlines), classify based on the dominant tone. When truly ambiguous, default to Neutral.
 
-For detailed signal word lists and classification examples for each activity type, see `${CLAUDE_PLUGIN_ROOT}/skills/crm/activity-logging/references/activity-schema.md`.
+For detailed signal word lists and classification examples for each activity type, see `skills/crm/activity-logging/references/activity-schema.md`.
 
 ## Deduplication Strategy
 
@@ -209,6 +209,6 @@ Never fail silently. Always report which operations succeeded and which failed.
 
 ## Additional Resources
 
-For the detailed activity schema with all optional fields, full summary templates with examples for each activity type, sentiment signal word lists, title generation rules, and error recovery procedures, consult `${CLAUDE_PLUGIN_ROOT}/skills/crm/activity-logging/references/activity-schema.md`.
+For the detailed activity schema with all optional fields, full summary templates with examples for each activity type, sentiment signal word lists, title generation rules, and error recovery procedures, consult `skills/crm/activity-logging/references/activity-schema.md`.
 
-For the standardized summary format template used during generation, consult `${CLAUDE_PLUGIN_ROOT}/templates/activity-summary.md`.
+For the standardized summary format template used during generation, consult `../../../../.founderOS/templates/activity-summary.md`.

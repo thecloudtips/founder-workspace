@@ -12,8 +12,8 @@ Check post status and per-platform delivery results.
 
 ## Skills
 
-1. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/late-skills/late-common/SKILL.md`
-2. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/late-skills/late-status/SKILL.md`
+1. Read `../../../.founderOS/infrastructure/late-skills/late-common/SKILL.md`
+2. Read `../../../.founderOS/infrastructure/late-skills/late-status/SKILL.md`
 
 ## Arguments
 
@@ -41,15 +41,15 @@ Check for learned optimizations from past `social:status` runs.
 
 1. If `post-id` provided:
    ```bash
-   node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs posts status --post-id=<post-id>
+   node ../../../.founderOS/scripts/late-tool.mjs posts status --post-id=<post-id>
    ```
 2. If `--failed`:
    ```bash
-   node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs posts list --status=failed --limit=20
+   node ../../../.founderOS/scripts/late-tool.mjs posts list --status=failed --limit=20
    ```
 3. If `--recent` or `--all`:
    ```bash
-   node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs posts list --limit=<N>
+   node ../../../.founderOS/scripts/late-tool.mjs posts list --limit=<N>
    ```
 
 ## Phase 2/2: Display & Actions
@@ -65,7 +65,7 @@ If any failed: offer `Retry failed platforms? (y/n)`
 
 If yes:
 ```bash
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs posts retry --post-id=<post-id>
+node ../../../.founderOS/scripts/late-tool.mjs posts retry --post-id=<post-id>
 ```
 
 ## Final Step: Observation Logging

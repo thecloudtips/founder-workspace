@@ -12,7 +12,7 @@ Perform deep topic research across multiple web sources to gather findings for n
 
 ## Load Skill
 
-Read the topic-research skill at `${CLAUDE_PLUGIN_ROOT}/skills/newsletter/topic-research/SKILL.md` for query formulation patterns, source type taxonomy, scoring formulas, deduplication logic, and finding extraction rules.
+Read the topic-research skill at `skills/newsletter/topic-research/SKILL.md` for query formulation patterns, source type taxonomy, scoring formulas, deduplication logic, and finding extraction rules.
 
 ## Parse Arguments
 
@@ -25,7 +25,7 @@ Extract the topic and flags from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `newsletter` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.

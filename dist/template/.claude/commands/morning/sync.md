@@ -12,11 +12,11 @@ Full morning briefing pipeline: gather overnight data from all configured source
 
 ## Load Skills
 
-Read the morning-briefing skill at `${CLAUDE_PLUGIN_ROOT}/skills/morning/morning-briefing/SKILL.md` for multi-source gathering patterns, overnight window calculation, five-source pipeline, source status reporting, and graceful degradation rules.
+Read the morning-briefing skill at `skills/morning/morning-briefing/SKILL.md` for multi-source gathering patterns, overnight window calculation, five-source pipeline, source status reporting, and graceful degradation rules.
 
-Read the priority-synthesis skill at `${CLAUDE_PLUGIN_ROOT}/skills/morning/priority-synthesis/SKILL.md` for cross-source priority scoring, Top-N extraction, urgency windowing, and section assembly format.
+Read the priority-synthesis skill at `skills/morning/priority-synthesis/SKILL.md` for cross-source priority scoring, Top-N extraction, urgency windowing, and section assembly format.
 
-Read the briefing template at `${CLAUDE_PLUGIN_ROOT}/templates/briefing-template.md` for the Notion page structure and variable placeholders.
+Read the briefing template at `../../../.founderOS/templates/briefing-template.md` for the Notion page structure and variable placeholders.
 
 ## Parse Arguments
 
@@ -31,7 +31,7 @@ If `--date` is provided and is not today, adjust the overnight window to end at 
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `morning` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.

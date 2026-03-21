@@ -12,13 +12,13 @@ Produce a comprehensive multi-period ROI report analyzing time savings trends ac
 
 ## Load Skills
 
-Read the cross-plugin-discovery skill at `${CLAUDE_PLUGIN_ROOT}/skills/savings/cross-plugin-discovery/SKILL.md` for the plugin scanning algorithm.
+Read the cross-plugin-discovery skill at `skills/savings/cross-plugin-discovery/SKILL.md` for the plugin scanning algorithm.
 
-Read the roi-calculation skill at `${CLAUDE_PLUGIN_ROOT}/skills/savings/roi-calculation/SKILL.md` for calculation formulas, multi-period chart generation (xychart-beta), and report structure.
+Read the roi-calculation skill at `skills/savings/roi-calculation/SKILL.md` for calculation formulas, multi-period chart generation (xychart-beta), and report structure.
 
-Read the task estimates registry at `${CLAUDE_PLUGIN_ROOT}/config/task-estimates.json` for the plugin-to-database mapping.
+Read the task estimates registry at `../../../.founderOS/config/task-estimates.json` for the plugin-to-database mapping.
 
-Read the report template at `${CLAUDE_PLUGIN_ROOT}/templates/savings-report-template.md` as the structural scaffold.
+Read the report template at `../../../.founderOS/templates/savings-report-template.md` as the structural scaffold.
 
 ## Parse Arguments
 
@@ -33,7 +33,7 @@ Extract from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `savings` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -82,7 +82,7 @@ If any error occurs during this command:
 
 ### Step 2: Load Configuration
 
-1. Read `${CLAUDE_PLUGIN_ROOT}/config/user-config.json` if it exists.
+1. Read `../../../.founderOS/config/user-config.json` if it exists.
 2. Fall back to task-estimates.json defaults.
 3. If hourly_rate not configured, use AskUserQuestion to prompt (same as /founder-os:savings:weekly).
 

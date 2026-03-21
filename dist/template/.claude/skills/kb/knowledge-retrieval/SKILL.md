@@ -39,14 +39,14 @@ Generate 2-3 query variants from the user's original question to maximize recall
 - Do not generate more than 3 variants -- diminishing returns after that.
 - Do not add words the user never implied. Synonyms must be reasonable substitutions, not speculative expansions.
 
-Consult `${CLAUDE_PLUGIN_ROOT}/skills/kb/knowledge-retrieval/references/search-strategies.md` for detailed query variant examples and source-specific search tips.
+Consult `skills/kb/knowledge-retrieval/references/search-strategies.md` for detailed query variant examples and source-specific search tips.
 
 ## Notion Search
 
 Use the Notion CLI `search` command to find pages and databases matching each query variant.
 
 **Search execution:**
-1. Run `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs search` with each query variant.
+1. Run `node ../../../../.founderOS/scripts/notion-tool.mjs search` with each query variant.
 2. Collect all returned pages and database entries.
 3. For database results, inspect the title property and any rich-text properties for relevance signals.
 4. For page results, read the page content to assess match quality.
@@ -140,7 +140,7 @@ Recency matters because knowledge bases contain living documents. A recently edi
 
 **Composite score**: Sum all three factors. Rank results by composite score descending.
 
-Consult `${CLAUDE_PLUGIN_ROOT}/skills/kb/knowledge-retrieval/references/search-strategies.md` for scoring formula details, worked examples, and edge case adjustments.
+Consult `skills/kb/knowledge-retrieval/references/search-strategies.md` for scoring formula details, worked examples, and edge case adjustments.
 
 ## Content Extraction
 

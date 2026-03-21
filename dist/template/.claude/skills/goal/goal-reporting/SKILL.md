@@ -48,7 +48,7 @@ Apply these formatting rules:
 
 Sort the entire table by RAG severity: 🔴 Red first, 🟡 Yellow second, 🟢 Green third, ⚪ Not Started last. Apply left-alignment to text columns and center-alignment to RAG and Progress columns.
 
-Reference `${CLAUDE_PLUGIN_ROOT}/skills/goal/goal-reporting/references/dashboard-table-format.md` for full column specifications, alignment rules, and edge case handling.
+Reference `skills/goal/goal-reporting/references/dashboard-table-format.md` for full column specifications, alignment rules, and edge case handling.
 
 ## Mermaid Gantt Chart
 
@@ -105,7 +105,7 @@ MilestoneName :milestone, targetDate, 0d
 
 Exclude goals without a Target Date from the Gantt chart entirely. Add a footnote below the Mermaid code block listing omitted goals by name: "Note: The following goals are excluded from the timeline (no target date): [goal names]."
 
-Reference `${CLAUDE_PLUGIN_ROOT}/skills/goal/goal-reporting/references/gantt-generation.md` for complete Mermaid syntax examples, sanitization rules, and overflow handling strategies.
+Reference `skills/goal/goal-reporting/references/gantt-generation.md` for complete Mermaid syntax examples, sanitization rules, and overflow handling strategies.
 
 ## Filtering Rules
 
@@ -219,5 +219,5 @@ Render all four sections even with only one goal. The Dashboard Table has one ro
 
 ## Additional Resources
 
-- `${CLAUDE_PLUGIN_ROOT}/skills/goal/goal-reporting/references/dashboard-table-format.md` — Full column specifications, alignment rules, and formatting edge cases for the dashboard table.
-- `${CLAUDE_PLUGIN_ROOT}/skills/goal/goal-reporting/references/gantt-generation.md` — Complete Mermaid Gantt syntax reference, sanitization rules, overflow handling, and example chart source code.
+- `skills/goal/goal-reporting/references/dashboard-table-format.md` — Full column specifications, alignment rules, and formatting edge cases for the dashboard table.
+- `skills/goal/goal-reporting/references/gantt-generation.md` — Complete Mermaid Gantt syntax reference, sanitization rules, overflow handling, and example chart source code.

@@ -14,7 +14,7 @@ Query the Learning Log Tracker database to find past learnings filtered by topic
 
 Read the learning-search skill before starting any step:
 
-1. `${CLAUDE_PLUGIN_ROOT}/skills/learn/learning-search/SKILL.md`
+1. `skills/learn/learning-search/SKILL.md`
 
 Apply learning-search for all filter logic, result ranking, display formatting, and empty result handling.
 
@@ -31,7 +31,7 @@ Extract from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `learn` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -92,7 +92,7 @@ Then stop. Do not create the database on read operations.
 
 ## Step 3: Build Filter Pipeline
 
-Read `${CLAUDE_PLUGIN_ROOT}/skills/learn/learning-search/references/search-filter-logic.md` for the detailed Notion query construction.
+Read `skills/learn/learning-search/references/search-filter-logic.md` for the detailed Notion query construction.
 
 Apply filters in the fixed order defined in the learning-search skill:
 

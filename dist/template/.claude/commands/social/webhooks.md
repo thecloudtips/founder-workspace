@@ -12,8 +12,8 @@ Configure webhooks for receiving post status callbacks with HMAC signature verif
 
 ## Skills
 
-1. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/late-skills/late-common/SKILL.md`
-2. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/late-skills/late-accounts/SKILL.md`
+1. Read `../../../.founderOS/infrastructure/late-skills/late-common/SKILL.md`
+2. Read `../../../.founderOS/infrastructure/late-skills/late-accounts/SKILL.md`
 
 ## Arguments
 
@@ -26,7 +26,7 @@ Configure webhooks for receiving post status callbacks with HMAC signature verif
 
 ## Business Context (Optional)
 
-Check `${CLAUDE_PLUGIN_ROOT}/_infrastructure/context/active/` for `.md` files.
+Check `../../../.founderOS/infrastructure/context/active/` for `.md` files.
 
 ## Preflight Check
 
@@ -45,7 +45,7 @@ Check for learned optimizations from past `social:webhooks` runs.
 ### Get Webhook Config
 
 ```bash
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs webhooks get
+node ../../../.founderOS/scripts/late-tool.mjs webhooks get
 ```
 
 Display current webhook URL (masked after domain) and whether signing is configured.
@@ -56,7 +56,7 @@ Display current webhook URL (masked after domain) and whether signing is configu
 2. **Signing secret**: If `--secret` not provided, generate a random HMAC secret
 3. Configure:
    ```bash
-   node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs webhooks set \
+   node ../../../.founderOS/scripts/late-tool.mjs webhooks set \
      --url="<url>" --secret="<secret>"
    ```
 4. **Store secret**: Save `LATE_WEBHOOK_SECRET` to `.env` file (not Notion DB)

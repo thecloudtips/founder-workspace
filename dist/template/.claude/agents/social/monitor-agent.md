@@ -38,7 +38,7 @@ tools: ["Read", "Bash"]
 For each platform with `status: "published"`:
 
 ```bash
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs posts status \
+node ../../../.founderOS/scripts/late-tool.mjs posts status \
   --id="<post_id>"
 ```
 
@@ -52,7 +52,7 @@ For each platform with `status: "failed"`:
 - Use same publish parameters from original request
 
 ```bash
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs posts create \
+node ../../../.founderOS/scripts/late-tool.mjs posts create \
   --accounts='["<account_id>"]' \
   --text="<original_text>" \
   --media='<original_media>'
@@ -69,7 +69,7 @@ Search for existing Content page or create new one:
 ### 4. Collect Engagement (Best-Effort)
 
 ```bash
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs analytics post \
+node ../../../.founderOS/scripts/late-tool.mjs analytics post \
   --id="<post_id>"
 ```
 

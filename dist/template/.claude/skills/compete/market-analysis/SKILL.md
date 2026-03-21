@@ -42,7 +42,7 @@ Construct SWOT analysis from gathered data rather than guessing. Each quadrant m
 
 ### SWOT Output Format
 
-Present SWOT as a 2x2 matrix summary followed by bulleted details. Consult `${CLAUDE_PLUGIN_ROOT}/skills/compete/market-analysis/references/analysis-frameworks.md` for SWOT templates and inference rules.
+Present SWOT as a 2x2 matrix summary followed by bulleted details. Consult `skills/compete/market-analysis/references/analysis-frameworks.md` for SWOT templates and inference rules.
 
 ## Competitive Positioning Framework
 
@@ -208,8 +208,8 @@ When called after `/founder-os:compete:research` or with structured competitor d
 1. **Inventory the data**: List all competitors researched and the data fields gathered for each
 2. **Normalize fields**: Standardize pricing formats, review score formats, and feature terminology
 3. **Classify archetypes**: Assign each competitor a positioning archetype with 2-3 supporting signals
-4. **Run SWOT per competitor**: Apply inference rules from `${CLAUDE_PLUGIN_ROOT}/skills/compete/market-analysis/references/analysis-frameworks.md`
+4. **Run SWOT per competitor**: Apply inference rules from `skills/compete/market-analysis/references/analysis-frameworks.md`
 5. **Build matrix**: Compile normalized data into comparison matrix
 6. **Identify whitespace**: Map overcrowded vs. underserved positions
 7. **Generate recommendations**: Apply recommendation heuristics, prioritize by Impact x Urgency
-8. **Self-comparison (if --your-product provided)**: Run feature gap analysis and differentiation mapping — see `${CLAUDE_PLUGIN_ROOT}/skills/compete/market-analysis/references/analysis-frameworks.md` Section 5 for step-by-step process
+8. **Self-comparison (if --your-product provided)**: Run feature gap analysis and differentiation mapping — see `skills/compete/market-analysis/references/analysis-frameworks.md` Section 5 for step-by-step process

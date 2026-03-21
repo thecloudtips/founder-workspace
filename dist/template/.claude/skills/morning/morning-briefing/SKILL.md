@@ -223,4 +223,4 @@ Populate the Company relation when the briefing is dominated by one client's ema
 ## Reference
 
 For detailed per-source query construction patterns, extraction field specifications, filtering rules, and edge case handling, consult:
-`${CLAUDE_PLUGIN_ROOT}/skills/morning/morning-briefing/references/source-patterns.md`
+`skills/morning/morning-briefing/references/source-patterns.md`

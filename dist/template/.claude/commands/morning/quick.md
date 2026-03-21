@@ -12,9 +12,9 @@ Lightweight morning check-in across all configured sources. Produce a concise ch
 
 ## Load Skills
 
-Read the morning-briefing skill at `${CLAUDE_PLUGIN_ROOT}/skills/morning/morning-briefing/SKILL.md` for multi-source gathering patterns and overnight window calculation.
+Read the morning-briefing skill at `skills/morning/morning-briefing/SKILL.md` for multi-source gathering patterns and overnight window calculation.
 
-Read the priority-synthesis skill at `${CLAUDE_PLUGIN_ROOT}/skills/morning/priority-synthesis/SKILL.md` for cross-source priority scoring and the Quick Summary Format.
+Read the priority-synthesis skill at `skills/morning/priority-synthesis/SKILL.md` for cross-source priority scoring and the Quick Summary Format.
 
 ## Parse Arguments
 
@@ -27,7 +27,7 @@ No `--date`, `--output`, or other flags. This command is always today, always ch
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `morning` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.

@@ -152,7 +152,7 @@ After the standard post_command observation block completes, the hooks system tr
 1. Write the command output to a temp file: `/tmp/fos-exec-{session_id}.txt`
 2. Run the eval runner synchronously (Tier 0 + Tier 1, <50ms):
    ```bash
-   node ${CLAUDE_PLUGIN_ROOT}/_infrastructure/intelligence/evals/eval-runner.mjs \
+   node ../../intelligence/evals/eval-runner.mjs \
      --namespace {namespace} --command {command} \
      --output-file /tmp/fos-exec-{session_id}.txt \
      --tokens-in {token_input} --tokens-out {token_output} \
@@ -173,7 +173,7 @@ Before the standard pre_command observation block, run a regression check:
 
 1. Call the eval runner in regression mode:
    ```bash
-   node ${CLAUDE_PLUGIN_ROOT}/_infrastructure/intelligence/evals/eval-runner.mjs \
+   node ../../intelligence/evals/eval-runner.mjs \
      --check-regression --namespace {namespace}
    ```
 2. Parse the JSON output — if `regression: true`, display the warning message to the founder
@@ -184,7 +184,7 @@ This check is fast (~1ms SQLite query) and adds no perceptible latency.
 ## Database Location
 
 The Intelligence database (`intelligence.db`) is stored at:
-- `${CLAUDE_PLUGIN_ROOT}/../.intelligence/intelligence.db` (relative to any plugin)
+- `../../../../.founderOS/../.intelligence/intelligence.db` (relative to any plugin)
 - Or `_infrastructure/intelligence/.data/intelligence.db` (repo-relative)
 
 The `.data/` directory should be added to `.gitignore` — it contains user-specific runtime data.

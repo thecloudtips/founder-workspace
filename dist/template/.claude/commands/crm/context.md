@@ -13,8 +13,8 @@ Load a lightweight, CRM-focused view of a client's data. This is a READ-ONLY com
 ## Load Skills
 
 Read these skills for lookup logic:
-- `${CLAUDE_PLUGIN_ROOT}/skills/crm/crm-sync/SKILL.md` for the context command workflow
-- `${CLAUDE_PLUGIN_ROOT}/skills/crm/client-matching/SKILL.md` for resolving client name to CRM records
+- `skills/crm/crm-sync/SKILL.md` for the context command workflow
+- `skills/crm/client-matching/SKILL.md` for resolving client name to CRM records
 
 ## Parse Arguments
 
@@ -29,7 +29,7 @@ If no client name provided, ask the user: "Which client would you like to look u
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `crm` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.

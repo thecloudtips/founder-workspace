@@ -12,7 +12,7 @@ Create a structured newsletter outline by clustering research findings into them
 
 ## Load Skills
 
-Read the newsletter-writing skill at `${CLAUDE_PLUGIN_ROOT}/skills/newsletter/newsletter-writing/SKILL.md` for structure guidelines, hook types, section formatting, and target length definitions. Use this skill throughout the outline process.
+Read the newsletter-writing skill at `skills/newsletter/newsletter-writing/SKILL.md` for structure guidelines, hook types, section formatting, and target length definitions. Use this skill throughout the outline process.
 
 ## Parse Arguments
 
@@ -24,7 +24,7 @@ Extract optional flags from the user's command:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `newsletter` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.

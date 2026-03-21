@@ -37,7 +37,7 @@ Batch mode processes multiple items from a configurable time window. Use it for 
 
 ### Common Batch Logic (Both Email and Meeting)
 
-1. **Scan**: Fetch recent items within the lookback window (default: 7 days, configurable via the `--since` flag). For parsing rules on the `--since` flag format, see `${CLAUDE_PLUGIN_ROOT}/skills/crm/crm-sync/references/sync-patterns.md`.
+1. **Scan**: Fetch recent items within the lookback window (default: 7 days, configurable via the `--since` flag). For parsing rules on the `--since` flag format, see `skills/crm/crm-sync/references/sync-patterns.md`.
    - Email: Scan the Gmail sent folder for threads with messages in the date range. Also scan the inbox for received threads if `--include-received` is set.
    - Meeting: Scan Google Calendar for events in the date range. Exclude declined and cancelled events by default.
 2. **Filter already-synced**: For each item, check the Communications DB for existing records using the deduplication logic from the activity-logging skill (match on source identifier: thread_id for emails, event_id for meetings). Skip items that already have a synced record. Count these as "Skipped (already synced)" in the batch report.
@@ -92,7 +92,7 @@ This command is READ-ONLY. It never writes to the CRM.
    - **Key contacts** from Contacts DB: all contacts related to the matched company. Display name, email, role, last activity date.
    - **Recent communications** from Communications DB: last 30 days by default, configurable via the `--days` flag. Show activity type, date, summary, and linked contact.
    - **Open deals** from Deals DB: all deals with status not "Closed Won" or "Closed Lost". Show deal name, stage, value, expected close date.
-3. **Display**: Format as a concise CRM context view. This is intentionally lighter than P20's `/founder-os:client:load` dossier -- focus on structured CRM data rather than cross-source intelligence gathering. For the detailed output format template, see `${CLAUDE_PLUGIN_ROOT}/skills/crm/crm-sync/references/sync-patterns.md`.
+3. **Display**: Format as a concise CRM context view. This is intentionally lighter than P20's `/founder-os:client:load` dossier -- focus on structured CRM data rather than cross-source intelligence gathering. For the detailed output format template, see `skills/crm/crm-sync/references/sync-patterns.md`.
 
 ## Error Handling
 
@@ -104,7 +104,7 @@ Handle errors at each step without halting the overall workflow:
 - **Calendar API error**: Handle identically to Gmail errors. Report, skip, continue, count.
 - **Notion write error**: If a Communications DB write fails, retry once after a 2-second pause. If the retry also fails, count as "Failed" and continue. Do not retry more than once per item.
 - **Partial data**: If an email has no body or a meeting has no description, proceed with available data. Generate a shorter summary from subject/title and participants alone. Never skip an item solely because of missing optional fields.
-- **Rate limiting**: If Notion returns a 429 (rate limit) response, pause for 5 seconds and retry. If rate limiting persists across 3 consecutive requests, pause for 30 seconds before resuming. See `${CLAUDE_PLUGIN_ROOT}/skills/crm/crm-sync/references/sync-patterns.md` for detailed rate limiting patterns.
+- **Rate limiting**: If Notion returns a 429 (rate limit) response, pause for 5 seconds and retry. If rate limiting persists across 3 consecutive requests, pause for 30 seconds before resuming. See `skills/crm/crm-sync/references/sync-patterns.md` for detailed rate limiting patterns.
 
 ## Lazy Notion DB Creation
 
@@ -128,4 +128,4 @@ Never fail the entire plugin because a single source is unavailable. Degrade gra
 
 ## Additional Resources
 
-For advanced batch processing patterns, rate limiting strategies, `--since` flag parsing rules, CRM context view format template, cross-plugin integration notes, and batch filter rules, consult `${CLAUDE_PLUGIN_ROOT}/skills/crm/crm-sync/references/sync-patterns.md`.
+For advanced batch processing patterns, rate limiting strategies, `--since` flag parsing rules, CRM context view format template, cross-plugin integration notes, and batch filter rules, consult `skills/crm/crm-sync/references/sync-patterns.md`.

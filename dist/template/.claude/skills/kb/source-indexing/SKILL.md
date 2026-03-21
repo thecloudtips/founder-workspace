@@ -19,11 +19,11 @@ Scan the Notion workspace for all accessible pages and databases using the Notio
 
 #### Step 1: Search for Pages
 
-Run `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs search` with an empty query and `filter.property: "object"`, `filter.value: "page"` to retrieve all accessible pages. Paginate through all results using the `start_cursor` from each response until `has_more` is false. Cap at 500 pages per index run to prevent runaway scans on large workspaces. When the cap is reached, warn: "Reached 500-page limit. Re-run with specific parent filters to index additional pages."
+Run `node ../../../../.founderOS/scripts/notion-tool.mjs search` with an empty query and `filter.property: "object"`, `filter.value: "page"` to retrieve all accessible pages. Paginate through all results using the `start_cursor` from each response until `has_more` is false. Cap at 500 pages per index run to prevent runaway scans on large workspaces. When the cap is reached, warn: "Reached 500-page limit. Re-run with specific parent filters to index additional pages."
 
 #### Step 2: Search for Databases
 
-Run `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs search` with `filter.property: "object"`, `filter.value: "database"` to retrieve all accessible databases. Databases are indexed as sources themselves (not their contents). Record the database title, URL, property schema summary, and item count when available.
+Run `node ../../../../.founderOS/scripts/notion-tool.mjs search` with `filter.property: "object"`, `filter.value: "database"` to retrieve all accessible databases. Databases are indexed as sources themselves (not their contents). Record the database title, URL, property schema summary, and item count when available.
 
 #### Step 3: Extract Page Metadata
 
@@ -32,7 +32,7 @@ For each discovered page, extract:
 1. **Title**: From the page title property. If the page has no title, use "Untitled" and flag for review.
 2. **URL**: Construct from the page ID: `https://www.notion.so/[page_id_without_hyphens]`.
 3. **Source Type**: Set to "Notion Page" for pages, "Notion Database" for databases.
-4. **Content**: Retrieve page content via `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs get-page` for classification and keyword extraction. Limit content retrieval to the first 3000 characters to control API usage.
+4. **Content**: Retrieve page content via `node ../../../../.founderOS/scripts/notion-tool.mjs get-page` for classification and keyword extraction. Limit content retrieval to the first 3000 characters to control API usage.
 5. **Last Edited**: From the `last_edited_time` property on the page object.
 6. **Parent Location**: From the `parent` property -- resolve to the parent page title or workspace root. Format as a breadcrumb path: "Workspace > Parent Page > Current Page".
 
@@ -90,7 +90,7 @@ Assign exactly one classification from the 9-type taxonomy to each source. Use a
 
 Apply three detection layers in order. Each layer can produce a classification. Accept the first classification that reaches sufficient confidence:
 
-1. **Title pattern matching**: Match the source title against known patterns for each type. This is the fastest and most reliable signal. See `${CLAUDE_PLUGIN_ROOT}/skills/kb/source-indexing/references/content-classification.md` for the full pattern list.
+1. **Title pattern matching**: Match the source title against known patterns for each type. This is the fastest and most reliable signal. See `skills/kb/source-indexing/references/content-classification.md` for the full pattern list.
 
 2. **Content structure analysis**: When title matching produces no result, analyze the first 3000 characters of content for structural signals (headings, list formats, Q&A patterns, step numbering). See the reference file for signal definitions per type.
 
@@ -267,4 +267,4 @@ When the Notion search returns more than 500 pages:
 
 For the complete 9-type classification taxonomy with detection signals, title patterns, content structure indicators, parent location mappings, keyword extraction methodology, and example index outputs, consult:
 
-`${CLAUDE_PLUGIN_ROOT}/skills/kb/source-indexing/references/content-classification.md`
+`skills/kb/source-indexing/references/content-classification.md`

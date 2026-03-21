@@ -13,8 +13,8 @@ Promote an installed scouted tool from the scout namespace into a native Founder
 ## Skills
 
 Read these skill files before proceeding:
-1. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/scout/SKILL.md` — catalog structure, sandbox layout, install status values
-2. Read `${CLAUDE_PLUGIN_ROOT}/skills/scout/integration/SKILL.md` — promotion rules, wrapper templates, namespace validation
+1. Read `../../../.founderOS/infrastructure/scout/SKILL.md` — catalog structure, sandbox layout, install status values
+2. Read `skills/scout/integration/SKILL.md` — promotion rules, wrapper templates, namespace validation
 
 ## Arguments
 
@@ -30,7 +30,7 @@ Check if context files exist at `_infrastructure/context/active/`. If the direct
 
 ## Preflight Check
 
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `scout` namespace.
 - Required: (none)
 - Optional: `websearch`
@@ -40,7 +40,7 @@ If the check returns `degraded`, note which optional sources are unavailable and
 
 ## Step 0: Memory Context
 
-Read the context-injection skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/memory/context-injection/SKILL.md`.
+Read the context-injection skill at `../../../.founderOS/infrastructure/memory/context-injection/SKILL.md`.
 Query memory store for: `scout promote`, `namespace migration`, `tool integration`. Inject top 5 relevant memories as working context for this execution.
 
 ## Intelligence: Apply Learned Patterns
@@ -53,7 +53,7 @@ Check for learned optimizations from past runs by querying the Intelligence data
 
 ## Phase 1/4: Validate
 
-1. Read the catalog at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/scout/catalog.json`. Parse it as JSON.
+1. Read the catalog at `../../../.founderOS/infrastructure/scout/catalog.json`. Parse it as JSON.
 2. Look up the entry where `id` equals the provided `tool-id`.
 3. If not found, stop and display:
    ```
@@ -67,7 +67,7 @@ Check for learned optimizations from past runs by querying the Intelligence data
    ```
 5. Determine the target namespace from `--to`. Check whether `commands/<namespace>/` already exists:
    ```bash
-   [ -d "${CLAUDE_PLUGIN_ROOT}/commands/<namespace>" ] && echo "exists" || echo "new"
+   [ -d "commands/<namespace>" ] && echo "exists" || echo "new"
    ```
 6. If the namespace directory does not exist, confirm with the user:
    ```
@@ -87,7 +87,7 @@ Check for learned optimizations from past runs by querying the Intelligence data
 1. Read the current wrapper command file at `commands/scout/<tool-name>.md` (where `tool-name` is the catalog entry's `command_path` basename, or derived from `tool-id`).
 2. If the namespace directory is new, create it:
    ```bash
-   mkdir -p "${CLAUDE_PLUGIN_ROOT}/commands/<namespace>"
+   mkdir -p "commands/<namespace>"
    ```
 3. Write the command content to the destination path `commands/<namespace>/<command-name>.md`.
    - Remove the `[Auto-generated] ` prefix from the `description` field in the YAML frontmatter if present.
@@ -95,7 +95,7 @@ Check for learned optimizations from past runs by querying the Intelligence data
    - Update the `usage` field in frontmatter if present.
 4. Delete the original file at `commands/scout/<tool-name>.md`:
    ```bash
-   rm "${CLAUDE_PLUGIN_ROOT}/commands/scout/<tool-name>.md"
+   rm "commands/scout/<tool-name>.md"
    ```
 
 ## Phase 3/4: Update References
@@ -107,8 +107,8 @@ Check for learned optimizations from past runs by querying the Intelligence data
 2. Write the updated catalog back to disk.
 3. Search for workflow YAML files that reference the old command path:
    ```bash
-   grep -rl "scout:<tool-name>" "${CLAUDE_PLUGIN_ROOT}/workflows/" 2>/dev/null
-   grep -rl "commands/scout/<tool-name>" "${CLAUDE_PLUGIN_ROOT}/workflows/" 2>/dev/null
+   grep -rl "scout:<tool-name>" "../../../.founderOS/workflows/" 2>/dev/null
+   grep -rl "commands/scout/<tool-name>" "../../../.founderOS/workflows/" 2>/dev/null
    ```
 4. For each workflow file found, update the old reference (`/founder-os:scout:<tool-name>`) to the new path (`/founder-os:<namespace>:<command-name>`). Inform the user of each file updated:
    ```
@@ -120,7 +120,7 @@ Check for learned optimizations from past runs by querying the Intelligence data
 
 After completing the move, offer to scaffold a domain skill for the target namespace if one does not already exist:
 
-1. Check: `[ -f "${CLAUDE_PLUGIN_ROOT}/skills/<namespace>/<command-name>/SKILL.md" ] && echo "exists" || echo "missing"`
+1. Check: `[ -f "skills/<namespace>/<command-name>/SKILL.md" ] && echo "exists" || echo "missing"`
 2. If the skill file does not exist, ask:
    ```
    Would you like to scaffold a domain skill at:
@@ -166,7 +166,7 @@ To use the promoted command:
 
 ## Final Step: Observation Logging
 
-Record observation via `${CLAUDE_PLUGIN_ROOT}/_infrastructure/memory/pattern-detection/SKILL.md`:
+Record observation via `../../../.founderOS/infrastructure/memory/pattern-detection/SKILL.md`:
 - Plugin: `scout`
 - Command: `scout-promote`
 - Action: tool promoted to namespace

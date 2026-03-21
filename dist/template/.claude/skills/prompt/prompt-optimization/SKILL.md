@@ -280,4 +280,4 @@ Never change the meaning or intent of the prompt during rewrite. If the original
 
 ## Reference
 
-For detailed scoring examples showing before/after prompts at each score level (1–5) across all dimensions, and worked rewrite walkthroughs, see `${CLAUDE_PLUGIN_ROOT}/skills/prompt/prompt-optimization/references/scoring-rubric.md`.
+For detailed scoring examples showing before/after prompts at each score level (1–5) across all dimensions, and worked rewrite walkthroughs, see `skills/prompt/prompt-optimization/references/scoring-rubric.md`.

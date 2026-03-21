@@ -14,13 +14,13 @@ Create and publish content to one or more platforms via Late.dev.
 
 Read these skill files before proceeding:
 
-1. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/late-skills/late-common/SKILL.md` — auth, errors, conventions
-2. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/late-skills/late-publish/SKILL.md` — publishing patterns
-3. Read `${CLAUDE_PLUGIN_ROOT}/skills/social/platform-adaptation/SKILL.md` — per-platform rules
-4. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/humanize-content/SKILL.md`
-5. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/humanize-content/references/social-humanization.md`
-6. If `--schedule` provided: Read `${CLAUDE_PLUGIN_ROOT}/skills/social/posting-cadence/SKILL.md`
-7. If `--media` provided: Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/late-skills/late-media/SKILL.md`
+1. Read `../../../.founderOS/infrastructure/late-skills/late-common/SKILL.md` — auth, errors, conventions
+2. Read `../../../.founderOS/infrastructure/late-skills/late-publish/SKILL.md` — publishing patterns
+3. Read `skills/social/platform-adaptation/SKILL.md` — per-platform rules
+4. Read `../../../.founderOS/infrastructure/humanize-content/SKILL.md`
+5. Read `../../../.founderOS/infrastructure/humanize-content/references/social-humanization.md`
+6. If `--schedule` provided: Read `skills/social/posting-cadence/SKILL.md`
+7. If `--media` provided: Read `../../../.founderOS/infrastructure/late-skills/late-media/SKILL.md`
 
 ## Arguments
 
@@ -40,23 +40,23 @@ Read these skill files before proceeding:
 
 ## Business Context (Optional)
 
-Check `${CLAUDE_PLUGIN_ROOT}/_infrastructure/context/active/` for `.md` files. If present, read them to personalize tone, voice, and brand.
+Check `../../../.founderOS/infrastructure/context/active/` for `.md` files. If present, read them to personalize tone, voice, and brand.
 
 ## Preflight Check
 
-Run `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md` for namespace `social`.
+Run `../../../.founderOS/infrastructure/preflight/SKILL.md` for namespace `social`.
 - Required: `late` (validate `$LATE_API_KEY` + probe `late-tool.mjs --validate-only`)
 - Optional: `notion` (for Content DB logging), `filesystem` (for `--from` file source)
 
 **Interim check** (until preflight ships):
 ```bash
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs --validate-only
+node ../../../.founderOS/scripts/late-tool.mjs --validate-only
 ```
 If failed: show fix instructions from `_infrastructure/preflight/references/fix-messages.md` > `late`.
 
 ## Step 0: Memory Context
 
-Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/memory/context-injection/SKILL.md`.
+Read `../../../.founderOS/infrastructure/memory/context-injection/SKILL.md`.
 Query memory store for: `social posting`, `linkedin`, `content publishing`, user's brand voice.
 Inject top 5 relevant memories.
 
@@ -96,7 +96,7 @@ Display: `Phase 3/3: Publishing...`
 1. If `--media`: upload each file via `late-tool.mjs media presign`, collect public URLs
 2. For each platform:
    ```bash
-   node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs posts create \
+   node ../../../.founderOS/scripts/late-tool.mjs posts create \
      --accounts='["<account_id>"]' \
      --text="<adapted_text>" \
      --media='[<media_items>]' \
@@ -137,7 +137,7 @@ If Notion available, create/update entry in `[FOS] Content`:
 
 ## Final Step: Observation Logging
 
-Record observation via `${CLAUDE_PLUGIN_ROOT}/_infrastructure/memory/pattern-detection/SKILL.md`:
+Record observation via `../../../.founderOS/infrastructure/memory/pattern-detection/SKILL.md`:
 - Platforms used, success/failure per platform
 - Content length and type
 - Whether media was included

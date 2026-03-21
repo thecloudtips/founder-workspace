@@ -12,7 +12,7 @@ Create Google Calendar events as reminders to follow up on pending emails. Suppo
 
 ## Load Skill
 
-Read the follow-up-detection skill at `${CLAUDE_PLUGIN_ROOT}/skills/followup/follow-up-detection/SKILL.md` for thread context analysis and priority-based scheduling logic.
+Read the follow-up-detection skill at `skills/followup/follow-up-detection/SKILL.md` for thread context analysis and priority-based scheduling logic.
 
 ## Parse Arguments
 
@@ -29,7 +29,7 @@ If neither `$1` nor `--all` is provided:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `followup` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.

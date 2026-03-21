@@ -11,7 +11,7 @@ Generate structured, engaging social media content that follows platform best pr
 
 ## Purpose and Context
 
-Transform raw ideas, topics, documents, or briefs into social media content that a founder can review, lightly edit, and publish directly. Every post must follow one of seven proven frameworks, respect the target platform's formatting constraints, target a specific audience segment, and land within the selected length mode. Use the framework templates at `${CLAUDE_PLUGIN_ROOT}/skills/ideate/content-writing/references/post-frameworks.md` as the structural scaffold for every post.
+Transform raw ideas, topics, documents, or briefs into social media content that a founder can review, lightly edit, and publish directly. Every post must follow one of seven proven frameworks, respect the target platform's formatting constraints, target a specific audience segment, and land within the selected length mode. Use the framework templates at `skills/ideate/content-writing/references/post-frameworks.md` as the structural scaffold for every post.
 
 The ideate commands focus on **content quality and structure**. Platform-specific formatting (hashtag placement, character counting, link handling) is finalized downstream by `social:compose`. The ideate layer produces the creative substance; the social layer applies the platform polish.
 
@@ -42,7 +42,7 @@ When no framework is specified, select based on these signals:
 5. **Topic references data, research, or industry trends** -- use Industry Insight.
 6. **Topic is best explored through discussion** -- use Question-Led.
 
-When two frameworks fit equally, prefer the one that matches the target audience segment. See `${CLAUDE_PLUGIN_ROOT}/skills/ideate/content-writing/references/post-frameworks.md` for detailed templates, examples, and engagement tips for each framework.
+When two frameworks fit equally, prefer the one that matches the target audience segment. See `skills/ideate/content-writing/references/post-frameworks.md` for detailed templates, examples, and engagement tips for each framework.
 
 ---
 

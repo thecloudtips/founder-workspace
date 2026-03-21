@@ -12,25 +12,25 @@ Perform a full contract analysis (same as `/founder-os:contract:analyze`) and th
 
 ## Load Skills and References
 
-Read the contract-analysis skill at `${CLAUDE_PLUGIN_ROOT}/skills/contract/contract-analysis/SKILL.md` for contract structure recognition, file format handling, contract type detection, key term extraction patterns, and output structure.
+Read the contract-analysis skill at `skills/contract/contract-analysis/SKILL.md` for contract structure recognition, file format handling, contract type detection, key term extraction patterns, and output structure.
 
-Read the legal-risk-detection skill at `${CLAUDE_PLUGIN_ROOT}/skills/contract/legal-risk-detection/SKILL.md` for RAG classification system, risk categories, comparison logic vs standard terms, and risk flag taxonomy.
+Read the legal-risk-detection skill at `skills/contract/legal-risk-detection/SKILL.md` for RAG classification system, risk categories, comparison logic vs standard terms, and risk flag taxonomy.
 
-Read the standard terms reference at `${CLAUDE_PLUGIN_ROOT}/templates/standard-terms.md` for baseline acceptable terms across all categories. If the user provides `--standards=PATH`, read their custom standards file instead.
+Read the standard terms reference at `../../../.founderOS/templates/standard-terms.md` for baseline acceptable terms across all categories. If the user provides `--standards=PATH`, read their custom standards file instead.
 
-Read the contract review checklist at `${CLAUDE_PLUGIN_ROOT}/templates/contract-checklist.md` for coverage verification.
+Read the contract review checklist at `../../../.founderOS/templates/contract-checklist.md` for coverage verification.
 
 ## Parse Arguments
 
 Extract from `$ARGUMENTS`:
 - `[file-path]` (required) — path to the contract file to analyze. Supported formats: PDF, DOCX, MD, TXT. If no argument provided, prompt the user: "Provide the path to the contract file to analyze and compare. Supported formats: PDF, DOCX, MD, TXT."
-- `--standards=PATH` (optional) — path to a custom standard-terms file. Default: use the built-in `${CLAUDE_PLUGIN_ROOT}/templates/standard-terms.md`. This allows users to customize their baseline expectations.
+- `--standards=PATH` (optional) — path to a custom standard-terms file. Default: use the built-in `../../../.founderOS/templates/standard-terms.md`. This allows users to customize their baseline expectations.
 
 ## Business Context (Optional)
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `contract` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.

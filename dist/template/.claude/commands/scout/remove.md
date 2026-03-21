@@ -13,8 +13,8 @@ Remove a scouted tool from the sandbox, deleting its wrapper command, sandbox di
 ## Skills
 
 Read these skill files before proceeding:
-1. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/scout/SKILL.md` — catalog structure, sandbox layout, install status values
-2. Read `${CLAUDE_PLUGIN_ROOT}/skills/scout/integration/SKILL.md` — removal process, artifact inventory
+1. Read `../../../.founderOS/infrastructure/scout/SKILL.md` — catalog structure, sandbox layout, install status values
+2. Read `skills/scout/integration/SKILL.md` — removal process, artifact inventory
 
 ## Arguments
 
@@ -29,7 +29,7 @@ Check if context files exist at `_infrastructure/context/active/`. If the direct
 
 ## Preflight Check
 
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `scout` namespace.
 - Required: (none)
 - Optional: `websearch`
@@ -39,7 +39,7 @@ If the check returns `degraded`, note which optional sources are unavailable and
 
 ## Step 0: Memory Context
 
-Read the context-injection skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/memory/context-injection/SKILL.md`.
+Read the context-injection skill at `../../../.founderOS/infrastructure/memory/context-injection/SKILL.md`.
 Query memory store for: `scout remove`, `tool cleanup`, `sandbox`. Inject top 5 relevant memories as working context for this execution.
 
 ## Intelligence: Apply Learned Patterns
@@ -52,7 +52,7 @@ Check for learned optimizations from past runs by querying the Intelligence data
 
 ## Phase 1/3: Locate
 
-1. Read the catalog at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/scout/catalog.json`. Parse it as JSON.
+1. Read the catalog at `../../../.founderOS/infrastructure/scout/catalog.json`. Parse it as JSON.
 2. Look up the entry where `id` equals the provided `tool-id`.
 3. If not found, stop and display:
    ```
@@ -78,7 +78,7 @@ Check for learned optimizations from past runs by querying the Intelligence data
 
 6. Check for active workflow references:
    ```bash
-   grep -rl "scout:<tool-name>" "${CLAUDE_PLUGIN_ROOT}/workflows/" 2>/dev/null
+   grep -rl "scout:<tool-name>" "../../../.founderOS/workflows/" 2>/dev/null
    ```
    If any workflow files reference this tool, list them as a warning in Phase 2.
 
@@ -125,7 +125,7 @@ Execute removals in order. Report each step as it completes.
 
 If `commands/scout/<tool-name>.md` exists:
 ```bash
-rm "${CLAUDE_PLUGIN_ROOT}/commands/scout/<tool-name>.md"
+rm "commands/scout/<tool-name>.md"
 ```
 Report: `Deleted: commands/scout/<tool-name>.md`
 
@@ -135,7 +135,7 @@ If the file does not exist, note: `Skipped (not found): commands/scout/<tool-nam
 
 If `_infrastructure/scout/sandbox/<tool-id>/` exists:
 ```bash
-rm -rf "${CLAUDE_PLUGIN_ROOT}/_infrastructure/scout/sandbox/<tool-id>/"
+rm -rf "../../../.founderOS/infrastructure/scout/sandbox/<tool-id>/"
 ```
 Report: `Deleted: _infrastructure/scout/sandbox/<tool-id>/`
 
@@ -192,7 +192,7 @@ To scout a replacement tool:
 
 ## Final Step: Observation Logging
 
-Record observation via `${CLAUDE_PLUGIN_ROOT}/_infrastructure/memory/pattern-detection/SKILL.md`:
+Record observation via `../../../.founderOS/infrastructure/memory/pattern-detection/SKILL.md`:
 - Plugin: `scout`
 - Command: `scout-remove`
 - Action: tool removed from sandbox

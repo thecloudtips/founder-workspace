@@ -12,9 +12,9 @@ Research 2 or more competitors and build a structured comparison matrix across 7
 
 ## Load Skills
 
-Read the competitive-research skill at `${CLAUDE_PLUGIN_ROOT}/skills/compete/competitive-research/SKILL.md` for surface scan strategy, query formulation, and data extraction rules.
+Read the competitive-research skill at `skills/compete/competitive-research/SKILL.md` for surface scan strategy, query formulation, and data extraction rules.
 
-Read the market-analysis skill at `${CLAUDE_PLUGIN_ROOT}/skills/compete/market-analysis/SKILL.md` for matrix building conventions, dimension normalization, and self-comparison analysis.
+Read the market-analysis skill at `skills/compete/market-analysis/SKILL.md` for matrix building conventions, dimension normalization, and self-comparison analysis.
 
 ## Parse Arguments
 
@@ -27,7 +27,7 @@ Extract from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `compete` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -75,7 +75,7 @@ For each company in the input list, apply the competitive-research skill indepen
 
 2. **Formulate queries**: Construct 4-6 targeted queries per company covering all 5 research dimensions (pricing, features, reviews, positioning, news).
 
-   Consult `${CLAUDE_PLUGIN_ROOT}/skills/compete/competitive-research/references/query-patterns.md` for query templates. Use the Matrix Queries section for any cross-company comparison queries.
+   Consult `skills/compete/competitive-research/references/query-patterns.md` for query templates. Use the Matrix Queries section for any cross-company comparison queries.
 
 3. **Execute searches**: Run searches for each company. Apply data extraction and normalization rules from the competitive-research skill.
 
@@ -94,7 +94,7 @@ For each company in the input list, apply the competitive-research skill indepen
 
 Apply the market-analysis skill's Matrix Building guidance:
 
-5. **Normalize all entries**: Apply matrix normalization rules from `${CLAUDE_PLUGIN_ROOT}/skills/compete/market-analysis/references/analysis-frameworks.md` to make all values comparable:
+5. **Normalize all entries**: Apply matrix normalization rules from `skills/compete/market-analysis/references/analysis-frameworks.md` to make all values comparable:
    - Pricing: Always "$/user/month" or "$/month flat" format
    - Review scores: Always "X.X/5.0 (N reviews on Platform)"
    - Features: Use consistent terminology across columns

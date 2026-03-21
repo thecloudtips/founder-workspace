@@ -12,11 +12,11 @@ Save drafts to Late.dev without publishing. Useful for preparing content for lat
 
 ## Skills
 
-1. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/late-skills/late-common/SKILL.md`
-2. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/late-skills/late-publish/SKILL.md`
-3. Read `${CLAUDE_PLUGIN_ROOT}/skills/social/platform-adaptation/SKILL.md`
-4. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/humanize-content/SKILL.md`
-5. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/humanize-content/references/social-humanization.md`
+1. Read `../../../.founderOS/infrastructure/late-skills/late-common/SKILL.md`
+2. Read `../../../.founderOS/infrastructure/late-skills/late-publish/SKILL.md`
+3. Read `skills/social/platform-adaptation/SKILL.md`
+4. Read `../../../.founderOS/infrastructure/humanize-content/SKILL.md`
+5. Read `../../../.founderOS/infrastructure/humanize-content/references/social-humanization.md`
 
 ## Arguments
 
@@ -30,7 +30,7 @@ Save drafts to Late.dev without publishing. Useful for preparing content for lat
 
 ## Business Context (Optional)
 
-Check `${CLAUDE_PLUGIN_ROOT}/_infrastructure/context/active/`.
+Check `../../../.founderOS/infrastructure/context/active/`.
 
 ## Preflight Check
 
@@ -53,7 +53,7 @@ Check for learned optimizations from past `social:draft` runs.
 ## Phase 2/2: Save Draft
 
 ```bash
-node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs posts create \
+node ../../../.founderOS/scripts/late-tool.mjs posts create \
   --accounts='["<account_id>"]' \
   --text="<text>" \
   --draft

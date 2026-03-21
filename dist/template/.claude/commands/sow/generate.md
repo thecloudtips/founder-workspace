@@ -24,7 +24,7 @@ Extract these values from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `sow` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -66,7 +66,7 @@ If any error occurs during this command:
 
 Before generating in either mode:
 
-1. Check if Notion CLI is available. If yes, search Notion for historical SOWs matching the client name, industry, or project type using `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs search "SOW"`. Summarize any relevant historical scope, pricing, or risk patterns found. Note to the user if historical context was found and what it informed.
+1. Check if Notion CLI is available. If yes, search Notion for historical SOWs matching the client name, industry, or project type using `node ../../../.founderOS/scripts/notion-tool.mjs search "SOW"`. Summarize any relevant historical scope, pricing, or risk patterns found. Note to the user if historical context was found and what it informed.
 2. Check if a `.sow-history` file exists in the output directory. If it exists, read it and use its contents as additional calibration context for scope and pricing.
 3. If neither Notion nor `.sow-history` is available, proceed without historical context and note this to the user.
 
@@ -75,9 +75,9 @@ Before generating in either mode:
 When `--team` is NOT present:
 
 1. Read ALL 3 skills:
-   - `${CLAUDE_PLUGIN_ROOT}/skills/sow/scope-definition/SKILL.md`
-   - `${CLAUDE_PLUGIN_ROOT}/skills/sow/sow-writing/SKILL.md`
-   - `${CLAUDE_PLUGIN_ROOT}/skills/sow/risk-assessment/SKILL.md`
+   - `skills/sow/scope-definition/SKILL.md`
+   - `skills/sow/sow-writing/SKILL.md`
+   - `skills/sow/risk-assessment/SKILL.md`
 
 2. Collect the project brief:
    - If a `[brief]` argument was provided, use it as the project description.
@@ -174,7 +174,7 @@ _View the full SOW at [output path]_
 
 When `--team` IS present:
 
-1. Read `${CLAUDE_PLUGIN_ROOT}/agents/sow/config.json`.
+1. Read `agents/sow/config.json`.
 
 2. Collect the project brief:
    - If a `[brief]` argument was provided, use it.
@@ -192,9 +192,9 @@ When `--team` IS present:
      "weeks_constraint": "[weeks or null]",
      "historical_context": "[summary from Notion/.sow-history or null]",
      "skills_paths": {
-       "scope_definition": "${CLAUDE_PLUGIN_ROOT}/skills/sow/scope-definition/SKILL.md",
-       "sow_writing": "${CLAUDE_PLUGIN_ROOT}/skills/sow/sow-writing/SKILL.md",
-       "risk_assessment": "${CLAUDE_PLUGIN_ROOT}/skills/sow/risk-assessment/SKILL.md"
+       "scope_definition": "skills/sow/scope-definition/SKILL.md",
+       "sow_writing": "skills/sow/sow-writing/SKILL.md",
+       "risk_assessment": "skills/sow/risk-assessment/SKILL.md"
      }
    }
    ```
@@ -214,7 +214,7 @@ When `--team` IS present:
 
    Wait for both Phase 2 agents to complete before proceeding.
 
-8. Execute Phase 3 — invoke `sow-lead` with the structured context object plus all Phase 1 and Phase 2 outputs. The lead agent reads its definition from `${CLAUDE_PLUGIN_ROOT}/agents/sow/sow-lead.md` and synthesizes all inputs into the final SOW document. The lead writes the output file to the `--output` directory.
+8. Execute Phase 3 — invoke `sow-lead` with the structured context object plus all Phase 1 and Phase 2 outputs. The lead agent reads its definition from `agents/sow/sow-lead.md` and synthesizes all inputs into the final SOW document. The lead writes the output file to the `--output` directory.
 
 9. Present the pipeline completion summary:
 

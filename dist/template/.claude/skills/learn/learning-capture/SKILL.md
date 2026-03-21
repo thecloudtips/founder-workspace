@@ -80,7 +80,7 @@ When inference is ambiguous (signals for multiple types), select the strongest m
 
 ## Topic Auto-Detection
 
-Detect 1-3 topic categories from the 10-category taxonomy. For the full detection algorithm including keyword signals, scoring thresholds, multi-topic handling, and fallback logic, read `${CLAUDE_PLUGIN_ROOT}/skills/learn/learning-capture/references/topic-detection-algorithm.md`.
+Detect 1-3 topic categories from the 10-category taxonomy. For the full detection algorithm including keyword signals, scoring thresholds, multi-topic handling, and fallback logic, read `skills/learn/learning-capture/references/topic-detection-algorithm.md`.
 
 ### Topic Taxonomy (Quick Reference)
 
@@ -103,7 +103,7 @@ Custom topics may be added by the user. Store custom topics as new multi_select 
 
 ## Related Insights
 
-After capturing a new learning, find 2-3 most related past insights from the database. For the full matching algorithm including overlap scoring, recency tiebreaking, keyword fallback, and empty-result handling, read `${CLAUDE_PLUGIN_ROOT}/skills/learn/learning-capture/references/related-insights-algorithm.md`.
+After capturing a new learning, find 2-3 most related past insights from the database. For the full matching algorithm including overlap scoring, recency tiebreaking, keyword fallback, and empty-result handling, read `skills/learn/learning-capture/references/related-insights-algorithm.md`.
 
 ### Quick Reference
 
@@ -158,5 +158,5 @@ On the very first learning logged, there are no past entries to match against. S
 ### Reference Files
 
 For detailed algorithms and edge cases, consult:
-- **`${CLAUDE_PLUGIN_ROOT}/skills/learn/learning-capture/references/topic-detection-algorithm.md`** — Full 10-category keyword taxonomy with scoring thresholds, multi-topic selection rules, exclusion signals, and source-type fallback logic
-- **`${CLAUDE_PLUGIN_ROOT}/skills/learn/learning-capture/references/related-insights-algorithm.md`** — Overlap scoring formula, minimum thresholds, recency tiebreaking, keyword-matching fallback, and empty-result handling
+- **`skills/learn/learning-capture/references/topic-detection-algorithm.md`** — Full 10-category keyword taxonomy with scoring thresholds, multi-topic selection rules, exclusion signals, and source-type fallback logic
+- **`skills/learn/learning-capture/references/related-insights-algorithm.md`** — Overlap scoring formula, minimum thresholds, recency tiebreaking, keyword-matching fallback, and empty-result handling

@@ -12,7 +12,7 @@ Browse the social media template library, inspect individual templates, and view
 
 ## Skills
 
-1. Read `${CLAUDE_PLUGIN_ROOT}/skills/social/template-engine/SKILL.md` — for engagement score formula and ranking context
+1. Read `skills/social/template-engine/SKILL.md` — for engagement score formula and ranking context
 
 ## Arguments
 
@@ -24,7 +24,7 @@ Browse the social media template library, inspect individual templates, and view
 
 ## Business Context (Optional)
 
-Check `${CLAUDE_PLUGIN_ROOT}/_infrastructure/context/active/` for `.md` files. If present, read them to provide personalized context when displaying templates.
+Check `../../../.founderOS/infrastructure/context/active/` for `.md` files. If present, read them to provide personalized context when displaying templates.
 
 ## Preflight Check
 
@@ -32,7 +32,7 @@ This is a read-only command with no external API dependencies. No preflight vali
 
 ## Step 0: Memory Context
 
-Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/memory/context-injection/SKILL.md`.
+Read `../../../.founderOS/infrastructure/memory/context-injection/SKILL.md`.
 Query memory store for: `social templates`, `template library`, `A/B test`, `technique performance`.
 Inject top 5 relevant memories.
 
@@ -44,7 +44,7 @@ Check for learned optimizations from past `social:templates` runs.
 
 ### `list [--technique=name]`
 
-1. Read `${CLAUDE_PLUGIN_ROOT}/skills/social/templates/_index.yaml`
+1. Read `skills/social/templates/_index.yaml`
 2. Display all templates grouped by technique
 3. If `--technique` specified, filter to that technique group only
 4. Show for each template: ID, name, technique, platforms
@@ -65,10 +65,10 @@ If `--technique` is specified and no templates match: display "No templates foun
 
 ### `show <id>`
 
-1. Read `${CLAUDE_PLUGIN_ROOT}/skills/social/templates/_index.yaml`
+1. Read `skills/social/templates/_index.yaml`
 2. Look up filename from `id_map` section using the provided ID
 3. If ID not found: display "Template ID `<id>` not found. Run `/social:templates list` to see all template IDs."
-4. Read the matching file from `${CLAUDE_PLUGIN_ROOT}/skills/social/templates/{filename}.md`
+4. Read the matching file from `skills/social/templates/{filename}.md`
 5. Display full template: name, technique, platforms, tags, Why It Works, Template body, Example
 
 Example output:
@@ -90,7 +90,7 @@ Tags: hook, structure, rhythm
 
 ### `stats [--technique=name]`
 
-1. Read `${CLAUDE_PLUGIN_ROOT}/skills/social/templates/_performance.yaml`
+1. Read `skills/social/templates/_performance.yaml`
 2. If file is empty or has no test data: display "No A/B tests have been run yet. Use `/social:ab-test` to start testing."
 3. If data exists:
    - Display technique win/loss rates from `technique_scores`
@@ -121,7 +121,7 @@ All output is displayed inline in the main session. This is a foreground command
 
 ## Self-Healing: Error Recovery
 
-- **`_index.yaml` not found**: Display "Template index not found at expected path. Verify `${CLAUDE_PLUGIN_ROOT}/skills/social/templates/_index.yaml` exists."
+- **`_index.yaml` not found**: Display "Template index not found at expected path. Verify `skills/social/templates/_index.yaml` exists."
 - **`_performance.yaml` not found**: Treat as empty — display "No A/B tests have been run yet. Use `/social:ab-test` to start testing."
 - **Template `.md` file not found** (during `show`): Display "Template file missing for ID `<id>`. The index references a file that does not exist. Run `/social:templates list` to verify available templates."
 - **Missing subcommand**: Display usage hint — "Usage: `/social:templates list|show|stats [--technique=name]`"
@@ -129,7 +129,7 @@ All output is displayed inline in the main session. This is a foreground command
 
 ## Final Step: Observation Logging
 
-Record observation via `${CLAUDE_PLUGIN_ROOT}/_infrastructure/memory/pattern-detection/SKILL.md`:
+Record observation via `../../../.founderOS/infrastructure/memory/pattern-detection/SKILL.md`:
 - Subcommand used (`list`, `show`, or `stats`)
 - Technique filter applied (if any)
 - Template ID viewed (for `show`)

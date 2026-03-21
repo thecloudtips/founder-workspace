@@ -56,7 +56,7 @@ Ordered list of pipeline steps. Each step object contains:
 | timeout_seconds | number | no | Per-step timeout override |
 | condition | string | no | Expression evaluated at runtime; skip the step when it evaluates to false |
 
-Refer to `${CLAUDE_PLUGIN_ROOT}/skills/workflow/workflow-design/references/yaml-schema.md` for the complete field-by-field specification with types, defaults, constraints, and annotated examples.
+Refer to `skills/workflow/workflow-design/references/yaml-schema.md` for the complete field-by-field specification with types, defaults, constraints, and annotated examples.
 
 ## Step Dependencies & DAG Model
 
@@ -84,7 +84,7 @@ Resolve execution order using Kahn's algorithm:
 4. Repeat until the queue is empty.
 5. If the execution order contains fewer steps than the total step count, a cycle exists.
 
-Refer to `${CLAUDE_PLUGIN_ROOT}/skills/workflow/workflow-design/references/dag-resolution.md` for the full algorithm implementation, cycle detection logic, parallel batch identification, and worked examples with diagrams.
+Refer to `skills/workflow/workflow-design/references/dag-resolution.md` for the full algorithm implementation, cycle detection logic, parallel batch identification, and worked examples with diagrams.
 
 ## Validation Rules
 
@@ -105,14 +105,14 @@ Apply these checks before executing or saving any workflow. Reject the workflow 
 13. Step `id` values use kebab-case with no uppercase or special characters.
 14. `timeout_seconds` is a positive integer when provided.
 
-Refer to `${CLAUDE_PLUGIN_ROOT}/skills/workflow/workflow-design/references/validation-rules.md` for all 14 rules with error codes, messages, severity levels, and fix suggestions.
+Refer to `skills/workflow/workflow-design/references/validation-rules.md` for all 14 rules with error codes, messages, severity levels, and fix suggestions.
 
 ## Workflow File Conventions
 
 - Store workflow files in the `workflows/` directory at the plugin root.
 - File name must match `workflow.name` with a `.yaml` extension (e.g., `morning-pipeline.yaml` for `name: morning-pipeline`).
 - Use kebab-case for workflow names and step IDs throughout.
-- Start new workflows from `${CLAUDE_PLUGIN_ROOT}/skills/workflow/workflow-design/templates/workflow-template.yaml` to ensure correct structure.
+- Start new workflows from `skills/workflow/workflow-design/templates/workflow-template.yaml` to ensure correct structure.
 - Commit workflows to version control. Track changes via the `version` field.
 
 ## Context Variable Substitution
@@ -155,6 +155,6 @@ Do not use reserved key names as `output_as` values. Validation rejects collisio
 
 ## Additional Resources
 
-- `${CLAUDE_PLUGIN_ROOT}/skills/workflow/workflow-design/references/yaml-schema.md` — Complete field-by-field schema specification with types, defaults, constraints, and examples for every YAML field.
-- `${CLAUDE_PLUGIN_ROOT}/skills/workflow/workflow-design/references/dag-resolution.md` — Kahn's topological sort algorithm implementation, cycle detection logic, parallel batch identification, and worked examples.
-- `${CLAUDE_PLUGIN_ROOT}/skills/workflow/workflow-design/references/validation-rules.md` — All 14 validation rules with error codes, messages, severity levels, and fix suggestions.
+- `skills/workflow/workflow-design/references/yaml-schema.md` — Complete field-by-field schema specification with types, defaults, constraints, and examples for every YAML field.
+- `skills/workflow/workflow-design/references/dag-resolution.md` — Kahn's topological sort algorithm implementation, cycle detection logic, parallel batch identification, and worked examples.
+- `skills/workflow/workflow-design/references/validation-rules.md` — All 14 validation rules with error codes, messages, severity levels, and fix suggestions.

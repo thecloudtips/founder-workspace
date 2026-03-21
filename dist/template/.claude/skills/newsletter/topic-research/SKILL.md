@@ -33,7 +33,7 @@ Generate 5-8 search queries per topic, distributed across source types to maximi
 | Official Blogs / Changelogs | 1-2 | Authoritative announcements, product updates |
 | Quora (`site:quora.com`) | 0-1 | Expert Q&A, alternative perspectives |
 
-For detailed query templates and examples per source type, see `${CLAUDE_PLUGIN_ROOT}/skills/newsletter/topic-research/references/query-patterns.md`.
+For detailed query templates and examples per source type, see `skills/newsletter/topic-research/references/query-patterns.md`.
 
 ### Query Output Format
 

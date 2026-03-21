@@ -12,9 +12,9 @@ Generate a complete professional proposal from an existing brief file (local .md
 
 ## Load Skills
 
-Read the proposal-writing skill at `${CLAUDE_PLUGIN_ROOT}/skills/proposal/proposal-writing/SKILL.md` for the 7-section proposal structure, writing style rules, formatting standards, quality checklist, and output file conventions.
+Read the proposal-writing skill at `skills/proposal/proposal-writing/SKILL.md` for the 7-section proposal structure, writing style rules, formatting standards, quality checklist, and output file conventions.
 
-Read the pricing-strategy skill at `${CLAUDE_PLUGIN_ROOT}/skills/proposal/pricing-strategy/SKILL.md` for 3-tier pricing philosophy, package naming, pricing calculation frameworks, scope differentiation rules, comparison table layout, and payment terms patterns.
+Read the pricing-strategy skill at `skills/proposal/pricing-strategy/SKILL.md` for 3-tier pricing philosophy, package naming, pricing calculation frameworks, scope differentiation rules, comparison table layout, and payment terms patterns.
 
 ## Parse Arguments
 
@@ -27,7 +27,7 @@ Extract from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `proposal` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -76,7 +76,7 @@ Determine the source type from the argument:
 - If file not found, report error: "File not found: [path]. Check the file path and try again."
 
 **Notion page** (URL starting with http and containing notion):
-- Use `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs fetch <notion-url>` to retrieve page content
+- Use `node ../../../.founderOS/scripts/notion-tool.mjs fetch <notion-url>` to retrieve page content
 - If Notion CLI unavailable, report: "Notion CLI is unavailable or not configured. Provide a local file path instead, or run `/founder-os:setup:notion-cli` to configure."
 
 ### Step 2: Extract Brief Contents
@@ -93,7 +93,7 @@ If the client name cannot be determined and `--client` is not provided, ask: "Co
 ### Step 3: Resolve CRM Context
 
 If Notion CLI is available:
-- Search CRM Pro "Companies" database for the extracted client name using `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs search "<client-name>" --filter page`
+- Search CRM Pro "Companies" database for the extracted client name using `node ../../../.founderOS/scripts/notion-tool.mjs search "<client-name>" --filter page`
 - Retrieve industry, past projects, relationship history if found
 - Use context to enrich Cover Letter and Understanding & Approach sections
 
@@ -104,9 +104,9 @@ If Notion CLI is unavailable, proceed without CRM data.
 Follow the same generation logic as `/founder-os:proposal:create` from Step 3 onward:
 
 1. Generate 7-section proposal using the extracted brief contents and CRM context
-2. Read the proposal template at `${CLAUDE_PLUGIN_ROOT}/templates/proposal-template.md` as scaffold
-3. Consult `${CLAUDE_PLUGIN_ROOT}/skills/proposal/proposal-writing/references/section-templates.md` for section examples
-4. Consult `${CLAUDE_PLUGIN_ROOT}/skills/proposal/pricing-strategy/references/pricing-models.md` for pricing calculations
+2. Read the proposal template at `../../../.founderOS/templates/proposal-template.md` as scaffold
+3. Consult `skills/proposal/proposal-writing/references/section-templates.md` for section examples
+4. Consult `skills/proposal/pricing-strategy/references/pricing-models.md` for pricing calculations
 5. Apply all writing style rules and quality checklist from the proposal-writing skill
 
 ### Step 5: Save Files

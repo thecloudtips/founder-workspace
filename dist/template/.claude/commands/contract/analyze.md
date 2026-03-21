@@ -12,9 +12,9 @@ Read and analyze a legal contract document to extract key terms across 7 categor
 
 ## Load Skills
 
-Read the contract-analysis skill at `${CLAUDE_PLUGIN_ROOT}/skills/contract/contract-analysis/SKILL.md` for contract structure recognition, file format handling, contract type detection, key term extraction patterns, output structure, and Notion integration.
+Read the contract-analysis skill at `skills/contract/contract-analysis/SKILL.md` for contract structure recognition, file format handling, contract type detection, key term extraction patterns, output structure, and Notion integration.
 
-Read the legal-risk-detection skill at `${CLAUDE_PLUGIN_ROOT}/skills/contract/legal-risk-detection/SKILL.md` for RAG classification system, risk categories, risk flag taxonomy, overall risk level calculation, and output structure.
+Read the legal-risk-detection skill at `skills/contract/legal-risk-detection/SKILL.md` for RAG classification system, risk categories, risk flag taxonomy, overall risk level calculation, and output structure.
 
 ## Parse Arguments
 
@@ -25,7 +25,7 @@ Extract the file path from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `contract` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -73,11 +73,11 @@ If any error occurs during this command:
 
 4. **Identify structure**: Recognize contract sections (Parties, Scope, Payment, IP, Confidentiality, Liability, Termination, Dispute Resolution, Miscellaneous). Handle numbered clauses, lettered sub-clauses, and un-numbered paragraph formats.
 
-5. **Extract key terms**: For each of the 7 categories (Payment, Duration/Renewal, IP, Confidentiality, Liability, Termination, Warranty), extract specific terms. Consult `${CLAUDE_PLUGIN_ROOT}/skills/contract/contract-analysis/references/clause-patterns.md` for detailed extraction patterns and examples.
+5. **Extract key terms**: For each of the 7 categories (Payment, Duration/Renewal, IP, Confidentiality, Liability, Termination, Warranty), extract specific terms. Consult `skills/contract/contract-analysis/references/clause-patterns.md` for detailed extraction patterns and examples.
 
-6. **Run checklist**: Verify the contract against the review checklist at `${CLAUDE_PLUGIN_ROOT}/templates/contract-checklist.md`. Note any missing sections or unchecked items.
+6. **Run checklist**: Verify the contract against the review checklist at `../../../.founderOS/templates/contract-checklist.md`. Note any missing sections or unchecked items.
 
-7. **Detect risks**: Apply the legal-risk-detection skill to evaluate each extracted term and clause. Assign RAG severity (Red/Yellow/Green) to each finding. Consult `${CLAUDE_PLUGIN_ROOT}/skills/contract/legal-risk-detection/references/risk-patterns.md` for the comprehensive risk pattern library.
+7. **Detect risks**: Apply the legal-risk-detection skill to evaluate each extracted term and clause. Assign RAG severity (Red/Yellow/Green) to each finding. Consult `skills/contract/legal-risk-detection/references/risk-patterns.md` for the comprehensive risk pattern library.
 
 8. **Calculate overall risk level**: Red if ANY Red flag exists, Yellow if ANY Yellow flag and no Red flags, Green if all flags are Green or no flags found.
 

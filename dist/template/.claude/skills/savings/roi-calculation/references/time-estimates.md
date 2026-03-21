@@ -89,7 +89,7 @@ The highest-ROI categories (`crm_sync` at 10.0x, `competitive_research` and `exp
 
 ## Customization
 
-Override any estimate via the user config file at `${CLAUDE_PLUGIN_ROOT}/config/user-config.json`.
+Override any estimate via the user config file at `../../../../.founderOS/config/user-config.json`.
 
 ### Override Format
 

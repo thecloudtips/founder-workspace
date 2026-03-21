@@ -14,8 +14,8 @@ Configure recurring execution of a workflow via session-level or persistent OS c
 
 Read these skills:
 
-1. `${CLAUDE_PLUGIN_ROOT}/skills/workflow/workflow-scheduling/SKILL.md`
-2. `${CLAUDE_PLUGIN_ROOT}/skills/workflow/workflow-design/SKILL.md`
+1. `skills/workflow/workflow-scheduling/SKILL.md`
+2. `skills/workflow/workflow-design/SKILL.md`
 
 ## Parse Arguments
 
@@ -33,7 +33,7 @@ If workflow-name provided but no --cron or --natural, check if workflow already 
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `workflow` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -93,7 +93,7 @@ Total: 2 scheduled workflows
 1. **Locate Workflow**: Find `workflows/[workflow-name].yaml`. If not found, error.
 
 2. **Determine Cron Expression**:
-   - If `--cron` provided: validate the 5-field expression per cron-syntax reference (`${CLAUDE_PLUGIN_ROOT}/skills/workflow/workflow-scheduling/references/cron-syntax.md`)
+   - If `--cron` provided: validate the 5-field expression per cron-syntax reference (`skills/workflow/workflow-scheduling/references/cron-syntax.md`)
    - If `--natural` provided: convert using NL-to-cron table from workflow-scheduling skill. Confirm: "Interpreted as: [cron] ([description]). Correct?"
    - If neither: check workflow's schedule.cron. If empty, ask user.
 
@@ -105,7 +105,7 @@ Total: 2 scheduled workflows
    - Note: "This schedule is active for this session only. Use --persistent for OS-level cron."
 
 5. **Persistent Schedule** (--persistent):
-   - Generate runner script at `workflows/runners/[name]-runner.sh` per os-cron-generation reference (`${CLAUDE_PLUGIN_ROOT}/skills/workflow/workflow-scheduling/references/os-cron-generation.md`)
+   - Generate runner script at `workflows/runners/[name]-runner.sh` per os-cron-generation reference (`skills/workflow/workflow-scheduling/references/os-cron-generation.md`)
    - Make script executable
    - Display crontab installation instructions (never modify crontab directly)
    - Display: "Runner script created. Follow the instructions above to install the persistent cron job."

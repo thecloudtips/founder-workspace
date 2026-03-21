@@ -141,12 +141,28 @@
     "scout": {
       "required": [],
       "optional": ["websearch"]
+    },
+    "video": {
+      "required": ["node", "remotion-project", "disk-space"],
+      "optional": ["late"]
     }
   },
   "dependencies": {
     "late": {
-      "check": "node ${CLAUDE_PLUGIN_ROOT}/scripts/late-tool.mjs --validate-only",
+      "check": "node ../../scripts/late-tool.mjs --validate-only",
       "description": "Late.dev social media publishing API"
+    },
+    "node": {
+      "check": "node -e \"process.exit(parseInt(process.version.slice(1)) >= 18 ? 0 : 1)\"",
+      "description": "Node.js >= 18 for Remotion rendering"
+    },
+    "remotion-project": {
+      "check": "node -e \"const j=JSON.parse(require('fs').readFileSync(require('os').homedir()+'/.founder-os/video-studio.json','utf8')); require('fs').accessSync(j.path+'/node_modules/remotion')\" 2>/dev/null",
+      "description": "Managed Remotion project with state file (run /founder-os:video:init to set up)"
+    },
+    "disk-space": {
+      "check": "df -k $(node -e \"process.stdout.write(JSON.parse(require('fs').readFileSync(require('os').homedir()+'/.founder-os/video-studio.json','utf8')).path)\")/output 2>/dev/null | awk 'NR==2 {if ($4 < 512000) exit 1}'",
+      "description": ">= 500MB free in video output directory"
     }
   }
 }

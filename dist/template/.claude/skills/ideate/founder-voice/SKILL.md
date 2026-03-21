@@ -290,4 +290,4 @@ The founder voice core (professional, conversational, opinionated) applies every
 
 ## Voice Reference Examples
 
-Refer to `${CLAUDE_PLUGIN_ROOT}/skills/ideate/founder-voice/references/voice-examples.md` for detailed before-and-after rewrite examples demonstrating how to transform generic social media content into founder voice.
+Refer to `skills/ideate/founder-voice/references/voice-examples.md` for detailed before-and-after rewrite examples demonstrating how to transform generic social media content into founder voice.

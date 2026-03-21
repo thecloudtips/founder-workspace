@@ -13,7 +13,7 @@ Assemble researched topics into structured, publishable newsletter drafts with S
 
 ## Purpose and Context
 
-Transform raw research findings and topic clusters into a newsletter that a founder can review, lightly edit, and publish directly to Substack. The output must follow a consistent four-part structure (Hook, Main Content, Key Takeaways, CTA), use Substack-compatible Markdown, attribute all sources properly, and land within the 800-1500 word target. Use the output template at `${CLAUDE_PLUGIN_ROOT}/templates/newsletter-template.md` as the formatting scaffold for every draft.
+Transform raw research findings and topic clusters into a newsletter that a founder can review, lightly edit, and publish directly to Substack. The output must follow a consistent four-part structure (Hook, Main Content, Key Takeaways, CTA), use Substack-compatible Markdown, attribute all sources properly, and land within the 800-1500 word target. Use the output template at `../../../../.founderOS/templates/newsletter-template.md` as the formatting scaffold for every draft.
 
 ---
 
@@ -210,7 +210,7 @@ Do not repeat the same opening pattern in consecutive sections.
 
 ## Section Type Templates
 
-Different newsletter issues call for different section types. Select the appropriate type for each section based on the research content. See `${CLAUDE_PLUGIN_ROOT}/skills/newsletter/newsletter-writing/references/section-templates.md` for detailed templates, examples, and formatting guidance for each type.
+Different newsletter issues call for different section types. Select the appropriate type for each section based on the research content. See `skills/newsletter/newsletter-writing/references/section-templates.md` for detailed templates, examples, and formatting guidance for each type.
 
 Available section types:
 - **News Roundup** -- curate 3-5 recent developments into a scannable briefing
@@ -239,4 +239,4 @@ Before outputting a newsletter draft, confirm:
 - [ ] No H1 headings are used (reserved for Substack post title)
 - [ ] Transition bridges connect consecutive sections without filler phrases
 - [ ] Sources section lists all referenced URLs in order of appearance
-- [ ] Draft uses the template scaffold from `${CLAUDE_PLUGIN_ROOT}/templates/newsletter-template.md`
+- [ ] Draft uses the template scaffold from `../../../../.founderOS/templates/newsletter-template.md`

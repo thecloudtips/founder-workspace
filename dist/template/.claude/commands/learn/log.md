@@ -14,7 +14,7 @@ Capture a daily learning with auto-generated title, topic detection, source clas
 
 Read the learning-capture skill before starting any step:
 
-1. `${CLAUDE_PLUGIN_ROOT}/skills/learn/learning-capture/SKILL.md`
+1. `skills/learn/learning-capture/SKILL.md`
 
 Apply learning-capture for all database operations, title generation, topic detection, source classification, related insights, and guardrails.
 
@@ -33,7 +33,7 @@ If `$ARGUMENTS` is empty, prompt: "What did you learn today? Share an insight, o
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `learn` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -103,7 +103,7 @@ If `--source` was not provided, auto-detect from the insight text using the sour
 
 Run the topic detection algorithm from the learning-capture skill:
 
-1. Read `${CLAUDE_PLUGIN_ROOT}/skills/learn/learning-capture/references/topic-detection-algorithm.md` for the full algorithm.
+1. Read `skills/learn/learning-capture/references/topic-detection-algorithm.md` for the full algorithm.
 2. Match keywords against the 10-category taxonomy.
 3. Select 1-3 topics that score above the 2-point threshold.
 4. If no topics meet the threshold, apply the source-type fallback rule.
@@ -128,7 +128,7 @@ If a duplicate exists, present the existing entry and ask: "A similar learning w
 
 ## Step 7: Find Related Insights
 
-Read `${CLAUDE_PLUGIN_ROOT}/skills/learn/learning-capture/references/related-insights-algorithm.md` for the full algorithm.
+Read `skills/learn/learning-capture/references/related-insights-algorithm.md` for the full algorithm.
 
 1. Query the database for entries sharing Topics with the new learning.
 2. Score by topic overlap.

@@ -31,7 +31,7 @@ Extract from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md` and `current-data.md`. Use this context to enrich company lookups and improve key generation. If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `memory` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -164,7 +164,7 @@ If no similar memory exists, proceed directly to Step 5.
 If `--company "NAME"` was provided:
 
 1. Search the Notion workspace for a database named "[FOS] Companies". If not found, try "Founder OS HQ - Companies" or "Founder OS CRM - Companies".
-2. Within that database, search for a page whose title contains the provided company name (case-insensitive). Use `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs search "<company-name>" --filter page`.
+2. Within that database, search for a page whose title contains the provided company name (case-insensitive). Use `node ../../../.founderOS/scripts/notion-tool.mjs search "<company-name>" --filter page`.
 3. If exactly one match is found, capture its Notion page ID as `company_id`.
 4. If multiple matches are found, present a numbered list:
 

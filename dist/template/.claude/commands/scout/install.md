@@ -13,9 +13,9 @@ Install a discovered tool into the scout sandbox, run a security review, generat
 ## Skills
 
 Read these skill files before proceeding:
-1. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/scout/SKILL.md` — catalog schema, sandbox layout, tool ID generation
-2. Read `${CLAUDE_PLUGIN_ROOT}/skills/scout/security/SKILL.md` — 6-point security checklist, verdict schema, audit trail rules
-3. Read `${CLAUDE_PLUGIN_ROOT}/skills/scout/integration/SKILL.md` — wrapper command templates, frontmatter rules, scout metadata comment block
+1. Read `../../../.founderOS/infrastructure/scout/SKILL.md` — catalog schema, sandbox layout, tool ID generation
+2. Read `skills/scout/security/SKILL.md` — 6-point security checklist, verdict schema, audit trail rules
+3. Read `skills/scout/integration/SKILL.md` — wrapper command templates, frontmatter rules, scout metadata comment block
 
 ## Arguments
 
@@ -27,11 +27,11 @@ Read these skill files before proceeding:
 
 ## Business Context (Optional)
 
-Check `${CLAUDE_PLUGIN_ROOT}/_infrastructure/context/active/` for `.md` files. If present, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., filter relevance by business domain). If files don't exist, skip silently.
+Check `../../../.founderOS/infrastructure/context/active/` for `.md` files. If present, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., filter relevance by business domain). If files don't exist, skip silently.
 
 ## Preflight Check
 
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `scout` namespace.
 - Required: (none)
 - Optional: `websearch`
@@ -41,7 +41,7 @@ If the check returns `degraded`, note which optional sources are unavailable and
 
 ## Step 0: Memory Context
 
-Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/memory/context-injection/SKILL.md`.
+Read `../../../.founderOS/infrastructure/memory/context-injection/SKILL.md`.
 Query memory store for: `scout install`, `tool integration`, `security review`.
 Inject top 5 relevant memories into working context for this execution.
 
@@ -56,7 +56,7 @@ Before executing the main logic, check for learned patterns in the Intelligence 
 ## Phase 1/4: Download
 
 1. Derive the tool ID from the target URL or catalog ID per the ID generation rules in the scout common skill (kebab-case, strip org prefixes and file extensions).
-2. Create the sandbox directory at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/scout/sandbox/<tool-id>/_downloaded/`.
+2. Create the sandbox directory at `../../../.founderOS/infrastructure/scout/sandbox/<tool-id>/_downloaded/`.
 3. Fetch all tool files (SKILL.md, command markdown files, agent configs, referenced scripts) into `_downloaded/`. Do not execute any downloaded file.
 4. Write `_meta.json` in the sandbox root (`_infrastructure/scout/sandbox/<tool-id>/_meta.json`) with:
    ```json
@@ -87,7 +87,7 @@ Before executing the main logic, check for learned patterns in the Intelligence 
 **If `--skip-review` is NOT passed:**
 
 1. Spawn a background `security-auditor` agent via the Task tool with:
-   - `${CLAUDE_PLUGIN_ROOT}/skills/scout/security/SKILL.md` as checklist context
+   - `skills/scout/security/SKILL.md` as checklist context
    - All files in `_infrastructure/scout/sandbox/<tool-id>/_downloaded/` as target corpus
    - Instructions to run all six checks (prompt injection, secret exfiltration, overly broad tools, data leakage, supply chain risk, permission escalation) and produce a verdict JSON
 2. Write the completed verdict JSON to `_infrastructure/scout/sandbox/<tool-id>/_review/report.json`.
@@ -102,7 +102,7 @@ Before executing the main logic, check for learned patterns in the Intelligence 
 ## Phase 3/4: Generate Wrapper
 
 1. Derive the wrapper command name from the tool ID (use the tool's primary action if clear, otherwise use the tool ID as-is).
-2. Create `${CLAUDE_PLUGIN_ROOT}/commands/scout/<tool-name>.md` using the template from the integration skill:
+2. Create `commands/scout/<tool-name>.md` using the template from the integration skill:
    - YAML frontmatter with only the five permitted fields (`description`, `argument-hint`, `allowed-tools`, `execution-mode`, `result-format`)
    - `description` prefixed with `[Auto-generated]`
    - `allowed-tools` scoped to what the tool actually needs (not a blanket set)
@@ -120,7 +120,7 @@ Before executing the main logic, check for learned patterns in the Intelligence 
 
 ## Phase 4/4: Register
 
-1. Read `${CLAUDE_PLUGIN_ROOT}/_infrastructure/scout/catalog.json`.
+1. Read `../../../.founderOS/infrastructure/scout/catalog.json`.
 2. Append a new entry conforming to the catalog schema (from the scout common skill):
    ```json
    {
@@ -196,7 +196,7 @@ Always notify: `[Heal] {description of what happened and what was done}`
 
 ## Final Step: Observation Logging
 
-Record observation via `${CLAUDE_PLUGIN_ROOT}/_infrastructure/memory/pattern-detection/SKILL.md`:
+Record observation via `../../../.founderOS/infrastructure/memory/pattern-detection/SKILL.md`:
 - Plugin: `scout`
 - Command: `scout-install`
 - Key entities: tool ID, source URL, security verdict

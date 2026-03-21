@@ -11,7 +11,7 @@ Calculate time and money saved by using Founder OS plugins. Accept a DiscoveryRe
 
 ## Purpose and Context
 
-Transform raw plugin task counts into actionable productivity metrics. Receive an array of DiscoveryResult objects (one per plugin category, each containing `category_key`, `completed_count`, `period_start`, `period_end`, and `status`), look up or override the corresponding time estimates, compute per-category and aggregate savings, and render the results as a 5-section Markdown report with embedded Mermaid charts. Use the detailed category reference at `${CLAUDE_PLUGIN_ROOT}/skills/savings/roi-calculation/references/time-estimates.md` for the full breakdown of all 24 category estimates and their rationale. Use `${CLAUDE_PLUGIN_ROOT}/config/task-estimates.json` as the authoritative machine-readable estimates data.
+Transform raw plugin task counts into actionable productivity metrics. Receive an array of DiscoveryResult objects (one per plugin category, each containing `category_key`, `completed_count`, `period_start`, `period_end`, and `status`), look up or override the corresponding time estimates, compute per-category and aggregate savings, and render the results as a 5-section Markdown report with embedded Mermaid charts. Use the detailed category reference at `skills/savings/roi-calculation/references/time-estimates.md` for the full breakdown of all 24 category estimates and their rationale. Use `../../../../.founderOS/config/task-estimates.json` as the authoritative machine-readable estimates data.
 
 ---
 
@@ -22,8 +22,8 @@ Resolve every configurable value using a strict priority order. Higher-priority 
 ### Priority Order (highest to lowest)
 
 1. **Command flags** — `--rate=N`, `--currency=X` passed at invocation time
-2. **User config file** — `${CLAUDE_PLUGIN_ROOT}/config/user-config.json` (if the file exists)
-3. **Default values** — from `${CLAUDE_PLUGIN_ROOT}/config/task-estimates.json` (`hourly_rate_default: 150`, `currency: "USD"`)
+2. **User config file** — `../../../../.founderOS/config/user-config.json` (if the file exists)
+3. **Default values** — from `../../../../.founderOS/config/task-estimates.json` (`hourly_rate_default: 150`, `currency: "USD"`)
 
 ### User Config Schema
 
@@ -46,7 +46,7 @@ Accept an optional user config file with the following shape:
 ### Resolution Steps
 
 1. Load `task-estimates.json` as the base configuration.
-2. If `${CLAUDE_PLUGIN_ROOT}/config/user-config.json` exists, read it and apply `hourly_rate`, `currency`, and any category overrides on top of the base.
+2. If `../../../../.founderOS/config/user-config.json` exists, read it and apply `hourly_rate`, `currency`, and any category overrides on top of the base.
 3. If command flags are present, apply them last — `--rate` replaces hourly_rate, `--currency` replaces currency.
 4. Validate every resolved category: `manual_minutes` must be greater than `ai_minutes`, and both must be greater than 0. Skip any category that fails validation and emit a warning.
 
@@ -300,6 +300,6 @@ Handle the following conditions:
 
 ## Additional Resources
 
-- Refer to `${CLAUDE_PLUGIN_ROOT}/skills/savings/roi-calculation/references/time-estimates.md` for the detailed breakdown of all 24 category estimates, their derivation methodology, and customization guidance.
-- Refer to `${CLAUDE_PLUGIN_ROOT}/config/task-estimates.json` for the authoritative machine-readable estimates data used by the calculation engine.
+- Refer to `skills/savings/roi-calculation/references/time-estimates.md` for the detailed breakdown of all 24 category estimates, their derivation methodology, and customization guidance.
+- Refer to `../../../../.founderOS/config/task-estimates.json` for the authoritative machine-readable estimates data used by the calculation engine.
 - Refer to the cross-plugin-discovery skill for the DiscoveryResult schema and data gathering pipeline that feeds into this skill.

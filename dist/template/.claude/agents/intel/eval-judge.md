@@ -74,7 +74,7 @@ Assign a label:
 Use the db.mjs CLI entry point to write all dimension results in a single call:
 
 ```bash
-cd ${CLAUDE_PLUGIN_ROOT}
+cd ../../../.founderOS
 node _infrastructure/intelligence/evals/db.mjs --write-eval \
   --db-path "DB_PATH" \
   --execution-id "EXECUTION_ID" \

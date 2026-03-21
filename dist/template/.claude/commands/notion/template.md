@@ -12,9 +12,9 @@ Deploy a pre-built business database template or list available templates. Templ
 
 ## Load Skills
 
-Read the notion-database-design skill at `${CLAUDE_PLUGIN_ROOT}/skills/notion/notion-database-design/SKILL.md` for schema design best practices and template deployment protocol.
+Read the notion-database-design skill at `skills/notion/notion-database-design/SKILL.md` for schema design best practices and template deployment protocol.
 
-Read the notion-operations skill at `${CLAUDE_PLUGIN_ROOT}/skills/notion/notion-operations/SKILL.md` for Notion CLI tool usage, workspace discovery, and database creation operations.
+Read the notion-operations skill at `skills/notion/notion-operations/SKILL.md` for Notion CLI tool usage, workspace discovery, and database creation operations.
 
 ## Parse Arguments
 
@@ -26,7 +26,7 @@ Extract from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `notion` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -102,7 +102,7 @@ If the input doesn't match any template, display: "Unknown template '[input]'. A
 ## Step 2: Resolve Parent
 
 If `--parent=NAME` is provided:
-1. Search Notion for the parent page using `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs search`.
+1. Search Notion for the parent page using `node ../../../.founderOS/scripts/notion-tool.mjs search`.
 2. Disambiguate if multiple matches (numbered list with context).
 3. If not found, offer to create at workspace root.
 
@@ -111,7 +111,7 @@ If `--parent` is omitted:
 
 ## Step 3: Load Template Schema
 
-Read the complete template definition from `${CLAUDE_PLUGIN_ROOT}/skills/notion/notion-database-design/references/templates.md`. Each template defines:
+Read the complete template definition from `skills/notion/notion-database-design/references/templates.md`. Each template defines:
 - Property names and types
 - Default options for Select/Multi-select properties
 - Suggested default view (Board, Table, or Calendar)
@@ -142,7 +142,7 @@ If the user says "no", stop. Display: "Template deployment canceled."
 
 ## Step 5: Create Database
 
-1. Run `node ${CLAUDE_PLUGIN_ROOT}/scripts/notion-tool.mjs create-database <parent-id> --title '<name>' --properties '<json>'` with the template title and complete property schema.
+1. Run `node ../../../.founderOS/scripts/notion-tool.mjs create-database <parent-id> --title '<name>' --properties '<json>'` with the template title and complete property schema.
 2. If creation succeeds, display:
 
 ```

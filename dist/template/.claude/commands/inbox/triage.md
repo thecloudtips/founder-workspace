@@ -31,7 +31,7 @@ Extract these flags from `$ARGUMENTS`:
 Check if context files exist at `_infrastructure/context/active/`. If the directory contains `.md` files, read `business-info.md`, `strategy.md`, and `current-data.md`. Use this context to personalize output (e.g., prioritize known clients, use correct terminology, align with current strategy). If files don't exist, skip silently.
 
 ## Preflight Check
-Read the preflight skill at `${CLAUDE_PLUGIN_ROOT}/_infrastructure/preflight/SKILL.md`.
+Read the preflight skill at `../../../.founderOS/infrastructure/preflight/SKILL.md`.
 Run the preflight check for the `inbox` namespace.
 If the check returns `blocked`, stop execution and display the fix instructions.
 If the check returns `degraded`, note which optional sources are unavailable and adjust later steps accordingly.
@@ -73,8 +73,8 @@ If any error occurs during this command:
 
 When `--team` is NOT present:
 
-1. Read the email-triage skill at `${CLAUDE_PLUGIN_ROOT}/skills/inbox/email-triage/SKILL.md` for categorization rules.
-2. Read the priority-scoring skill at `${CLAUDE_PLUGIN_ROOT}/skills/inbox/priority-scoring/SKILL.md` for the Eisenhower matrix rubric.
+1. Read the email-triage skill at `skills/inbox/email-triage/SKILL.md` for categorization rules.
+2. Read the priority-scoring skill at `skills/inbox/priority-scoring/SKILL.md` for the Eisenhower matrix rubric.
 3. Use `gws gmail users messages list --params '{"userId":"me","q":"is:unread newer_than:Nd","maxResults":MAX}' --format json` to fetch unread emails from the last `--hours` hours (convert hours to days for the query), up to `--max` emails. For the default 24-hour window, use `gws gmail +triage --max MAX --format json` as a shortcut.
 4. For each email, assign:
    - **Category**: one of `action_required`, `waiting_on`, `fyi`, `newsletter`, `promotions` (per email-triage skill rules)
@@ -123,7 +123,7 @@ Record this classification to the Intelligence event store:
 
 When `--team` IS present:
 
-1. Read the pipeline configuration at `${CLAUDE_PLUGIN_ROOT}/agents/inbox/config.json`.
+1. Read the pipeline configuration at `agents/inbox/config.json`.
 2. Execute the full 4-agent pipeline sequentially:
    - **Triage Agent** → categorize and prioritize all emails
    - **Action Agent** → extract action items, create tasks in "[FOS] Tasks" (Type="Email Task", Source Plugin="Inbox Zero"); falls back to "Founder OS HQ - Tasks", then legacy "Inbox Zero - Action Items" DB
@@ -135,7 +135,7 @@ Record the draft tone selection to the Intelligence event store:
 - Payload: { decision: "draft_tone_selection", options: ["formal", "casual", "technical"], choice: [selected tone], reasoning: [based on sender relationship and context] }
 
    - **Archive Agent** → recommend archiving for low-priority processed emails (recommend-only, no auto-archive)
-3. Each agent reads its corresponding agent definition from `${CLAUDE_PLUGIN_ROOT}/agents/inbox/`.
+3. Each agent reads its corresponding agent definition from `agents/inbox/`.
 4. Pass output from each agent as input to the next (pipeline pattern).
 5. Present the final pipeline report with:
    - Triage summary (category counts)

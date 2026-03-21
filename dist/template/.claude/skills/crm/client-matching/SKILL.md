@@ -47,8 +47,8 @@ From the email address, extract the domain portion after the `@` symbol.
 1. Split the email address at `@`. Take the right-hand portion as the raw domain.
 2. Convert to lowercase.
 3. Strip common prefixes: remove leading `www.`, `mail.`, or `email.` if present.
-4. Check the normalized domain against the personal email domain list (see `${CLAUDE_PLUGIN_ROOT}/skills/crm/client-matching/references/matching-patterns.md`). If the domain is personal, mark it as non-matchable by domain and skip directly to Step 4.
-5. Check the email local part (left of `@`) against the distribution list patterns (see `${CLAUDE_PLUGIN_ROOT}/skills/crm/client-matching/references/matching-patterns.md`). If it matches a distribution list pattern, skip this participant entirely -- distribution addresses do not represent individual contacts.
+4. Check the normalized domain against the personal email domain list (see `skills/crm/client-matching/references/matching-patterns.md`). If the domain is personal, mark it as non-matchable by domain and skip directly to Step 4.
+5. Check the email local part (left of `@`) against the distribution list patterns (see `skills/crm/client-matching/references/matching-patterns.md`). If it matches a distribution list pattern, skip this participant entirely -- distribution addresses do not represent individual contacts.
 
 ### Step 2: Search Companies DB by Domain
 
@@ -77,7 +77,7 @@ When Steps 2 and 3 fail (personal email domain or no domain/email match), attemp
 1. Extract the display name from the email header (`From: "Jane Smith" <jane@gmail.com>`) or meeting attendee name field.
 2. If no display name is available, attempt to derive a name from the email local part: split on `.`, `-`, `_` delimiters. Capitalize each part. Skip this derivation if the local part appears to be a username rather than a name (e.g., "cooldude99").
 3. Search the Contacts DB for records where the Name property partially matches the extracted name. Use case-insensitive comparison.
-4. Apply fuzzy matching rules from `${CLAUDE_PLUGIN_ROOT}/skills/crm/client-matching/references/matching-patterns.md`: handle initials, nickname variants, and hyphenated names.
+4. Apply fuzzy matching rules from `skills/crm/client-matching/references/matching-patterns.md`: handle initials, nickname variants, and hyphenated names.
 5. If exactly one contact matches: follow the Company relation to identify the company. Set confidence to LOW (0.4).
 6. If multiple contacts match: present all candidates to the user for disambiguation. Do not auto-select. Format: "Multiple contacts match '[name]': [Contact A] at [Company A], [Contact B] at [Company B]. Which client does this belong to?"
 7. If no contacts match: search the Companies DB by partial name match. If a company matches, set confidence to LOW (0.4). If nothing matches, proceed to Step 5.
@@ -174,4 +174,4 @@ Skip any participant with an empty email field, an email missing the `@` symbol,
 
 ## Additional Resources
 
-For detailed personal email domain lists, distribution list patterns, domain normalization rules, and fuzzy name matching specifications, consult `${CLAUDE_PLUGIN_ROOT}/skills/crm/client-matching/references/matching-patterns.md`.
+For detailed personal email domain lists, distribution list patterns, domain normalization rules, and fuzzy name matching specifications, consult `skills/crm/client-matching/references/matching-patterns.md`.
