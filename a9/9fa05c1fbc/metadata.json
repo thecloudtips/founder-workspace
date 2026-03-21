@@ -7,7 +7,6 @@
   "files_touched": [
     ".github/workflows/publish-npm.yml",
     "development/scripts/build-dist.sh",
-    "development/skills/video/brand-kit/SKILL.md",
     "dist/template/.founderOS/infrastructure/automation-audit/SKILL.md",
     "dist/template/.founderOS/infrastructure/automation-audit/commands/audit-report.md",
     "dist/template/.founderOS/infrastructure/automation-audit/commands/audit-scan.md",
@@ -119,10 +118,10 @@
     }
   ],
   "token_usage": {
-    "input_tokens": 134,
-    "cache_creation_tokens": 517971,
-    "cache_read_tokens": 7080635,
-    "output_tokens": 36612,
-    "api_call_count": 75
+    "input_tokens": 127,
+    "cache_creation_tokens": 417385,
+    "cache_read_tokens": 7123401,
+    "output_tokens": 45408,
+    "api_call_count": 70
   }
 }

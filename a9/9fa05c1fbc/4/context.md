@@ -13,3 +13,7 @@ Execute the plugin root resolution implementation plan at internal_docs/superpow
 
   Tasks are sequential (Task 1 must complete befor...
 
+### Prompt 2
+
+lets fully resove the issye so option 2
+

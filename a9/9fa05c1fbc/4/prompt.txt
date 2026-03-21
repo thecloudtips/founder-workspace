@@ -6,3 +6,7 @@ Execute the plugin root resolution implementation plan at internal_docs/superpow
   to verify.
 
   Tasks are sequential (Task 1 must complete before Task 3's build verification will pass). Commit after each task. Push when Task 3 verification passes.
+
+---
+
+lets fully resove the issye so option 2
