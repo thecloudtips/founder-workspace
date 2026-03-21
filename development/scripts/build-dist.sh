@@ -111,12 +111,36 @@ find "$DIST_DIR/template/.claude/agents" -name '*.md' -type f -exec \
     -e 's|\${CLAUDE_PLUGIN_ROOT}|../../../.founderOS|g' \
     {} + 2>/dev/null || true
 
-# Check for unrewritten references
-REMAINING=$(grep -r 'CLAUDE_PLUGIN_ROOT' "$DIST_DIR/template/.claude/" --include='*.md' -l 2>/dev/null || true)
+# --- Post-build validation ---
+echo "Validating build output..."
+
+# Check BOTH .claude/ and .founderOS/ for unrewritten plugin root references
+REMAINING=$(grep -r 'CLAUDE_PLUGIN_ROOT' "$DIST_DIR/template/" --include='*.md' --include='*.json' -l 2>/dev/null || true)
 if [[ -n "$REMAINING" ]]; then
-  echo "WARNING: Unrewritten \${CLAUDE_PLUGIN_ROOT} references found in:"
+  echo "ERROR: Unrewritten \${CLAUDE_PLUGIN_ROOT} references found in:"
   echo "$REMAINING"
+  exit 1
 fi
+
+# Check for hardcoded video-studio directory paths (should use ${VIDEO_PATH} in source).
+# init.md is allowed exactly 2 references (the --path argument default and parse step).
+HARDCODED_VIDEO=$(grep -r '~/.founder-os/video-studio/' "$DIST_DIR/template/" --include='*.md' -l 2>/dev/null || true)
+if [[ -n "$HARDCODED_VIDEO" ]]; then
+  UNEXPECTED=$(echo "$HARDCODED_VIDEO" | grep -v 'commands/video/init\.md' || true)
+  if [[ -n "$UNEXPECTED" ]]; then
+    echo "ERROR: Hardcoded ~/.founder-os/video-studio/ paths found in:"
+    echo "$UNEXPECTED"
+    echo "These should use \${VIDEO_PATH} in source (resolved from state file at runtime)."
+    exit 1
+  fi
+  INIT_COUNT=$(grep -c '~/.founder-os/video-studio/' "$DIST_DIR/template/.claude/commands/video/init.md" 2>/dev/null || echo 0)
+  if [[ "$INIT_COUNT" -gt 2 ]]; then
+    echo "ERROR: init.md has $INIT_COUNT hardcoded video-studio paths (expected exactly 2)."
+    exit 1
+  fi
+fi
+
+echo "Build validation passed: zero unrewritten references."
 
 # --- Generate CLAUDE.md for end users ---
 if [[ -f "$DEV_ROOT/scripts/generate-user-claude-md.sh" ]]; then
